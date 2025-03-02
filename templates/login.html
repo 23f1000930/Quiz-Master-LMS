@@ -10,6 +10,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    .form-body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            padding-bottom: 150px;
+        }
+    .form-container {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          width: 380px;
+        }    
+  </style>
 </head>
 
 <body>
@@ -37,13 +54,12 @@
 
 
 
-  <div class="container">
-    <div class="py-3 text-center">
+  <div class="form-body">
+    <div class="py-3 text-center form-container">
       <a class="navbar-brand" href="#" style="font-weight: bold; font-size: 50px; font-family: Bebas Neue;">
         QuizMaster.in</a>
-        <h3>Sign in or create account</h3>
-        <div style="width: 320px; margin: 0 auto;">
-          
+      <h3>Sign in or create account</h3>
+      <div style="width: 320px; margin: 0 auto;">    
           <form action="" method="post">
             <div class="form-floating mb-3">
               <input type="text" class="form-control" id="floatingInput" placeholder="Username" required>
@@ -57,7 +73,7 @@
 
             <button class="btn btn-primary w-100 py-2" type="submit" fdprocessedid="0bh64">Sign in</button>
           </form><br>
-          <h6>Are you a new user ?<a href="register.html">Register</a></h6>
+          <h6>Are you a new user? <a href="register.html">Register</a></h6>
         </div>
     </div>
   </div>

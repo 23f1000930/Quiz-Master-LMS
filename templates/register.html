@@ -10,12 +10,31 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        .form-body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+            padding-bottom: 150px;
+        }
+        .form-container {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          width: 650px;
+          margin-top: 130px;
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding: 0px 0px;">
         <div class="container-fluid" style="padding-left: 50px;">
-            <a class="navbar-brand" href="basic.html" style="font-weight: bold; font-size: 35px; font-family: Bebas Neue;">Quiz
+            <a class="navbar-brand" href="basic.html"
+                style="font-weight: bold; font-size: 35px; font-family: Bebas Neue;">Quiz
                 Master</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -37,63 +56,62 @@
             </div>
         </div>
     </nav>
-
-
-
-    <div class="container">
-        <div class="py-3 text-center">
+    
+    <div class="form-body">
+        <div class="py-3 text-center form-container">
             <a class="navbar-brand" href="#" style="font-weight: bold; font-size: 50px; font-family: Bebas Neue;">
                 QuizMaster.in</a>
             <h3>Create Account</h3>
-        </div>
-        <div class="col my-1" style="width: 600px; margin: 0 auto; ">
-            <form class="row g-3">
-                <div class="col-6">
-                    <label for="fname" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="First Name">
-                  </div>
-                  <div class="col-6">
-                    <label for="lanme" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Last Name">
-                  </div>
-                <div class="col-md-6">
-                  <label for="inputEmail4" class="form-label">DOB</label>
-                  <input type="date" class="form-control" id="inputEmail4">
-                </div>
-                <div class="col-md-6">
-                  <label for="inputPassword4" class="form-label">Qualification</label>
-                  <select class="form-select" aria-label="Default select example" id="" name="">
-                    <option selected>Select Qualification</option>
-                    <option value="1">Secondary School</option>
-                    <option value="2">High School</option>
-                    <option value="3">Graduate</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="inputPassword4" class="form-label">Username</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Username">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="inputPassword4" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-                  </div>
-                  <div class="col-md-6">
-                    <label for="inputPassword4" class="form-label">Upload Files</label>
-                    <div class="input-group mb-3">
-                        <input type="file" class="form-control" id="inputGroupFile02">
-                      </div>
-                  </div>
-                <div class="col-6" style="width: 700px; margin: 0 auto;">
-                    <center>
-                        <button type="submit" class="btn btn-primary w-50 py-2">Register</button>
-                        <h6>Already have an account ?<a href="login.html">Login</a></h6>
-                    </center>
-                </div>
-              </form>
+
+            <div class="col my-1" style="width: 600px; margin: 0 auto; ">
+                <form class="row g-3">
+                    <div class="col-6">
+                        <label for="fname" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="First Name">
+                    </div>
+                    <div class="col-6">
+                        <label for="lanme" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Last Name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">DOB</label>
+                        <input type="date" class="form-control" id="inputEmail4">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Qualification</label>
+                        <select class="form-select" aria-label="Default select example" id="" name="">
+                            <option selected>Select Qualification</option>
+                            <option value="1">Secondary School</option>
+                            <option value="2">High School</option>
+                            <option value="3">Graduate</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail4" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Username</label>
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="Username">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Upload Files</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                        </div>
+                    </div>
+                    <div class="col-6" style="width: 700px; margin: 0 auto;">
+                        <center>
+                            <button type="submit" class="btn btn-primary w-50 py-2">Register</button><br><br>
+                            <h6>Already have an account? <a href="login.html">Login</a></h6>
+                        </center>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
