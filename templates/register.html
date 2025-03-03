@@ -16,20 +16,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 90vh;
+            height: 91vh;
             padding-bottom: 150px;
         }
         .form-container {
           background: white;
           padding: 30px;
+          padding-bottom: 20px;
           border-radius: 10px;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           width: 650px;
-          margin-top: 130px;
+          margin-top: 125px;
+          height: 84vh;
         }
     </style>
 </head>
-
+<!--"name" atttribute of input tag store the variable which holds the data entered in that input tag-->
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding: 0px 0px;">
         <div class="container-fluid" style="padding-left: 50px;">
@@ -61,52 +63,71 @@
         <div class="py-3 text-center form-container">
             <a class="navbar-brand" href="#" style="font-weight: bold; font-size: 50px; font-family: Bebas Neue;">
                 QuizMaster.in</a>
-            <h3>Create Account</h3>
+            <h4>Create Account</h4>
 
             <div class="col my-1" style="width: 600px; margin: 0 auto; ">
-                <form class="row g-3">
+                <form action="give-endpoint" method="post" class="row g-3">
                     <div class="col-6">
-                        <label for="fname" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="First Name">
+                        <label for="fName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="fName" placeholder="First Name" name="fname" required>
                     </div>
                     <div class="col-6">
-                        <label for="lanme" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="inputAddress2" placeholder="Last Name">
+                        <label for="lName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lName" placeholder="Last Name" name="lname" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputEmail4" class="form-label">DOB</label>
-                        <input type="date" class="form-control" id="inputEmail4">
+                        <label for="inputDob" class="form-label">DOB</label>
+                        <input type="date" class="form-control" id="inputDob" name="dob" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Qualification</label>
-                        <select class="form-select" aria-label="Default select example" id="" name="">
-                            <option selected>Select Qualification</option>
-                            <option value="1">Secondary School</option>
-                            <option value="2">High School</option>
-                            <option value="3">Graduate</option>
+                        <label for="inputGender" class="form-label">Gender</label>
+                        <select class="form-select" aria-label="Default select example" id="inputGender" name="gender" required>
+                            <option selected disabled value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputEmail4" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                        <label for="inputBloodGroup" class="form-label">Blood Group</label>
+                        <select class="form-select" aria-label="Default select example" id="inputBloodGroup" name="bloodgroup" required>
+                            <option selected disabled value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="B+">B+</option>
+                            <option value="AB">AB</option>
+                            <option value="O">O</option>
+                            <option value="AB-">AB-</option>
+                        </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Username</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="Username">
+                        <label for="inputQualification" class="form-label">Qualification</label>
+                        <select class="form-select" aria-label="Default select example" id="inputQualification" name="education" required>
+                            <option selected disabled value="">Select Qualification</option>
+                            <option value="secondary">Secondary School</option>
+                            <option value="high">High School</option>
+                            <option value="graduate">Graduate</option>
+                        </select>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                        <label for="inputEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Upload Files</label>
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                        </div>
+                        <label for="inputUsername" class="form-label">Username</label>
+                        <input type="password" class="form-control" id="inputUsername" placeholder="Username" name="username" required>
                     </div>
-                    <div class="col-6" style="width: 700px; margin: 0 auto;">
+                    <div class="col-md-6">
+                        <label for="inputPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="pwd" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputUpload" class="form-label">Upload Files</label>
+                        <input type="file" class="form-control" id="inputUpload" name="image" accept="image/*" required>
+                    </div>
+                    
+                    <div class="col-6" style="width: 700px;">
                         <center>
-                            <button type="submit" class="btn btn-primary w-50 py-2">Register</button><br><br>
+                            <input type="submit" class="btn btn-primary w-50 py-2" value="Register"><br><br>
                             <h6>Already have an account? <a href="login.html">Login</a></h6>
                         </center>
                     </div>
