@@ -31,7 +31,7 @@
     /* Sidebar Default (Closed) */
   .sidebar {
       width: 60px;
-      height: 50vh;
+      height: 43vh;
       background: #f8f9fa;
       transition: width 0.3s ease-in-out;
       overflow: hidden;
@@ -41,6 +41,7 @@
       padding-top: 2px;
       border-radius: 17px;
       margin-top: 176px;
+      z-index: 1000;
   }
 
   /* Expanded Sidebar */
@@ -118,6 +119,10 @@
             height: 264px;
             border-radius: 6px;
         }
+
+        .accordion-body{
+          padding: 0px;
+        }
   </style>
 </head>
 
@@ -155,10 +160,6 @@
     <i class="bi bi-plus-slash-minus"></i>
     <span>Scores</span>
   </a>
-  <a href="user_summary.html" id="usummary">
-    <i class="bi bi-bar-chart-line"></i>
-    <span>Summary</span>
-  </a>
   <a onclick="toggleCalculator()" id="calculator-btn">
     <i class="bi bi-calculator"></i>
     <span>Calculator</span>
@@ -182,6 +183,180 @@
   <iframe src="https://www.desmos.com/scientific"></iframe>
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--Module Accordion-->
+<div class="accordion" id="accordionPanelsStayOpenExample z-n1 poition absolute" style="width: 300px; margin-top: -96px; margin-left: 65px;">
+  <span class="badge text-bg-dark" 
+      style="display: inline-block; width: 298px; height: auto; font-size: 19px; padding: 11px; word-wrap: break-word; white-space: normal; text-align: center; margin-top: 6px;">
+  Database Management System
+</span>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="">
+            <div class="list-group" id="list-tab" role="tablist">
+              <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">Home</a>
+              <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Profile</a>
+              <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+              <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="">
+            <div class="list-group" id="list-tab" role="tablist">
+              <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">Home</a>
+              <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Profile</a>
+              <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+              <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+
+
+
+    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="">
+            <div class="list-group" id="list-tab" role="tablist">
+              <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home"><i class="bi bi-clock"></i>Home</a>
+              <a class="list-group-item list-group-item-action" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">Profile</a>
+              <a class="list-group-item list-group-item-action" id="list-messages-list" data-bs-toggle="list" href="#list-messages" role="tab" aria-controls="list-messages">Messages</a>
+              <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+</div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--Button Activeness-->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -196,7 +371,6 @@
         "help.html": "helpBtn",
         "user_module.html":"umod",
         "user_score.html":"uscore",
-        "user_summary.html":"usummary"
       };
 
       // If current page matches, add active state
