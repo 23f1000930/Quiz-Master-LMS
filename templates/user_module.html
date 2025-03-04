@@ -75,6 +75,49 @@
       opacity: 1;
   }
 
+  /* Calculator container styling */
+  #calculatorContainer {
+            display: none;
+            position: absolute;
+            width: 420px;
+            height: 311px;
+            background: white;
+            border: 2px solid black;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header for dragging */
+        #calculatorHeader {
+            cursor: move;
+            background: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        /* Close button */
+        #closeBtn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        /* Iframe styling */
+        iframe {
+            width: 100%;
+            height: 264px;
+            border-radius: 6px;
+        }
   </style>
 </head>
 
@@ -104,13 +147,9 @@
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-  <a href="user_home.html" id="uhome">
-    <i class="bi bi-house-door"></i>
-    <span>Home</span>
-  </a>
-  <a href="user_subject.html" id="usub">
-    <i class="bi bi-journals"></i>
-    <span>Subjects</span>
+  <a href="user_module.html" id="umod">
+    <i class="bi bi-journal-text"></i>
+    <span>Modules</span>
   </a>
   <a href="user_score.html" id="uscore">
     <i class="bi bi-plus-slash-minus"></i>
@@ -119,6 +158,10 @@
   <a href="user_summary.html" id="usummary">
     <i class="bi bi-bar-chart-line"></i>
     <span>Summary</span>
+  </a>
+  <a onclick="toggleCalculator()" id="calculator-btn">
+    <i class="bi bi-calculator"></i>
+    <span>Calculator</span>
   </a>
   <a href="login.html">
     <i class="bi bi-box-arrow-right"></i>
@@ -130,6 +173,16 @@
   </a>
 </div>
 
+<!-- Draggable Calculator -->
+<div id="calculatorContainer">
+  <div id="calculatorHeader">
+      Calculator (Dragable)
+      <button id="closeBtn" onclick="toggleCalculator()">X</button>
+  </div>
+  <iframe src="https://www.desmos.com/scientific"></iframe>
+</div>
+
+<!--Button Activeness-->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     // Get the current page URL
@@ -141,8 +194,7 @@
         "about.html": "aboutBtn",
         "contact.html": "contactBtn",
         "help.html": "helpBtn",
-        "user_home.html":"uhome",
-        "user_subject.html":"usub",
+        "user_module.html":"umod",
         "user_score.html":"uscore",
         "user_summary.html":"usummary"
       };
@@ -150,7 +202,7 @@
       // If current page matches, add active state
       if (pageMap[currentPage]) {
         let activeButton = document.getElementById(pageMap[currentPage]);
-        if (["uhome", "usub", "uscore", "usummary"].includes(activeButton.id)) {
+        if (["umod", "uscore", "usummary"].includes(activeButton.id)) {
           activeButton.style.background = "black"
           activeButton.style.color = "white"; // Active Effect
         }
@@ -164,35 +216,78 @@
     const toggleButton = document.getElementById("toggleSidebar");
     const toggleIcon = document.getElementById("toggleIcon");
 
-    // Unique storage key for home.html
-    let storageKey = "sidebarExpanded_user_dashboard";
+     // Unique storage key for user_module.html
+     let storageKey = "sidebarExpanded_user_module";
 
-    // Check localStorage for previous sidebar state
-    if (localStorage.getItem(storageKey) === "true") {
-        sidebar.classList.add("expanded");
+// Check localStorage for previous sidebar state
+if (localStorage.getItem(storageKey) === "true") {
+    sidebar.classList.add("expanded");
+    toggleIcon.classList.remove("bi-chevron-double-right");
+    toggleIcon.classList.add("bi-chevron-double-left");
+}
+
+// Toggle sidebar on button click
+toggleButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    sidebar.classList.toggle("expanded");
+
+    if (sidebar.classList.contains("expanded")) {
         toggleIcon.classList.remove("bi-chevron-double-right");
         toggleIcon.classList.add("bi-chevron-double-left");
+        localStorage.setItem(storageKey, "true");
+    } else {
+        toggleIcon.classList.remove("bi-chevron-double-left");
+        toggleIcon.classList.add("bi-chevron-double-right");
+        localStorage.setItem(storageKey, "false");
     }
-
-    // Toggle sidebar on button click
-    toggleButton.addEventListener("click", function (event) {
-        event.preventDefault();
-        sidebar.classList.toggle("expanded");
-
-        if (sidebar.classList.contains("expanded")) {
-            toggleIcon.classList.remove("bi-chevron-double-right");
-            toggleIcon.classList.add("bi-chevron-double-left");
-            localStorage.setItem(storageKey, "true");
-        } else {
-            toggleIcon.classList.remove("bi-chevron-double-left");
-            toggleIcon.classList.add("bi-chevron-double-right");
-            localStorage.setItem(storageKey, "false");
-        }
-    });
+});
   });
 </script>
 
+<!-- Draggable Calculator -->
+<script>
+  function toggleCalculator() {
+      let calcDiv = document.getElementById("calculatorContainer");
+      let calcBtn = document.getElementById("calculator-btn");
+      if (calcDiv.style.display === "none") {
+          calcDiv.style.display = "block"; // Show
 
+          // Highlight calculator button
+          calcBtn.style.background = "black";
+          calcBtn.style.color = "white";
+          calcDiv.style.top = "100px";  // Default position
+          calcDiv.style.right = "100px"; 
+      } else {
+          calcDiv.style.display = "none";  // Hide
+          // Highlight calculator button
+          calcBtn.style.background = "#f8f9fa";
+          calcBtn.style.color = "black";
+      }
+  }
+
+  // Drag Functionality
+  let dragItem = document.getElementById("calculatorContainer");
+  let header = document.getElementById("calculatorHeader");
+
+  let offsetX = 0, offsetY = 0, isDragging = false;
+
+  header.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - dragItem.offsetLeft;
+      offsetY = e.clientY - dragItem.offsetTop;
+  });
+
+  document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+          dragItem.style.left = (e.clientX - offsetX) + "px";
+          dragItem.style.top = (e.clientY - offsetY) + "px";
+      }
+  });
+
+  document.addEventListener("mouseup", () => {
+      isDragging = false;
+  });
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">

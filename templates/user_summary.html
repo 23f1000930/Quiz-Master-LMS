@@ -109,7 +109,7 @@
     <span>Home</span>
   </a>
   <a href="user_subject.html" id="usub">
-    <i class="bi bi-journal-text"></i>
+    <i class="bi bi-journals"></i>
     <span>Subjects</span>
   </a>
   <a href="user_score.html" id="uscore">
@@ -150,13 +150,13 @@
       // If current page matches, add active state
       if (pageMap[currentPage]) {
         let activeButton = document.getElementById(pageMap[currentPage]);
-        if (activeButton !="uhome" && activeButton !="usub") {
-          activeButton.classList.remove("btn-light");
-          activeButton.classList.add("btn-dark"); // Active Effect
-        }
-        if (activeButton) {
+        if (["uhome", "usub", "uscore", "usummary"].includes(activeButton.id)) {
           activeButton.style.background = "black"
           activeButton.style.color = "white"; // Active Effect
+        }
+        else {
+          activeButton.classList.remove("btn-light");
+          activeButton.classList.add("btn-dark"); // Active Effect
         }
 
       }
@@ -164,27 +164,30 @@
     const toggleButton = document.getElementById("toggleSidebar");
     const toggleIcon = document.getElementById("toggleIcon");
 
+    // Unique storage key for home.html
+    let storageKey = "sidebarExpanded_user_dashboard";
+
     // Check localStorage for previous sidebar state
-    if (localStorage.getItem("sidebarExpanded") === "true") {
-      sidebar.classList.add("expanded");
-      toggleIcon.classList.remove("bi-chevron-double-right");
-      toggleIcon.classList.add("bi-chevron-double-left");
+    if (localStorage.getItem(storageKey) === "true") {
+        sidebar.classList.add("expanded");
+        toggleIcon.classList.remove("bi-chevron-double-right");
+        toggleIcon.classList.add("bi-chevron-double-left");
     }
 
     // Toggle sidebar on button click
     toggleButton.addEventListener("click", function (event) {
-      event.preventDefault();
-      sidebar.classList.toggle("expanded");
+        event.preventDefault();
+        sidebar.classList.toggle("expanded");
 
-      if (sidebar.classList.contains("expanded")) {
-        toggleIcon.classList.remove("bi-chevron-double-right");
-        toggleIcon.classList.add("bi-chevron-double-left");
-        localStorage.setItem("sidebarExpanded", "true");
-      } else {
-        toggleIcon.classList.remove("bi-chevron-double-left");
-        toggleIcon.classList.add("bi-chevron-double-right");
-        localStorage.setItem("sidebarExpanded", "false");
-      }
+        if (sidebar.classList.contains("expanded")) {
+            toggleIcon.classList.remove("bi-chevron-double-right");
+            toggleIcon.classList.add("bi-chevron-double-left");
+            localStorage.setItem(storageKey, "true");
+        } else {
+            toggleIcon.classList.remove("bi-chevron-double-left");
+            toggleIcon.classList.add("bi-chevron-double-right");
+            localStorage.setItem(storageKey, "false");
+        }
     });
   });
 </script>
