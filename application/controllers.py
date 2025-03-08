@@ -49,5 +49,5 @@ def register():
 @app.route("/admin")
 def admin_dash():
     this_user = User.query.filter_by(type="admin").first()
-    all_info = Info.query.all()
+    all_info = Subject.query.all()
     return render_template("admin_dash.html", this_user=this_user, all_info=all_info)
