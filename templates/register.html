@@ -66,7 +66,7 @@
             <h4>Create Account</h4>
 
             <div class="col my-1" style="width: 600px; margin: 0 auto; ">
-                <form action="give-endpoint" method="post" class="row g-3">
+                <form action="/register" method="post" class="row g-3">
                     <div class="col-6">
                         <label for="fName" class="form-label">First Name</label>
                         <input type="text" class="form-control" id="fName" placeholder="First Name" name="fname" required>
@@ -93,9 +93,12 @@
                         <select class="form-select" aria-label="Default select example" id="inputBloodGroup" name="bloodgroup" required>
                             <option selected disabled value="">Select Blood Group</option>
                             <option value="A+">A+</option>
+                            <option value="A-">A-</option>
                             <option value="B+">B+</option>
-                            <option value="AB">AB</option>
-                            <option value="O">O</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
                             <option value="AB-">AB-</option>
                         </select>
                     </div>
@@ -104,8 +107,11 @@
                         <select class="form-select" aria-label="Default select example" id="inputQualification" name="education" required>
                             <option selected disabled value="">Select Qualification</option>
                             <option value="secondary">Secondary School</option>
-                            <option value="high">High School</option>
-                            <option value="graduate">Graduate</option>
+                            <option value="High School">High School</option>
+                            <option value="Diploma">Diploma</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="M.Sc">M.Sc</option>
+                            <option value="PhD">PhD</option>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -122,13 +128,13 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputUpload" class="form-label">Upload Files</label>
-                        <input type="file" class="form-control" id="inputUpload" name="image" accept="image/*" required>
+                        <input type="file" class="form-control" id="inputUpload" name="profile_image" accept="image/*" required>
                     </div>
                     
                     <div class="col-6" style="width: 700px;">
                         <center>
                             <input type="submit" class="btn btn-primary w-50 py-2" value="Register"><br><br>
-                            <h6>Already have an account? <a href="login.html">Login</a></h6>
+                            <h6>Already have an account? <a href="/login">Login</a></h6>
                         </center>
                     </div>
                 </form>
