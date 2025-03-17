@@ -68,6 +68,11 @@ def contact():
 def help():
     return render_template("help.html",)
 
+@app.route("/subject")
+def subject():
+    return render_template("subject.html",)
+
+
 @app.route("/user_home")
 def test():
     return render_template("user_home.html",)
