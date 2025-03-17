@@ -1,0 +1,48 @@
+/* "basic.html" STYLE */
+
+/* Make the body a flex container */
+   html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Allow main content to grow and push footer down */
+    main {
+    flex-grow: 1;
+}
+
+/* Footer styling */
+    .page-footer {
+    text-align: center;
+}
+
+/* Main & Social Media Icon styling */
+.icon-style{
+    font-size: 2rem;
+}
+
+/* Carousel styling */
+.carousel-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Carousel Button styling */
+.prev-btn {
+    left: -25px;
+}
+
+.next-btn {
+    right: -25px;
+}
+

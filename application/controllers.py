@@ -51,3 +51,27 @@ def admin_dash():
     this_user = User.query.filter_by(type="admin").first()
     all_info = Subject.query.all()
     return render_template("admin_dash.html", this_user=this_user, all_info=all_info)
+
+@app.route("/home")
+def home():
+    return render_template("home.html",)
+
+@app.route("/about")
+def about():
+    return render_template("about.html",)
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html",)
+
+@app.route("/help")
+def help():
+    return render_template("help.html",)
+
+@app.route("/user_home")
+def test():
+    return render_template("user_home.html",)
+
+@app.route("/user_subject")
+def user_subject():
+    return render_template("user_subject.html",)
