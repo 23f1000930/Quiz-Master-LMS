@@ -34,11 +34,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent"
                 style="font-weight: 500; font-size: 17px; font-family: sans-serif;">
                 
-                <span class="navbar-text" style="margin-left: 914px;">
+                <span class="navbar-text" style="margin-left: {{ margin_left | default(914) }}px;">
                     <a href="/about"><button type="button" class="btn btn-light toggle-btn" id="aboutBtn">About Us</button></a>
                     <a href="/help"><button type="button" class="btn btn-light toggle-btn" id="helpBtn">Help</button></a>
+                    {% if login_register_show %}
                     <a href="/login"><button type="button" class="btn btn-outline-dark">Login</button></a>&nbsp;&nbsp;
                     <a href="/register"><button type="button" class="btn btn-outline-dark">Sign Up</button></a>
+                    {% else %}
+                    <a href="/user_profile" type="button">
+                        <span class="badge text-bg-dark">
+                            <img src="/static/1.jpg" width="38px" height="36px" class="rounded-3 border border-3 border-white" alt="..."> AYUSH GUPTA
+                        </span>
+                    </a>
+                    
+
+
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -59,7 +70,7 @@
 
 
 <!-----------------------------Start FOOTER -------------------------------------------------------------->
-{% if show_footer %}
+{% if footer_show %}
 <div class="page-footer">
     <footer class="bg-dark text-white pt-2 pb-2">
         <div class="container text-center text-md-start">
@@ -129,8 +140,8 @@
     
             // Map pages to button IDs
             const pageMap = {
-                "about.html": "aboutBtn",
-                "help.html": "helpBtn"
+                "about": "aboutBtn",
+                "help": "helpBtn"
             };
             
             // If current page matches, add active state

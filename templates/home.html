@@ -1,6 +1,7 @@
 {% extends 'basic.html' %}
 {% block page_title %} Home {% endblock %}
 
+{% set login_register_show = True %}
 
 {% block page_body %}
 
@@ -207,7 +208,7 @@
               <a href="/subject" class="badge rounded-pill text-bg-dark w-25">View All</a>
           </div>
           <!------------------------------View All Button ENDS--------------------------->
-      </div>
+        </div>
 
         <!-------------------------------------------course Tech STARTS------------------------------>
         <div class="container">
@@ -462,4 +463,4 @@
 </div>
 {% endblock %}
 
-{% set show_footer = True %}
+{% set footer_show = True %}

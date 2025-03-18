@@ -1,7 +1,142 @@
 {% extends 'user_basic.html' %}
 {% block page_title %} Home {% endblock %}
 
+{% block user_css %}
+<style>   
+    .user-summary1 {
+        background-image: linear-gradient(310deg, #7928ca, #ff0080);
+    }
+
+    .user-summary2 {
+        background-color: #261878 !important;
+    }
+    
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+</style>
+{% endblock %}
 
 {% block user_content %} 
+<div class="px-4 text-center">
 
+    <div class="d-flex mb-3 row g-2 mt-3" style="padding-inline: 98px;">
+        <a class="btn btn-outline-dark w-25" type="button" style="height: 40px; font-size: 19px;"><i class="bi bi-box-arrow-down"></i> Export Data</a>
+        <!-- Clock item STARTS -->
+          <div class="d-flex justify-content-center ms-auto align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
+            <span class="display-6 lh-1 text-dark mb-0"><i class="bi bi-clock"></i></i></span>
+            <div class="ms-4 h6 fw-normal mb-0">
+              <div class="d-flex">
+                <h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
+              </div>
+              <p class="mb-0">Quiz Attempted</p>
+            </div>
+        <!-- Clock item ENDS-->
+        </div>
+    </div>    
+
+    <!--user short summary STARTS-->
+    <div class="container my-5">
+        <div class="row g-4">
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-15 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-check2-square"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
+                </div>
+                <p class="mb-0 text-white">Quiz Attempted</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-bar-graph"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200" data-purecounter-duration="0">86</h5>
+                  <span class="mb-0 h5 text-warning">%</span>
+                </div>
+                <p class="mb-0 text-warning">Performance</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-journals"></i></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">4</h5>
+                </div>
+                <p class="mb-0 text-white">Current Courses</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-check"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">2</h5>
+                 
+                </div>
+                <p class="mb-0 text-warning">Completed Courses</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--user short summary ENDS-->
+
+    <!--upcoming table STARTS-->
+    <div class="container my-5">
+        <div class="position-relative px-5 py-3 text-center text-muted bg-body border border-dashed rounded-5">  
+            <div class="d-flex justify-content-center position-relative">
+                <h2><code>Your Upcoming/Unattempted Quizes Shown Here</code></h2>
+            </div>                
+            <div>
+                <table class="table  table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Chapter</th>
+                        <th scope="col">Quiz No.</th>
+                        <th scope="col">Questions</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Attempts Left</th>
+                        <th scope="col">Total Attempts</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Action</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    <tr class="pt-5">
+                        <th scope="row">1</th>
+                        <td class="text-wrap">Mark</td>
+                        <td class="text-wrap">Otto</td>
+                        <td>@mdo</td>
+                        <th>kjhkj</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <th>kkj</th>
+                        <td>Mark</td>
+                        <td><a href="" class="btn btn-warning text-dark view-btn" type="button">View</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><br>
+    </div>
+    <!--upcoming table ENDS-->
+
+</div>
 {% endblock %}

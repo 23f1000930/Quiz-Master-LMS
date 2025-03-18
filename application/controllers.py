@@ -26,7 +26,7 @@ def login():
         else:
             return render_template("not_exist.html")
     
-    return render_template("login.html")
+    return render_template("login.html", margin_left = 1076)
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -42,9 +42,9 @@ def register():
             new_user = User(username=username,email=email,password=pwd)#LHS attribute name in table, RHS is data fetched from form 
             db.session.add(new_user)
             db.session.commit()
-            return redirect("/login")
+            return redirect("/login",)
         
-    return render_template("register.html")
+    return render_template("register.html", margin_left = 1076)
 
 @app.route("/admin")
 def admin_dash():
@@ -80,3 +80,7 @@ def test():
 @app.route("/user_subject")
 def user_subject():
     return render_template("user_subject.html",)
+
+@app.route("/user_module")
+def user_module():
+    return render_template("user_module.html")

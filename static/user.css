@@ -13,6 +13,7 @@
     padding-top: 2px;
     border-radius: 17px;
     margin-top: 176px;
+    z-index: 1000;
 }
 
 /* Expanded Sidebar */
