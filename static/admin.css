@@ -1,0 +1,49 @@
+/* user interface STYLE */
+
+/* Sidebar Default (Closed) */
+.sidebar {
+    width: 60px;
+    height: 50vh;
+    background: #f8f9fa;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 2px;
+    border-radius: 17px;
+    margin-top: 176px;
+    z-index: 1000;
+}
+
+/* Expanded Sidebar */
+.sidebar.expanded {
+    width: 180px; /* Sidebar खुलेगा */
+}
+
+/* Sidebar Links */
+.sidebar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 12px;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.sidebar a i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.sidebar a span {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    white-space: nowrap;
+}
+
+/* Show Text Only When Expanded */
+.sidebar.expanded a span {
+    opacity: 1;
+}

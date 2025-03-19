@@ -73,14 +73,25 @@ def subject():
     return render_template("subject.html",)
 
 
+#USER ROUTE & FUNCTION 
+@app.route("/admin_home")
+def admin_home():
+    return render_template("admin/admin_home.html",)
+
+@app.route("/admin_subject")
+def admin_subject():
+    return render_template("admin/admin_subject.html",)
+
+
+#USER ROUTE & FUNCTION 
 @app.route("/user_home")
 def test():
-    return render_template("user_home.html",)
+    return render_template("user/user_home.html",)
 
 @app.route("/user_subject")
 def user_subject():
-    return render_template("user_subject.html",)
+    return render_template("user/user_subject.html",)
 
 @app.route("/user_module")
 def user_module():
-    return render_template("user_module.html")
+    return render_template("user/user_module.html")

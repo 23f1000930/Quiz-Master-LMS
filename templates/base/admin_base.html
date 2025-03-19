@@ -1,0 +1,97 @@
+{% extends 'base/base.html' %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/static/admin.css">
+  {% block user_css %} {% endblock %}
+{% endblock %}
+
+
+{% block page_body %}
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <a href="/admin_home" id="ahome">
+      <i class="bi bi-house-door"></i>
+      <span>Home</span>
+    </a>
+    <a href="/admin_subject" id="asub">
+      <i class="bi bi-journals"></i>
+      <span>Subjects</span>
+    </a>
+    <a href="/admin_user" id="a_user">
+        <i class="bi bi-people"></i>
+        <span>Users</span>
+      </a>
+    <a href="/admin_summary" id="asummary">
+      <i class="bi bi-bar-chart-line"></i>
+      <span>Summary</span>
+    </a>
+    <a href="/home">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Logout</span>
+    </a>
+    <a href="#" id="toggleSidebar">
+      <i class="bi bi-chevron-double-right" id="toggleIcon"></i>
+      <span>Collapse</span>
+    </a>
+  </div>
+
+  <main class="position asbolute">
+    {% block admin_content %} {% endblock %}
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get the current page URL
+      let currentPage = window.location.pathname.split("/").pop();
+        console.log("Current Page URL:", currentPage)
+  
+        // Map pages to button IDs
+        const pageMap = {
+          "admin_home":"ahome",
+          "admin_subject":"asub",
+          "admin_user":"a_user",
+          "admin_summary":"asummary"
+        };
+  
+        // If current page matches, add active state
+        if (pageMap[currentPage]) {
+          let activeButton = document.getElementById(pageMap[currentPage]);
+          if (["ahome", "asub", "a_user", "asummary"].includes(activeButton.id)) {
+            activeButton.style.background = "black"
+            activeButton.style.color = "white"; // Active Effect
+          }
+  
+        }
+      const sidebar = document.getElementById("sidebar");
+      const toggleButton = document.getElementById("toggleSidebar");
+      const toggleIcon = document.getElementById("toggleIcon");
+  
+      // Unique storage key for home.html
+      let storageKey = "sidebarExpanded_user_dashboard";
+  
+      // Check localStorage for previous sidebar state
+      if (localStorage.getItem(storageKey) === "true") {
+          sidebar.classList.add("expanded");
+          toggleIcon.classList.remove("bi-chevron-double-right");
+          toggleIcon.classList.add("bi-chevron-double-left");
+      }
+  
+      // Toggle sidebar on button click
+      toggleButton.addEventListener("click", function (event) {
+          event.preventDefault();
+          sidebar.classList.toggle("expanded");
+  
+          if (sidebar.classList.contains("expanded")) {
+              toggleIcon.classList.remove("bi-chevron-double-right");
+              toggleIcon.classList.add("bi-chevron-double-left");
+              localStorage.setItem(storageKey, "true");
+          } else {
+              toggleIcon.classList.remove("bi-chevron-double-left");
+              toggleIcon.classList.add("bi-chevron-double-right");
+              localStorage.setItem(storageKey, "false");
+          }
+      });
+    });
+  </script>
+{% endblock %}
