@@ -82,6 +82,14 @@ def admin_home():
 def admin_subject():
     return render_template("admin/admin_subject.html",)
 
+@app.route("/admin_module")
+def admin_module():
+    return render_template("admin/admin_module.html",)
+
+@app.route("/admin_user")
+def admin_user():
+    return render_template("admin/admin_user.html",)
+
 
 #USER ROUTE & FUNCTION 
 @app.route("/user_home")

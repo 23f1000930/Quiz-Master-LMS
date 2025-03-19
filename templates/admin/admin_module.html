@@ -1,0 +1,448 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} Home {% endblock %}
+
+{% block user_css %}
+<style>   
+    .user-summary1 {
+        background-image: linear-gradient(310deg, #7928ca, #ff0080);
+    }
+
+    .user-summary2 {
+        background-color: #261878 !important;
+    }
+    
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #212529;
+    background-color: #fff;
+    }
+
+    .nav-link:focus, .nav-link:hover {
+        color: #fff;
+    }
+    
+    .nav-link {
+        color: #fff;
+    }
+    .accordion {
+    margin-bottom: 10px; /* Adjust the value as needed */
+    /* border: 2px solid 	#212529;  Change color as needed */
+    border-radius: 8px;
+    }
+
+    .chapter-bar{
+        border-radius: 21px;
+        height: auto; 
+        padding: 6px 0px;
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %} 
+<div class="px-4 text-center">
+
+    <div class="d-flex align-items-center justify-content-between position-relative mb-3 mt-3" style="padding-inline: 98px;">
+        <!-- Export Button (Left) -->
+        <a class="btn btn-outline-dark w-25" type="button" style="height: 40px; font-size: 19px;">
+            <i class="bi bi-box-arrow-down"></i> Export Data
+        </a>
+    
+        <!-- Title (Centered) -->
+        <span class="fs-4 position-absolute start-50 translate-middle-x m-0 badge rounded-pill text-bg-dark">Add Subject Details</span>
+    
+        <!-- Clock Item (Right) -->
+        <div class="d-flex justify-content-center align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
+            <span class="display-6 lh-1 text-dark mb-0"><i class="bi bi-clock"></i></span>
+            <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                    <h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
+                </div>
+                <p class="mb-0">Quiz Attempted</p>
+            </div>
+        </div>
+    </div>
+       
+
+    <!--user short summary STARTS-->
+    <div class="container my-5">
+        <div class="row g-4">
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-15 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-check2-square"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
+                </div>
+                <p class="mb-0 text-white">Quiz Attempted</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-bar-graph"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200" data-purecounter-duration="0">86</h5>
+                  <span class="mb-0 h5 text-warning">%</span>
+                </div>
+                <p class="mb-0 text-warning">Performance</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-journals"></i></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">4</h5>
+                </div>
+                <p class="mb-0 text-white">Current Courses</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-check"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">2</h5>
+                 
+                </div>
+                <p class="mb-0 text-warning">Completed Courses</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--user short summary ENDS-->
+
+    <!--upcoming table STARTS-->
+    <div class="container">
+        <!-- Tabs START -->
+        <ul class="nav nav-pills justify-content-sm-center mb-4 px-3 bg-dark" id="course-pills-tab" role="tablist" style="border-radius: 21px;height: auto; padding: 6px 0px;">
+            <!-- Tab item -->
+            <li class="nav-item me-2 me-sm-5" role="presentation">
+                <button class="nav-link mb-2 mb-md-0 active fw-bold" id="course-pills-tab-main" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false" tabindex="-1">Database Management Systems</button>
+            </li>
+        </ul>
+        <div class="d-flex mx-4">
+            <!-----------------------------------ADD Chapter Modal--------------------------------------->
+            <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i> Add Chapter</button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="mb-3">
+                          <label for="recipient-name" class="col-form-label">Recipient:</label>
+                          <input type="text" class="form-control" id="recipient-name">
+                        </div>
+                        <div class="mb-3">
+                          <label for="message-text" class="col-form-label">Message:</label>
+                          <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Send message</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->  
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
+              </form>
+        </div>
+        <!-- Tabs END -->
+    
+        <!-- Tabs content START -->
+        <div style="width: 1268px; margin-left: 4px;">
+            <!-- Content START -->
+            <div style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+
+                    <!---------------------------------Accordin/Chapters STARTS------------------------->
+                   
+                    <div class="accordion border border-dark" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsTwo1" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
+                                        Chapter: 1 Rational Database Management System
+                                </button>
+                            </h2>
+                            <div id="collapsTwo1" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div>
+
+                                         <!--upcoming table STARTS-->
+                                        <div class="container">
+                                            <!-- Tabs START -->
+                                            <ul class="nav nav-pills justify-content-sm-center mb-4 px-3 bg-dark chapter-bar" id="course-pills-tab00" role="tablist">
+                                                <!-- Tab item -->
+                                                <li class="nav-item me-2 me-sm-5" role="presentation">
+                                                    <button class="nav-link mb-2 mb-md-0 active p-1" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-11" type="button" role="tab" aria-controls="course-pills-tabs-11" aria-selected="false" tabindex="-1">Lectures</button>
+                                                </li>
+                                                <!-- Tab item -->
+                                                <li class="nav-item me-2 me-sm-5" role="presentation">
+                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-22" type="button" role="tab" aria-controls="course-pills-tabs-22" aria-selected="false" tabindex="-1">Activity Assignments</button>
+                                                </li>
+                                                <!-- Tab item -->
+                                                <li class="nav-item me-2 me-sm-5" role="presentation">
+                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-3" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-33" type="button" role="tab" aria-controls="course-pills-tabs-33" aria-selected="false" tabindex="-1">Practice Assignments</button>
+                                                </li>
+                                                <!-- Tab item -->
+                                                <li class="nav-item me-2 me-sm-5" role="presentation">
+                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-44" type="button" role="tab" aria-controls="course-pills-tabs-44" aria-selected="false" tabindex="-1">Graded Assignments</button>
+                                                </li>
+                                            </ul>
+                                            <div class="d-flex mx-4">
+                                                <!-----------------------------------ADD Chapter Modal--------------------------------------->
+                                                <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i> Add</button>
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        <form>
+                                                            <div class="mb-3">
+                                                            <label for="recipient-name" class="col-form-label">Recipient:</label>
+                                                            <input type="text" class="form-control" id="recipient-name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                            <label for="message-text" class="col-form-label">Message:</label>
+                                                            <textarea class="form-control" id="message-text"></textarea>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Send message</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->  
+                                                
+                                            </div>
+                                            <!-- Tabs END -->
+
+                                            <!-- Tabs content START -->
+                                            <div class="tab-content" id="course-pills-tabContent00">
+
+
+
+                                                <!-- Content START -->
+                                                <div class="tab-pane fade active show" id="course-pills-tabs-11" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    <table class="table table-hover">
+                                                        <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">S No.</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Description</th>
+                                                            <th scope="col">Link</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Understanding Relational operators</td>
+                                                            <td>Gives Deep Understanding Of Set Theory</td>
+                                                            <td><a href="google.com">Link</a></td>
+                                                            <td>
+                                                                <a href="" class="btn btn-primary view-btn" type="button"><i class="bi bi-pencil"></i></a>
+                                                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Content END -->
+
+                                                <!-- Content START -->
+                                                <div class="tab-pane fade" id="course-pills-tabs-22" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Acti</th>
+                                                            <th scope="col">Last Attempt</th>
+                                                            <th scope="col">Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>24/02/2021</td>
+                                                            <td>86%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>14/04/2024</td>
+                                                            <td>96%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>19/07/2025</td>
+                                                            <td>76%</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Content END -->
+                                                <!-- Content START -->
+                                                <div class="tab-pane fade" id="course-pills-tabs-33" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Prac</th>
+                                                            <th scope="col">Last Attempt</th>
+                                                            <th scope="col">Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>24/02/2021</td>
+                                                            <td>86%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>14/04/2024</td>
+                                                            <td>96%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>19/07/2025</td>
+                                                            <td>76%</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Content END -->
+                                                <!-- Content START -->
+                                                <div class="tab-pane fade" id="course-pills-tabs-44" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">Lec</th>
+                                                            <th scope="col">Gradded</th>
+                                                            <th scope="col">Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>24/02/2021</td>
+                                                            <td>86%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>14/04/2024</td>
+                                                            <td>96%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>19/07/2025</td>
+                                                            <td>76%</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Content END -->
+
+
+
+
+
+
+
+
+
+
+                                                
+
+
+                                                
+                                            </div>
+                                            <!-- Tabs content END -->
+                                        </div>
+                                        <!--upcoming table ENDS-->
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion border border-dark" id="accordionPanelsStayOpenExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsTwo2" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
+                                        View Scores
+                                </button>
+                            </h2>
+                            <div id="collapsTwo2" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div>
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Quiz</th>
+                                                <th scope="col">Last Attempt</th>
+                                                <th scope="col">Marks</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>24/02/2021</td>
+                                                <td>86%</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>14/04/2024</td>
+                                                <td>96%</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>19/07/2025</td>
+                                                <td>76%</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+             
+                    <!---------------------------------Accordin/Chapters ENDS--------------------------->
+
+
+            </div>
+            <!-- Content END -->
+        </div>
+        <!-- Tabs content END -->
+    </div>
+    <!--upcoming table ENDS-->
+
+</div>
+{% endblock %}
