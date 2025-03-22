@@ -33,22 +33,27 @@
         <h4>Create Account</h4>
 
         <div class="col my-1" style="width: 600px; margin: 0 auto; ">
-            <form action="/register" method="post" class="row g-3">
+            <!--When you upload files via an HTML form, the browser needs to send the file data correctly to the server.
+                By default, forms use application/x-www-form-urlencoded, which cannot handle file uploads.
+                multipart/form-data allows file data to be sent along with form fields.
+                Without enctype="multipart/form-data", Flask won’t receive the file correctly when you use request.files["profile_image"].
+            -->
+            <form action="/register" method="post" class="row g-3" enctype="multipart/form-data">
                 <div class="col-6">
                     <label for="fName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="fName" placeholder="First Name" name="fname" required>
+                    <input type="text" class="form-control" id="f_name" placeholder="First Name" name="f_name" required>
                 </div>
                 <div class="col-6">
                     <label for="lName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lName" placeholder="Last Name" name="lname" required>
+                    <input type="text" class="form-control" id="l_name" placeholder="Last Name" name="l_name" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputDob" class="form-label">DOB</label>
-                    <input type="date" class="form-control" id="inputDob" name="dob" required>
+                    <input type="date" class="form-control" id="dob" name="dob" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputGender" class="form-label">Gender</label>
-                    <select class="form-select" aria-label="Default select example" id="inputGender" name="gender" required>
+                    <select class="form-select" aria-label="Default select example" id="gender" name="gender" required>
                         <option selected disabled value="">Select Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -57,7 +62,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="inputBloodGroup" class="form-label">Blood Group</label>
-                    <select class="form-select" aria-label="Default select example" id="inputBloodGroup" name="bloodgroup" required>
+                    <select class="form-select" aria-label="Default select example" id="blood_group" name="blood_group" required>
                         <option selected disabled value="">Select Blood Group</option>
                         <option value="A+">A+</option>
                         <option value="A-">A-</option>
@@ -71,7 +76,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="inputQualification" class="form-label">Qualification</label>
-                    <select class="form-select" aria-label="Default select example" id="inputQualification" name="education" required>
+                    <select class="form-select" aria-label="Default select example" id="qualification" name="qualification" required>
                         <option selected disabled value="">Select Qualification</option>
                         <option value="secondary">Secondary School</option>
                         <option value="High School">High School</option>
@@ -83,15 +88,15 @@
                 </div>
                 <div class="col-md-6">
                     <label for="inputEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputUsername" class="form-label">Username</label>
-                    <input type="password" class="form-control" id="inputUsername" placeholder="Username" name="username" required>
+                    <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="pwd" required>
+                    <input type="password" class="form-control" id="pwd" placeholder="Password" name="pwd" required>
                 </div>
                 <div class="col-md-6">
                     <label for="inputUpload" class="form-label">Upload Files</label>

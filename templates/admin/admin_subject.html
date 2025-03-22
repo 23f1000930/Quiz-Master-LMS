@@ -27,6 +27,12 @@
     .nav-link {
         color: #fff;
     }
+
+    .sub-category{
+        padding-left: 28px;
+        padding-bottom: 70px;
+        padding-top: 25px;
+    }
 </style>
 {% endblock %}
 
@@ -40,7 +46,7 @@
         </a>
     
         <!-- Title (Centered) -->
-        <h3 class="position-absolute start-50 translate-middle-x m-0">All Courses</h3>
+        <h3 class="position-absolute start-50 translate-middle-x m-0">All Subjects</h3>
     
         <!-- Clock Item (Right) -->
         <div class="d-flex justify-content-center align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
@@ -118,11 +124,11 @@
         <ul class="nav nav-pills justify-content-sm-center mb-4 px-3 bg-dark" id="course-pills-tab" role="tablist" style="border-radius: 21px;height: auto; padding: 6px 0px;">
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
-                <button class="nav-link mb-2 mb-md-0 active" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false" tabindex="-1">Web Design</button>
+                <button class="nav-link mb-2 mb-md-0 active" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false" tabindex="-1">Data Science</button>
             </li>
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
-                <button class="nav-link mb-2 mb-md-0" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-2" type="button" role="tab" aria-controls="course-pills-tabs-2" aria-selected="false" tabindex="-1">Development</button>
+                <button class="nav-link mb-2 mb-md-0" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-2" type="button" role="tab" aria-controls="course-pills-tabs-2" aria-selected="false" tabindex="-1">Electronic Stytems</button>
             </li>
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
@@ -130,7 +136,7 @@
             </li>
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
-                <button class="nav-link mb-2 mb-md-0" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-4" type="button" role="tab" aria-controls="course-pills-tabs-4" aria-selected="false" tabindex="-1">Marketing</button>
+                <button class="nav-link mb-2 mb-md-0" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-4" type="button" role="tab" aria-controls="course-pills-tabs-4" aria-selected="false" tabindex="-1">Cyber Security</button>
             </li>
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
@@ -139,34 +145,95 @@
         </ul>
         <div class="d-flex mx-4">
             <!-----------------------------------ADD Subject Modal--------------------------------------->
-            <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i> Add Subject</button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal"><i class="bi bi-plus-lg"></i> Add Subject</button>
+            <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Subject</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form>
-                        <div class="mb-3">
-                          <label for="recipient-name" class="col-form-label">Recipient:</label>
-                          <input type="text" class="form-control" id="recipient-name">
-                        </div>
-                        <div class="mb-3">
-                          <label for="message-text" class="col-form-label">Message:</label>
-                          <textarea class="form-control" id="message-text"></textarea>
-                        </div>
-                      </form>
+                        <form action="/admin_subject" method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="sub_name" name="sub_name" placeholder="Subject Name" required>
+                                <label for="sub_name">Subject Name</label>
+                            </div>
+                            <div class="form-floating">
+                                <select class="form-select" id="category" aria-label="Floating label select example" name="category" required>
+                                    <option selected disabled value="">Select Category</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Electronic Systems">Electronic Systems</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Cyber Security">Cyber Security</option>
+                                    <option value="Finance">Finance</option>
+                                </select>
+                                <label for="category">Subject Category</label>
+                              </div>
+                              <br>
+                            <div class="form-floating">
+                                <textarea  type="text" class="form-control" id="description" name="description" placeholder="SubjectDescription" style="height: 80px" required></textarea>
+                                <label for="description">Subject Description</label>
+                            </div><br>
+                            <div>
+                                <input type="file" class="form-control" id="inputUpload" name="sub_image" accept="image/*" required>
+                            </div><br>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-dark" value="Add Subject" style="width: 120px;">
+                            </div>
+                        </form>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Send message</button>
-                    </div>
+                    
                   </div>
                 </div>
-              </div>
+            </div>
             <!--------------------------------------ADD Subject Modal END--------------------------------------------------->  
+            
+            <!----------------------------------MODIFY Subject Modal--------------------------------------->
+            <div class="modal fade" id="modifySubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Subject Info</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/admin_subject" method="post" enctype="multipart/form-data">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mod_sub_name" name="mod_sub_name" placeholder="Subject Name" required>
+                                <label for="mod_sub_name">Subject Name</label>
+                            </div>
+                            <div class="form-floating">
+                                <select class="form-select" id="mod_category" aria-label="Floating label select example" name="mod_category" required>
+                                    <option selected disabled value="">Select Category</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Electronic Stytems">Electronic Stytems</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Cyber Security">Cyber Security</option>
+                                    <option value="Finance">Finance</option>
+                                </select>
+                                <label for="mod_category">Subject Category</label>
+                              </div>
+                              <br>
+                            <div class="form-floating">
+                                <textarea  type="text" class="form-control" id="mod_description" name="mod_description" placeholder="SubjectDescription" style="height: 80px" required></textarea>
+                                <label for="mod_description">Subject Description</label>
+                            </div><br>
+                            <div>
+                                <input type="file" class="form-control" id="inputUpload" name="sub_image" accept="image/*" required>
+                            </div><br>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-dark" value="Add Subject" style="width: 120px;">
+                            </div>
+                        </form>
+                    </div>
+                    
+                  </div>
+                </div>
+            </div>
+            <!--------------------------------------MODIFY Subject Modal END--------------------------------------------------->  
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
@@ -180,679 +247,170 @@
     
     
             <!-- Content START -->
-            <div class="tab-pane fade active show" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+            <div class="tab-pane fade active show sub-category" id="course-pills-tabs-1" role="tabpanel" aria-labelledby="course-pills-tab-1">
                 <div class="row g-2" >
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-                     <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
 
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 18rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-warning w-100"><i class="bi bi-plus-circle"></i>&nbsp;&nbsp;Add Chapers</a><br><br>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-dark w-50"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
-                            </div>
+                    {% for subject in subjects %}
+                        {% if subject.category == "Data Science" %}
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ subject.name }}</h5>
+                                <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
+                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Card item END -->
+                        <!-- Card item END -->
+                        {% endif %}
+                     {% endfor %}
+      
                 </div> <!-- Row END -->
             </div>
             <!-- Content END -->
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
             <!-- Content START -->
-            <div class="tab-pane fade" id="course-pills-tabs-2" role="tabpanel" aria-labelledby="course-pills-tab-2">
-                <div class="row g-4">
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 22rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-dark w-50">Enroll</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/06.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-info bg-opacity-10 text-info">Intermediate</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
+            <div class="tab-pane fade sub-category" id="course-pills-tabs-2" role="tabpanel" aria-labelledby="course-pills-tab-2">
+                <div class="row g-2">
+                    
+                    {% for subject in subjects %}
+                        {% if subject.category == "Electronic Systems" %}
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ subject.name }}</h5>
+                                <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
+                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
                                 </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Angular – The Complete Guider</a></h5>
-                                <p class="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>9h 32m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>42 lectures</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/07.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                                    <a href="#" class="text-danger"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Deep Learning with React-Native</a></h5>
-                                <p class="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>18h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>99 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/09.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">JavaScript: Full Understanding</a></h5>
-                                <p class="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">5.0/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>35h 20m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>89 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/10.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-info bg-opacity-10 text-info">Intermediate</a>
-                                    <a href="#" class="text-danger"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Bootstrap 5 From Scratch</a></h5>
-                                <p class="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>25h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>38 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/13.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">PHP with - CMS Project</a></h5>
-                                <p class="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>21h 22m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>30 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
+                        <!-- Card item END -->
+                        {% endif %}
+                     {% endfor %}
+
                 </div>
             </div>
             <!-- Content END -->
     
             <!-- Content START -->
-            <div class="tab-pane fade" id="course-pills-tabs-3" role="tabpanel" aria-labelledby="course-pills-tab-3">
+            <div class="tab-pane fade sub-category" id="course-pills-tabs-3" role="tabpanel" aria-labelledby="course-pills-tab-3">
                 <div class="row g-4">
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
+                    
+                    {% for subject in subjects %}
+                        {% if subject.category == "Graphic Design" %}
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ subject.name }}</h5>
+                                <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
+                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
                                 </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Sketch from A to Z: for app designer</a></h5>
-                                <p class="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>12h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>15 lectures</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/04.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                                    <a href="#" class="text-danger"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Learn Invision</a></h5>
-                                <p class="mb-2">Arrived off she elderly beloved him Course regard to up he hardly.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">3.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>6h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>82 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/02.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                                    <a href="#" class="text-danger"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Graphic Design Masterclass</a></h5>
-                                <p class="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>9h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>65 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/03.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Create a Design System in Figma</a></h5>
-                                <p class="text-truncate-2 mb-2">Rooms oh fully taken by worse do. Points afraid but may end.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>5h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>32 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
+                        <!-- Card item END -->
+                        {% endif %}
+                     {% endfor %}
+
                 </div>
             </div>
             <!-- Content END -->
     
             <!-- Content START -->
-            <div class="tab-pane fade" id="course-pills-tabs-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
+            <div class="tab-pane fade sub-category" id="course-pills-tabs-4" role="tabpanel" aria-labelledby="course-pills-tab-4">
                 <div class="row g-4">
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/01.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-success bg-opacity-10 text-success">Beginner</a>
-                                    <a href="#" class="text-danger"><i class="fas fa-heart"></i></a>
+                    {% for subject in subjects %}
+                        {% if subject.category == "Cyber Security" %}
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ subject.name }}</h5>
+                                <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
+                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
                                 </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Digital Marketing Masterclass</a></h5>
-                                <p class="text-truncate-2 mb-2">Delivered dejection necessary objection do Mr prevailed.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star-half-alt text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.5/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>6h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>82 lectures</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/08.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
-                                </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">Sketch from A to Z: for app designer</a></h5>
-                                <p class="text-truncate-2 mb-2">Proposal indulged no do sociable he throwing settling.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">4.0/5.0</li>
-                                </ul>
-                            </div>	
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>12h 56m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>15 lectures</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
+                        <!-- Card item END -->
+                        {% endif %}
+                     {% endfor %}
                 </div>
             </div>
             <!-- Content END -->
     
             <!-- Content START -->
-            <div class="tab-pane fade" id="course-pills-tabs-5" role="tabpanel" aria-labelledby="course-pills-tab-5">
+            <div class="tab-pane fade sub-category" id="course-pills-tabs-5" role="tabpanel" aria-labelledby="course-pills-tab-5">
                 <div class="row g-4">
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card" style="width: 22rem;">
-                            <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                            <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                <a href="#" class="btn btn-dark w-50">Enroll</a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Card item END -->
-    
-                    <!-- Card item START -->
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card shadow h-100">
-                            <!-- Image -->
-                            <img src="assets/images/courses/4by3/09.jpg" class="card-img-top" alt="course image">
-                            <div class="card-body pb-0">
-                                <!-- Badge and favorite -->
-                                <div class="d-flex justify-content-between mb-2">
-                                    <a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-                                    <a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
+                    {% for subject in subjects %}
+                        {% if subject.category == "Finance" %}
+                        <!-- Card item START -->
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                <h5 class="card-title">{{ subject.name }}</h5>
+                                <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
+                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
                                 </div>
-                                <!-- Title -->
-                                <h5 class="card-title fw-normal"><a href="#">JavaScript: Full Understanding</a></h5>
-                                <p class="text-truncate-2 mb-2">Far advanced settling say finished raillery. Offered chiefly farther.</p>
-                                <!-- Rating star -->
-                                <ul class="list-inline mb-0">
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
-                                    <li class="list-inline-item ms-2 h6 fw-light mb-0">5.0/5.0</li>
-                                </ul>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer pt-0 pb-3">
-                                <hr>
-                                <div class="d-flex justify-content-between">
-                                    <span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i>35h 20m</span>
-                                    <span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i>89 lectures</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Card item END -->
+                        <!-- Card item END -->
+                        {% endif %}
+                     {% endfor %}
                 </div>
             </div>
             <!-- Content END -->
 
-            
         </div>
         <!-- Tabs content END -->
     </div>
     <!--upcoming table ENDS-->
 
 </div>
+<script>
+   async function getSubjectDetails(subjectId) {
+    try {
+        let response = await fetch(`http://127.0.0.1:5000/get_subject/${subjectId}`);
+        let data = await response.json();
+
+        if (data.error) {
+            alert("Subject not found!");
+            return;
+        }
+        console.log("Fetched Data:", data); 
+        document.getElementById("mod_sub_name").value = data.name || "";
+        document.getElementById("mod_category").value = data.category || "";
+        document.getElementById("mod_description").value = data.description || "";
+
+    } catch (error) {
+        console.error("Error fetching subject details:", error);
+    }
+}
+</script>
 {% endblock %}

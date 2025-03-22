@@ -1,0 +1,33 @@
+#to create database
+go to python shell then run following commands one by one
+>>> from app import *
+>>> db.create_all()
+
+#create record:
+>>> from app import *
+>>> user1 = User(
+        firstname="Admin",
+        dob=date(2001, 12, 20),  
+        gender="Male",
+        bloodgroup="B+",
+        qualification="B.Tech",
+        email="admin@quizmaster.com",
+        username="quizmasteradmin",
+        password=123, 
+        profile_image="1.jpg",
+        type="admin"
+    )
+>>> db.session.add(user1) #entry is added to the session
+>>> db.session.commit()
+>>> user2 = User(
+        firstname="Ram",
+        lastname="Lal",
+        dob=date(1998, 08, 15),  
+        gender="Male",
+        bloodgroup="O+",
+        qualification="Msc",
+        email="ram@gmail.com",
+        username="ramlal123",
+        password=123, 
+        profile_image="2.jpg",
+    )

@@ -34,7 +34,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent"
                 style="font-weight: 500; font-size: 17px; font-family: sans-serif;">
                 
-                <span class="navbar-text" style="margin-left: {{ margin_left | default(914) }}px;">
+                <span class="navbar-text" style="margin-left:auto;">
                     <a href="/about"><button type="button" class="btn btn-light toggle-btn" id="aboutBtn">About Us</button></a>
                     <a href="/help"><button type="button" class="btn btn-light toggle-btn" id="helpBtn">Help</button></a>
                     {% if login_register_show %}
@@ -43,13 +43,11 @@
                     {% else %}
                     <a href="/user_profile" type="button">
                         <span class="badge text-bg-dark">
-                            <img src="/static/1.jpg" width="38px" height="36px" class="rounded-3 border border-3 border-white" alt="..."> AYUSH GUPTA
+                            <img src="/static/uploads/{{ profile_image }}" width="38px" height="36px" class="rounded-3 border border-3 border-white" alt="..."> {{ profile_name }}
                         </span>
                     </a>
-                    
-
-
                     {% endif %}
+                    
                 </span>
             </div>
         </div>

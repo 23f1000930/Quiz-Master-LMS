@@ -7,7 +7,7 @@ app = None
 def create_app():
     app = Flask(__name__) #consider this file(module) as a server code for web application 
     app.debug = True
-    app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///quizmaster.sqlite3"#3 database,  "quizmaster"-->name of database file
+    app.config["SQLALCHEMY_DATABASE_URI"]= "sqlite:///quizmaster.sqlite3"#3 database,  "quizmaster.sqlite3"-->name of database file
     db.init_app(app) #3 database,  it connects our "db" object of "database.py" to "app.py" or "app" object
     app.app_context().push() #runtime error, it brings everything under context of flask application
     return app
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 """
 By doing all things by setting up all files of "application" folder & "app.py"we have to go 
 1. in pythpn shell & run "from app import *" then "instance" folder is created.
-2. then run "db.created_all()" creates database file with name "quizmaster" as specified in "app.py"
-inside "instance" folder
+2. then run "db.created_all()" creates database file with name "quizmaster.sqlite3" as specified in "app.py"
+inside "instance" folder is created
 3.
 """

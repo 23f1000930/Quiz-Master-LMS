@@ -26,7 +26,7 @@ go to python shell then run following commands one by one
 
 #create record:
 >>> from app import *
->>> user1 = User(username="Admin123",email = "admin@user.com",password="1234",type="admin")     
+>>> user1 = User(username="quizadmin",email = "quizadmin@user.com",password="1234",type="admin")     
 >>> db.session.add(user1) #entry is added to the session
 >>> db.session.commit()
 >>> user2 = User(username="Ansh",email = "ansh@user.com",password="1234")
