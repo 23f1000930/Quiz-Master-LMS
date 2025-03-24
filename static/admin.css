@@ -3,7 +3,7 @@
 /* Sidebar Default (Closed) */
 .sidebar {
     width: 60px;
-    height: 50vh;
+    height: 58vh;
     background: #f8f9fa;
     transition: width 0.3s ease-in-out;
     overflow: hidden;

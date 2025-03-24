@@ -39,27 +39,10 @@
 {% block admin_content %} 
 <div class="px-4 text-center">
 
-    <div class="d-flex align-items-center justify-content-between position-relative mb-3 mt-3" style="padding-inline: 98px;">
-        <!-- Export Button (Left) -->
-        <a class="btn btn-outline-dark w-25" type="button" style="height: 40px; font-size: 19px;">
-            <i class="bi bi-box-arrow-down"></i> Export Data
-        </a>
-    
+    <div class="mb-5">
         <!-- Title (Centered) -->
-        <h3 class="position-absolute start-50 translate-middle-x m-0">All Subjects</h3>
-    
-        <!-- Clock Item (Right) -->
-        <div class="d-flex justify-content-center align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
-            <span class="display-6 lh-1 text-dark mb-0"><i class="bi bi-clock"></i></span>
-            <div class="ms-4 h6 fw-normal mb-0">
-                <div class="d-flex">
-                    <h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
-                </div>
-                <p class="mb-0">Quiz Attempted</p>
-            </div>
-        </div>
-    </div>
-       
+        <h3 ><span class="badge text-bg-warning">All Subjects</span></h3>
+      </div>
 
     <!--user short summary STARTS-->
     <div class="container my-5">
@@ -117,7 +100,6 @@
         </div>
     </div>
     <!--user short summary ENDS-->
-
     <!--upcoming table STARTS-->
     <div class="container">
         <!-- Tabs START -->
@@ -146,7 +128,7 @@
         <div class="d-flex mx-4">
             <!-----------------------------------ADD Subject Modal--------------------------------------->
             <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#addSubjectModal"><i class="bi bi-plus-lg"></i> Add Subject</button>
-            <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-labelledby="addSubjectModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -155,11 +137,13 @@
                     </div>
                     <div class="modal-body">
                         <form action="/admin_subject" method="post" enctype="multipart/form-data">
+
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="sub_name" name="sub_name" placeholder="Subject Name" required>
                                 <label for="sub_name">Subject Name</label>
                             </div>
-                            <div class="form-floating">
+                            
+                            <div class="form-floating mb-3">
                                 <select class="form-select" id="category" aria-label="Floating label select example" name="category" required>
                                     <option selected disabled value="">Select Category</option>
                                     <option value="Data Science">Data Science</option>
@@ -169,15 +153,28 @@
                                     <option value="Finance">Finance</option>
                                 </select>
                                 <label for="category">Subject Category</label>
-                              </div>
-                              <br>
-                            <div class="form-floating">
-                                <textarea  type="text" class="form-control" id="description" name="description" placeholder="SubjectDescription" style="height: 80px" required></textarea>
+                            </div>
+
+                            <div class="form-control mb-3">
+                                <input type="radio" onclick="fetchAllInstructors()" class="btn-check" name="options-base" id="option6" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="option6">Click Here To Select Instructors For This Course</label>
+                            </div>
+                            <div  id="all_instructor">
+                                <!--ALL INSTRUCTORS COMES-->
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="description" name="description" placeholder="Subject Description" style="height: 100px" required></textarea>
                                 <label for="description">Subject Description</label>
-                            </div><br>
-                            <div>
-                                <input type="file" class="form-control" id="inputUpload" name="sub_image" accept="image/*" required>
-                            </div><br>
+                            </div>
+                            
+                            <div class="input-group mb-3 d-flex flex-row" style="height: 60px;">
+                                <div class="text-center me-2">
+                                    <img src="/static/uploads/prev_image.png" id="prev_sub_image" width="60px" height="60px" class="rounded" alt="Subject Image">
+                                  </div>
+                              <input type="file" onchange="previewImage(event, 'prev_sub_image')" id="sub_image" name="sub_image" class="form-control rounded-3" style="height: 60px;line-height: 60px; padding: 0px 10px;" required>
+                            </div>   
+                                
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
                                 <input type="submit" class="btn btn-dark" value="Add Subject" style="width: 120px;">
@@ -191,7 +188,7 @@
             <!--------------------------------------ADD Subject Modal END--------------------------------------------------->  
             
             <!----------------------------------MODIFY Subject Modal--------------------------------------->
-            <div class="modal fade" id="modifySubjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <div class="modal fade" id="modifySubjectModal" tabindex="-1" aria-labelledby="modifySubjectModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -199,33 +196,51 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/admin_subject" method="post" enctype="multipart/form-data">
+                        <form action="" id="modify_sub_info" method="post" enctype="multipart/form-data">
+                            
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="mod_sub_name" name="mod_sub_name" placeholder="Subject Name" required>
                                 <label for="mod_sub_name">Subject Name</label>
                             </div>
-                            <div class="form-floating">
+
+                            <div class="form-floating mb-3">
                                 <select class="form-select" id="mod_category" aria-label="Floating label select example" name="mod_category" required>
                                     <option selected disabled value="">Select Category</option>
                                     <option value="Data Science">Data Science</option>
-                                    <option value="Electronic Stytems">Electronic Stytems</option>
+                                    <option value="Electronic Systems">Electronic Systems</option>
                                     <option value="Graphic Design">Graphic Design</option>
                                     <option value="Cyber Security">Cyber Security</option>
                                     <option value="Finance">Finance</option>
                                 </select>
                                 <label for="mod_category">Subject Category</label>
-                              </div>
-                              <br>
-                            <div class="form-floating">
-                                <textarea  type="text" class="form-control" id="mod_description" name="mod_description" placeholder="SubjectDescription" style="height: 80px" required></textarea>
+                            </div>
+
+
+                            <div  id="mod_all_instructor">
+                                <!--ALL INSTRUCTORS COMES-->
+                            </div>
+
+
+
+
+
+                            
+                            <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="mod_description" name="mod_description" placeholder="Subject Description" style="height: 100px" required></textarea>
                                 <label for="mod_description">Subject Description</label>
-                            </div><br>
-                            <div>
-                                <input type="file" class="form-control" id="inputUpload" name="sub_image" accept="image/*" required>
-                            </div><br>
+                            </div>
+
+                            <div class="input-group mb-3 d-flex flex-row" style="height: 60px;">
+                                <div class="text-center me-2">
+                                    <img src="" id="mod_prev_sub_image" width="60px" height="60px" class="rounded" alt="Subject Image">
+                                </div>
+                              <input type="file" onchange="previewImage(event, 'mod_prev_sub_image')" id="mod_sub_image" name="mod_sub_image" class="form-control rounded-3" style="height: 60px;line-height: 60px; padding: 0px 10px;">
+                            </div>
+                                
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-warning " id="reset" value="" onclick="getSubjectDetails(value)">Reset</button>&nbsp;&nbsp;
                                 <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-                                <input type="submit" class="btn btn-dark" value="Add Subject" style="width: 120px;">
+                                <input type="submit" class="btn btn-dark" value="Modify Subject" style="width: 135px;">
                             </div>
                         </form>
                     </div>
@@ -259,7 +274,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">{{ subject.name }}</h5>
                                 <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
-                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
                                     <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
@@ -288,7 +303,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">{{ subject.name }}</h5>
                                 <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
-                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
                                     <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
@@ -317,7 +332,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">{{ subject.name }}</h5>
                                 <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
-                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
                                     <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
@@ -345,7 +360,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">{{ subject.name }}</h5>
                                 <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
-                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
                                     <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
@@ -372,7 +387,7 @@
                                 <div class="card-body">
                                 <h5 class="card-title">{{ subject.name }}</h5>
                                 <p class="card-text">{{ subject.description[:80] }}... <a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">view more</a></p>
-                                <a href="#" class="btn btn-warning w-100">Explore</a><br><br>
+                                <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
                                     <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
@@ -394,9 +409,11 @@
 
 </div>
 <script>
+
+    //FOR PREVIEW THE DETAILS IN FORM
    async function getSubjectDetails(subjectId) {
     try {
-        let response = await fetch(`http://127.0.0.1:5000/get_subject/${subjectId}`);
+        let response = await fetch(`http://127.0.0.1:5000/modify_subject/${subjectId}`);
         let data = await response.json();
 
         if (data.error) {
@@ -404,13 +421,96 @@
             return;
         }
         console.log("Fetched Data:", data); 
-        document.getElementById("mod_sub_name").value = data.name || "";
-        document.getElementById("mod_category").value = data.category || "";
+        //Assignming subjects details in modify form by using ({id_name}.value)
+        mod_sub_name.value = data.name || "";
+        mod_category.value = data.category || "";
         document.getElementById("mod_description").value = data.description || "";
+        mod_prev_sub_image.src = `/static/uploads/${data.sub_image}` || "";
+        reset.value = data.id
+        mod_sub_image = data.sub_image
+        modify_sub_info.action = "/modify_subject/" + data.id;
+
+        //FOR SELECTED INSTRUCTOR PREVIEW
+        mod_all_instructor.innerHTML = "" //ensures same options is not added while clicking dropdown multiple times
+        
+        //Selected Instructors
+        selected_instructors = data.selected_instructors
+        //All Instructors
+        all_instructors = data.all_instructors
+
+        // // Loop for showing Selected Instructors
+        // selected_instructors.forEach(instructor => {
+        //     mod_all_instructor.innerHTML += `
+        //     <div class="input-group mb-3">
+        //         <input class="form-check-input" type="checkbox" id = "${instructor.id}" name = "${instructor.id}" value = "${instructor.id}" aria-label="Checkbox for following text input" checked>  
+        //         &nbsp;&nbsp;<label class="form-check-label" for="${instructor.id}">${instructor.name}</label>
+        //     </div>`
+        //  });
+
+
+        // Loop for showing Selected Instructors
+         all_instructors.forEach(instructor => {
+        // Check if the instructor exists in selected_instructors based on ID
+        const isChecked = selected_instructors.some(selected => selected.id === instructor.id);
+
+        mod_all_instructor.innerHTML += `
+        <div class="input-group mb-3">
+            <input class="form-check-input" type="checkbox" id="${instructor.id}" name="${instructor.id}" value="${instructor.id}" ${isChecked ? 'checked' : ''}>  
+            &nbsp;&nbsp;<label class="form-check-label" for="${instructor.id}">${instructor.name}</label>
+        </div>`;
+        });
+
+        //The .some() method is used to check if at least one element in an array satisfies a given condition. It returns a boolean value (true or false).
+        //  .includes() only works for primitive values (numbers, strings, booleans).
+        // .some() works for objects because we can check a specific property.
 
     } catch (error) {
         console.error("Error fetching subject details:", error);
     }
 }
+
+    //PREVIEW IMAGE
+    function previewImage(event, imgId) {
+        let file = event.target.files[0]; // Get the selected file
+        if (file) {
+            let reader = new FileReader(); // If a file is selected, a FileReader object is created
+            //FileReader reads the file
+            // reader.onload is an event handler fires when reading is complete.
+            // An event handler is a function that runs in response to an event 
+            // (such as a button click, a file selection, or a page load).
+            // It is used to define what should happen when a specific event occurs.
+            reader.onload = e => document.getElementById(imgId).src = e.target.result; // Set image src
+            reader.readAsDataURL(file); // Convert file to Base64 URL
+        }
+    }
+
+    //FOR INSTRUCTOR CHECKBOXES
+    async function fetchAllInstructors()
+    {
+        try {
+        let response = await fetch("http://127.0.0.1:5000/admin_instructor/all_instructors");
+        let data = await response.json();
+        if (data.error) {
+            alert("Instructors not found!");
+            return;
+        }
+        console.log("Fetched Data:", data);
+
+        all_instructor.innerHTML = "" //ensures same options is not added while clicking dropdown multiple times
+         
+        // Loop through the JSON data
+        data.forEach(instructor => {
+            all_instructor.innerHTML += `
+            <div class="input-group mb-3">
+                <input class="form-check-input" type="checkbox" id = "${instructor.id}" name = "${instructor.id}" value = "${instructor.id}" aria-label="Checkbox for following text input">  
+                &nbsp;&nbsp;<label class="form-check-label" for="${instructor.id}">${instructor.name}</label>
+            </div>`
+        });
+
+        } catch (error) {
+            console.error("Error fetching subject details:", error);
+        }
+    }
+
 </script>
 {% endblock %}

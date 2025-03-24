@@ -1,0 +1,271 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} Home {% endblock %}
+
+{% block user_css %}
+<style>   
+    .user-summary1 {
+        background-image: linear-gradient(310deg, #7928ca, #ff0080);
+    }
+
+    .user-summary2 {
+        background-color: #261878 !important;
+    }
+    
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="px-4 text-center">
+  <div class="mb-5">
+    <!-- Title (Centered) -->
+    <h3 ><span class="badge text-bg-warning">Instructors</span></h3>
+  </div>
+
+    <!--user short summary STARTS-->
+    <div class="container my-5">
+        <div class="row g-4">
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-15 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-check2-square"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
+                </div>
+                <p class="mb-0 text-white">Quiz Attempted</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-bar-graph"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200" data-purecounter-duration="0">86</h5>
+                  <span class="mb-0 h5 text-warning">%</span>
+                </div>
+                <p class="mb-0 text-warning">Performance</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-journals"></i></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">4</h5>
+                </div>
+                <p class="mb-0 text-white">Current Courses</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-check"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">2</h5>
+                 
+                </div>
+                <p class="mb-0 text-warning">Completed Courses</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--user short summary ENDS-->
+
+    <!--upcoming table STARTS-->
+    <div class="container my-5">
+        <div class="position-relative px-5 py-3 text-center text-muted bg-body border border-dashed rounded-5">  
+            <div class="d-flex justify-content-center position-relative">
+                <h2><code>Modify Recently Added Graded Quizes</code></h2>
+            </div><br>
+            
+            <div class="d-flex mx-4 mb-2">
+                <!-----------------------------------ADD Instructor Modal--------------------------------------->
+                <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#addInstructorModal"><i class="bi bi-plus-lg"></i> Add Instructor</button>
+                <div class="modal fade" id="addInstructorModal" tabindex="-1" aria-labelledby="addInstructorModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Instructor</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/admin_instructor" method="post" enctype="multipart/form-data">
+
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="inst_name" name="inst_name" placeholder="Instructor Name" required>
+                                    <label for="inst_name">Instructor Name</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="exp_years" name="exp_years" placeholder="Experience Years" required>
+                                  <label for="exp_years">Experience Years</label>
+                              </div>
+
+                                <div class="form-floating mb-3">
+                                    <textarea  type="text" class="form-control" id="inst_desp" name="inst_desp" placeholder="Instructor Description" style="height: 100px" required></textarea>
+                                    <label for="inst_desp">Instructor Description</label>
+                                </div>
+                                
+                                <div class="input-group mb-3 d-flex flex-row" style="height: 60px;">
+                                    <div class="text-center me-2">
+                                        <img src="/static/uploads/prev_image.png" id="prev_inst_image" width="60px" height="60px" class="rounded" alt="Instructor Image">
+                                    </div>
+                                <input type="file" onchange="previewImage(event, 'prev_inst_image')" id="inst_image" name="inst_image" class="form-control rounded-3" style="height: 60px;line-height: 60px; padding: 0px 10px;" required>
+                                </div>   
+                                    
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Add Instructor" style="width: 120px;">
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                    </div>
+                </div>
+                <!--------------------------------------ADD Instructor Modal END--------------------------------------------------->  
+                
+                <!----------------------------------MODIFY Instructor Modal--------------------------------------->
+                <div class="modal fade" id="modifyInstructorModal" tabindex="-1" aria-labelledby="modifyInstructorModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Instructor Info</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" id="modify_inst_info" method="post" enctype="multipart/form-data">
+                                
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mod_inst_name" name="mod_inst_name" placeholder="Instructor Name" required>
+                                <label for="mod_inst_name">Instructor Name</label>
+                              </div>
+
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mod_exp_years" name="mod_exp_years" placeholder="Experience Years" required>
+                                <label for="mod_exp_years">Experience Years</label>
+                              </div>
+                                
+                              <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="mod_inst_desp" name="mod_inst_desp" placeholder="Instructor Description" style="height: 100px" required></textarea>
+                                <label for="mod_inst_desp">Instructor Description</label>
+                              </div>  
+
+                                <div class="input-group mb-3 d-flex flex-row" style="height: 60px;">
+                                    <div class="text-center me-2">
+                                        <img src="" id="mod_prev_inst_image" width="60px" height="60px" class="rounded" alt="Instructor Image">
+                                    </div>
+                                  <input type="file" onchange="previewImage(event, 'mod_prev_inst_image')" id="mod_inst_image" name="mod_inst_image" class="form-control rounded-3" style="height: 60px;line-height: 60px; padding: 0px 10px;">
+                                </div>
+                                    
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning " id="reset" value="" onclick="getSubjectDetails(value)">Reset</button>&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Modify Instructor" style="width: 145px;">
+                                </div>
+                            </form>
+                        </div>
+                        
+                      </div>
+                    </div>
+                </div>
+                <!--------------------------------------MODIFY Subject Modal END--------------------------------------------------->  
+                
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search">
+                    <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+            </div>
+            
+
+            <div class="table-responsive" >
+                <table class="table table-hover" style="width: 1142px; margin-left: 32px;">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Experience Years</th>
+                        <th scope="col">About</th>
+                        <th scope="col">Profile</th>
+                        <th scope="col">Action</th>
+                        
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                      {% for instructor in instructors %}
+                      <tr class="pt-5" >
+                          <td scope="row">{{ loop.index }}</td>
+                          <th class="text-wrap" style="width: 10rem;">{{ instructor.name }}</th>
+                          <th class="text-wrap">{{ instructor.experience }}</th>
+                          
+                          <td class="text-wrap" style="width: 19rem;">{{ instructor.description }}</td>
+                          <td>
+                            <img src="/static/uploads/{{ instructor.inst_image }}" id="mod_prev_sub_image" width="55px" height="55px" class="rounded" alt="Subject Image">
+                          </td>
+                          <td class="" >
+                              <button type="button" class="btn btn-primary view-btn" id="sub{{ instructor.id }}" value="{{ instructor.id }}" onclick="getInstructorDetails('{{ instructor.id }}')" data-bs-toggle="modal" data-bs-target="#modifyInstructorModal"><i class="bi bi-pencil"></i></button>
+                              <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><br>
+    </div>
+    <!--upcoming table ENDS-->
+
+</div>
+<script>
+  async function getInstructorDetails(instructortId) {
+   try {
+       let response = await fetch(`http://127.0.0.1:5000/modify_instructor/${instructortId}`);
+       let data = await response.json();
+
+       if (data.error) {
+           alert("Instructor not found!");
+           return;
+       }
+       console.log("Fetched Data:", data); 
+       //Assignming subjects details in modify form by using ({id_name}.value)
+       mod_inst_name.value = data.name || "";
+       mod_exp_years.value = data.experience || "";
+       document.getElementById("mod_inst_desp").value = data.description || "";
+       mod_prev_inst_image.src = `/static/uploads/${data.inst_image}` || "";
+       reset.value = data.id
+       mod_inst_image = data.inst_image
+       modify_inst_info.action = "/modify_instructor/" + data.id;
+
+   } catch (error) {
+       console.error("Error fetching subject details:", error);
+   }
+}
+
+//PREVIEW IMAGE
+function previewImage(event, imgId) {
+   let file = event.target.files[0]; // Get the selected file
+   if (file) {
+       let reader = new FileReader(); // If a file is selected, a FileReader object is created
+       //FileReader reads the file
+       // reader.onload is an event handler fires when reading is complete.
+       // An event handler is a function that runs in response to an event 
+       // (such as a button click, a file selection, or a page load).
+       // It is used to define what should happen when a specific event occurs.
+       reader.onload = e => document.getElementById(imgId).src = e.target.result; // Set image src
+       reader.readAsDataURL(file); // Convert file to Base64 URL
+   }
+}
+</script>
+{% endblock %}

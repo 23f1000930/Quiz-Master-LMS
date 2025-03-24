@@ -44,26 +44,18 @@
 {% block admin_content %} 
 <div class="px-4 text-center">
 
-    <div class="d-flex align-items-center justify-content-between position-relative mb-3 mt-3" style="padding-inline: 98px;">
-        <!-- Export Button (Left) -->
-        <a class="btn btn-outline-dark w-25" type="button" style="height: 40px; font-size: 19px;">
-            <i class="bi bi-box-arrow-down"></i> Export Data
-        </a>
-    
+    <div class="mb-5">
         <!-- Title (Centered) -->
-        <span class="fs-4 position-absolute start-50 translate-middle-x m-0 badge rounded-pill text-bg-dark">Add Subject Details</span>
-    
-        <!-- Clock Item (Right) -->
-        <div class="d-flex justify-content-center align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
-            <span class="display-6 lh-1 text-dark mb-0"><i class="bi bi-clock"></i></span>
-            <div class="ms-4 h6 fw-normal mb-0">
-                <div class="d-flex">
-                    <h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">21</h5>
-                </div>
-                <p class="mb-0">Quiz Attempted</p>
+        <h3 ><span class="badge text-bg-warning">Add Chapters To {{ subject.name }}</span></h3>
+        <div class="container my-5">
+            <div class="position-relative px-5 py-3 text-center text-muted bg-body border border-dashed rounded-4">
+                <h2 class="mb-3"><code>Description</code></h2>
+                <p class="carousel-container fs-5 fw-semibold ">
+                    {{ subject.description }}
+                </p>
             </div>
         </div>
-    </div>
+      </div>
        
 
     <!--user short summary STARTS-->
@@ -129,37 +121,41 @@
         <ul class="nav nav-pills justify-content-sm-center mb-4 px-3 bg-dark" id="course-pills-tab" role="tablist" style="border-radius: 21px;height: auto; padding: 6px 0px;">
             <!-- Tab item -->
             <li class="nav-item me-2 me-sm-5" role="presentation">
-                <button class="nav-link mb-2 mb-md-0 active fw-bold" id="course-pills-tab-main" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false" tabindex="-1">Database Management Systems</button>
+                <button class="nav-link mb-2 mb-md-0 active fw-bold" id="course-pills-tab-main" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-1" type="button" role="tab" aria-controls="course-pills-tabs-1" aria-selected="false" tabindex="-1">{{ subject.name }}</button>
             </li>
         </ul>
         <div class="d-flex mx-4">
             <!-----------------------------------ADD Chapter Modal--------------------------------------->
-            <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i> Add Chapter</button>
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+            <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#addChapterModal"><i class="bi bi-plus-lg"></i> Add Chapter</button>
+            <div class="modal fade" id="addChapterModal" tabindex="-1" aria-labelledby="addChapterModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form>
-                        <div class="mb-3">
-                          <label for="recipient-name" class="col-form-label">Recipient:</label>
-                          <input type="text" class="form-control" id="recipient-name">
-                        </div>
-                        <div class="mb-3">
-                          <label for="message-text" class="col-form-label">Message:</label>
-                          <textarea class="form-control" id="message-text"></textarea>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Send message</button>
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Chapter</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="/admin_subject" method="post" enctype="multipart/form-data">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="chapter_name" name="chapter_name" placeholder="Chapter Name" required>
+                                  <label for="chapter_name">Chapter Name</label>
+                              </div>
+                                
+                              <div class="form-floating mb-3">
+                                  <textarea  type="text" class="form-control" id="chapter_desp" name="chapter_desp" placeholder="Chapter Description" style="height: 100px" required></textarea>
+                                  <label for="chapter_desp">Chapter Description</label>
+                              </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                  <input type="submit" class="btn btn-dark" value="Add Chapter" style="width: 120px;">
+                              </div>
+                          </form>
+                      </div>
+                      
                     </div>
                   </div>
-                </div>
               </div>
             <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->  
             <form class="d-flex" role="search">

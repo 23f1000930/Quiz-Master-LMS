@@ -14,7 +14,7 @@ go to python shell then run following commands one by one
         email="admin@quizmaster.com",
         username="quizmasteradmin",
         password=123, 
-        profile_image="1.jpg",
+        profile_image="admin.jpg",
         type="admin"
     )
 >>> db.session.add(user1) #entry is added to the session
