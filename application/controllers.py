@@ -113,7 +113,7 @@ def admin_home():
 
 
 @app.route("/admin_instructor", defaults={'optional': None}, methods=["GET", "POST"])
-@app.route("/admin_instructor/<optional>", methods=["GET", "POST"])  #for api
+@app.route("/admin_instructor/<optional>", methods=["GET", "POST"])  #for showing instructors in subject create form only
 def admin_instructor(optional):
     if request.method == 'GET':
         instructors=Instructor.query.all()
@@ -347,66 +347,132 @@ def modify_subject(subject_id):
         return render_template("notfound.html")
 #--------------------------------------------------------------------------------------------------------------------
 
-# @app.route("/admin_instructor", methods=["GET", "POST"])
-# def admin_instructor():
-#     if request.method == 'GET':
-#         # subjects=Subject.query.all()
-#         this_user = User.query.filter_by(type="admin").first()
-#         return render_template("admin/admin_instructor.html", profile_image=this_user.profile_image, profile_name=this_user.firstname)
-
-#     # if request.method == 'POST':
-#     #     subject_name = request.form['sub_name']
-#     #     category = request.form['category']
-#     #     description = request.form['description']
-
-#     #     sub_image = request.files["sub_image"]  
-
-#     #     existing_subject = Subject.query.filter_by(name=subject).first()
-#     #     if existing_subject:
-#     #         return render_template("already.html")
-#     #     else:
-#     #         #uploading Image
-#     #         sub_image_filename = None 
-#     #         if sub_image and sub_image.filename:
-#     #             sub_image_filename = sub_image.filename 
-#     #             sub_image_path = os.path.join(app.config["UPLOAD_FOLDER"],sub_image_filename)
-#     #             sub_image.save(sub_image_path)
-
-#     #         new_subject = Subject(
-#     #             name=subject_name,
-#     #             category=category,
-#     #             description=description,
-#     #             sub_image=sub_image_filename,  # Store filename, not the FileStorage object
-#     #         )
-#     #         db.session.add(new_subject)
-#     #         db.session.commit()
-#     #         return redirect("/admin_subject")
-
 
 @app.route("/admin_module/<int:subject_id>", methods=["GET", "POST"])
 def admin_module(subject_id):
     if request.method == 'GET':
         subject = Subject.query.get(subject_id)
-        # chapters = Chapters.query.get(subject_id)
+        chapters = Chapter.query.filter_by(subject_id=subject_id).all()
+        chapter_ids = [chapter.id for chapter in chapters]
+        lectures = {}
+        for chapter_id in chapter_ids:
+            lectures[chapter_id] = Lecture.query.filter_by(chapter_id=chapter_id).all()
+            #lectures.append(Lecture.query.filter_by(id=i).all())
 
         this_user = User.query.filter_by(type="admin").first()
-        return render_template("admin/admin_module.html", subject=subject ,profile_image=this_user.profile_image, profile_name=this_user.firstname)
+        return render_template("admin/admin_module.html", subject=subject, chapters=chapters, lectures=lectures, profile_image=this_user.profile_image, profile_name=this_user.firstname)
     
-    # if request.method == 'POST':
-    #     chapter_name = request.form['chapter_name']
-    #     chapter_desp = request.form.get('chapter_desp')
-    #     #OR existing_chapter = Chapter.query.get(name=chapter_name)
-    #     existing_chapter = Chapter.query.filter_by(name=chapter_name).first()
-    #     if existing_chapter:
-    #         return render_template("already.html")
-    #     else:
-    #         new_chapter = Chapter(
-    #             name=chapter_name_name,
-    #             description=chapter_desp,
-    #         )
-    #         db.session.add(new_chapter)
-    #         db.session.commit()
-    #         return redirect("/admin_module/subject_id")
+    if request.method == 'POST':
+        chapter_name = request.form['chapter_name']
+        chapter_desp = request.form.get('chapter_desp')
+
+        #OR existing_chapter = Chapter.query.get(name=chapter_name)
+        existing_chapter = Chapter.query.filter_by(name=chapter_name).first()
+        if existing_chapter:
+            return render_template("already.html")
+        else:
+            new_chapter = Chapter(
+                name=chapter_name,
+                description=chapter_desp,
+                subject_id=subject_id
+            )
+
+            db.session.add(new_chapter)
+            db.session.commit()
+            return redirect(f"/admin_module/{subject_id}")
+
+
+#----------------------------------------ABOVE IS AN API IMPLEMENTATION ------------------------------------------------------------------------
+@app.route("/modify_module/<int:chapter_id>", methods=["GET", "POST"])
+def modify_module(chapter_id):
+    if request.method == 'GET':
+        chapter=Chapter.query.filter_by(id=chapter_id).first()
+        if chapter:
+            # Convert SQLAlchemy object to dictionary
+            chapter_data = {
+            "id": chapter.id,
+            "name": chapter.name,
+            "description": chapter.description
+            }
+            print("CHAPTER DATA",jsonify(chapter_data))
+            return jsonify(chapter_data)
+        else:
+            return jsonify({"error": "Chapter not found"}), 404
+        
+    if request.method == 'POST':
+        chapter = Chapter.query.get(chapter_id)
+        if chapter:
+            chapter.name = request.form['mod_chapter_name']
+            chapter.description = request.form['mod_chapter_desp']
+
+            db.session.commit()
+            subject_id = chapter.that_chap_sub.id
+            return redirect(f"/admin_module/{subject_id}")
+        return render_template("notfound.html")
+#------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+@app.route("/admin_lecture/<int:chapter_id>", methods=["GET", "POST"])
+def admin_lecture(chapter_id):
+    if request.method == 'POST':
+        lecture_name = request.form['lecture_name']
+        description = request.form['lect_desp']
+        link = request.form['lect_link']
+
+        #OR existing_lecture = Lecture.query.get(name=lecture_name)
+        existing_lecture = Lecture.query.filter_by(name=lecture_name).first()
+        if existing_lecture:
+            return render_template("already.html")
+        else:
+            new_lecture = Lecture(
+                name=lecture_name,
+                description=description,
+                link = link,
+                chapter_id = chapter_id
+            )
+
+            db.session.add(new_lecture)
+            db.session.commit()
+
+            chapter = Chapter.query.get(chapter_id)
+            subject_id = chapter.that_chap_sub.id
+            return redirect(f"/admin_module/{subject_id}")
+
+#----------------------------------------ABOVE IS AN API IMPLEMENTATION ------------------------------------------------------------------------
+@app.route("/modify_lecture/<int:lecture_id>", methods=["GET", "POST"])
+def modify_lecture(lecture_id):
+    if request.method == 'GET':
+        lecture=Lecture.query.filter_by(id=lecture_id).first()
+        if lecture:
+            # Convert SQLAlchemy object to dictionary
+            lecture_data = {
+            "id": lecture.id,
+            "name": lecture.name,
+            "description": lecture.description,
+            "link": lecture.link
+            }
+            print("LECTURE DATA",jsonify(lecture_data))
+            return jsonify(lecture_data)
+        else:
+            return jsonify({"error": "Lecture not found"}), 404
+    if request.method == 'POST':
+        lecture = Lecture.query.get(lecture_id)
+        if lecture:
+            lecture.name = request.form['mod_lecture_name']
+            lecture.description = request.form['mod_lect_desp']
+            lecture.link = request.form['mod_lect_link']
+
+            db.session.commit()
+
+            chapter = lecture.thatlecturechapter
+            subject_id = chapter.that_chap_sub.id
+            return redirect(f"/admin_module/{subject_id}")
+        return render_template("notfound.html")    
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 
 @app.route("/admin_user")

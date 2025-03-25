@@ -125,7 +125,10 @@
             </li>
         </ul>
         <div class="d-flex mx-4">
-            <!-----------------------------------ADD Chapter Modal--------------------------------------->
+
+
+            
+            <!-----------------------------------ADD Chapter Modal------------------------------------------------------->
             <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#addChapterModal"><i class="bi bi-plus-lg"></i> Add Chapter</button>
             <div class="modal fade" id="addChapterModal" tabindex="-1" aria-labelledby="addChapterModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
@@ -135,7 +138,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                          <form action="/admin_subject" method="post" enctype="multipart/form-data">
+                          <form action="/admin_module/{{ subject.id }}" method="post">
                               
                             <div class="form-floating mb-3">
                                   <input type="text" class="form-control" id="chapter_name" name="chapter_name" placeholder="Chapter Name" required>
@@ -156,12 +159,181 @@
                       
                     </div>
                   </div>
-              </div>
-            <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->  
+            </div>
+            <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->
+            
+            
+            <!-----------------------------------MODIFY Chapter Modal------------------------------------------------------->
+            <div class="modal fade" id="modifyChapterModal" tabindex="-1" aria-labelledby="modifyChapterModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Chapter</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="modify_chapter_info"  method="post">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="mod_chapter_name" name="mod_chapter_name" placeholder="Chapter Name" required>
+                                  <label for="mod_chapter_name">Chapter Name</label>
+                              </div>
+                                
+                              <div class="form-floating mb-3">
+                                  <textarea  type="text" class="form-control" id="mod_chapter_desp" name="mod_chapter_desp" placeholder="Chapter Description" style="height: 100px" required></textarea>
+                                  <label for="mod_chapter_desp">Chapter Description</label>
+                              </div>
+
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning " id="chapterReset" value="" onclick="getChapterDetails(value)">Reset</button>&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Modify Chapter" style="width: 132px;">
+                              </div>
+                          </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+            </div>
+            <!--------------------------------------MODIFY Chapter Modal END--------------------------------------------------->  
+            
+
+
+
+
+
+
+
+            <!--------------------------------------Add Lecture Modal ----------------------------------------------------------------------------------------------------------------------->
+            <div class="modal fade" id="addLectureModal" tabindex="-1" aria-labelledby="addLectureModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Lecture</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="add_lecture_info" method="post">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="lecture_name" name="lecture_name" placeholder="Lecture Name" required>
+                                  <label for="lecture_name">Lecture Name</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="lect_desp" name="lect_desp" placeholder="Lecture Description" style="height: 100px" required></textarea>
+                                <label for="lect_desp">Lecture Description</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="lect_link" name="lect_link" placeholder="Link" required>
+                                <label for="lect_link">Link</label>
+                            </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                  <input type="submit" class="btn btn-dark" value="Add Lecture" style="width: 120px;">
+                              </div>
+                          </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------Add Lecture Modal END------------------------------------------------------------------------------------------------------------->
+            
+            <!----------------------------------------Modify Lecture Modal -------------------------------------------------------------------------->
+            <div class="modal fade" id="modifyLectureModal" tabindex="-1" aria-labelledby="modifyLectureModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Lecture</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="modify_lecture_info" method="post">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="mod_lecture_name" name="mod_lecture_name" placeholder="Lecture Name" required>
+                                  <label for="mod_lecture_name">Lecture Name</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="mod_lect_desp" name="mod_lect_desp" placeholder="Lecture Description" style="height: 100px" required></textarea>
+                                <label for="mod_lect_desp">Lecture Description</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="mod_lect_link" name="mod_lect_link" placeholder="Link" required>
+                                <label for="mod_lect_link">Link</label>
+                            </div>
+
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-warning " id="lectureReset" value="" onclick="getLectureDetails(value)">Reset</button>&nbsp;&nbsp;
+                                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                  <input type="submit" class="btn btn-dark" value="Modify Lecture" style="width: 130px;">
+                              </div>
+                          </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------Modify Lecture Modal END------------------------------------------------------------------------------------------------------------->
+            
+            
+            
+            
+
+
+
+            <!--------------------------------------Add Quiz Modal ----------------------------------------------------------------------------------------------------------------------->
+            <div class="modal fade" id="addQuizModal" tabindex="-1" aria-labelledby="addQuizModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Lecture</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="add_quiz_info" method="post">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="lecture_name" name="lecture_name" placeholder="Lecture Name" required>
+                                  <label for="lecture_name">LQQQQQQQQQQQQQQQQQQ Name</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <textarea  type="text" class="form-control" id="lect_desp" name="lect_desp" placeholder="Lecture Description" style="height: 100px" required></textarea>
+                                <label for="lect_desp">Lecture Description</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="lect_link" name="lect_link" placeholder="Link" required>
+                                <label for="lect_link">Link</label>
+                            </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                  <input type="submit" class="btn btn-dark" value="Add Lecture" style="width: 120px;">
+                              </div>
+                          </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------Add Quiz Modal END------------------------------------------------------------------------------------------------------------->
+            
+            
+            
+            
+            
+            
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
-              </form>
+            </form>
         </div>
         <!-- Tabs END -->
     
@@ -171,71 +343,34 @@
             <div style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
 
                     <!---------------------------------Accordin/Chapters STARTS------------------------->
-                   
+                    {% for chapter in chapters %}
                     <div class="accordion border border-dark" id="accordionPanelsStayOpenExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsTwo1" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
-                                        Chapter: 1 Rational Database Management System
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ chapter.id }}" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
+                                        Chapter: {{ loop.index }} {{ chapter.name }}
                                 </button>
                             </h2>
-                            <div id="collapsTwo1" class="accordion-collapse collapse">
+                            <div id="{{ chapter.id }}" class="accordion-collapse collapse">
                                 <div class="accordion-body">
                                     <div>
-
-                                         <!--upcoming table STARTS-->
+                                        <!-- Modify Chapter Button -->
+                                        <button type="button" class="btn btn-warning me-auto mx-2 mb-2" id="sub{{ chapter.id }}" value="{{ chapter.id }}" onclick="getChapterDetails('{{ chapter.id }}')" data-bs-toggle="modal" data-bs-target="#modifyChapterModal"><i class="bi bi-pencil"></i> Edit Chapter</button>
+                                        
+                                        <!--upcoming table STARTS-->
                                         <div class="container">
                                             <!-- Tabs START -->
-                                            <ul class="nav nav-pills justify-content-sm-center mb-4 px-3 bg-dark chapter-bar" id="course-pills-tab00" role="tablist">
+                                            <ul class="nav nav-pills justify-content-sm-center mb-0 px-3 bg-dark chapter-bar" id="course-pills-tab00" role="tablist">
                                                 <!-- Tab item -->
                                                 <li class="nav-item me-2 me-sm-5" role="presentation">
-                                                    <button class="nav-link mb-2 mb-md-0 active p-1" id="course-pills-tab-1" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-11" type="button" role="tab" aria-controls="course-pills-tabs-11" aria-selected="false" tabindex="-1">Lectures</button>
+                                                    <button class="nav-link mb-2 mb-md-0 active p-1" id="chapter-head-lecture-{{ chapter.id}}" data-bs-toggle="pill" data-bs-target="#chapter-content-lecture-{{ chapter.id}}" type="button" role="tab" aria-controls="course-pills-tabs-11" aria-selected="false" tabindex="-1">Lectures</button>
                                                 </li>
                                                 <!-- Tab item -->
                                                 <li class="nav-item me-2 me-sm-5" role="presentation">
-                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-2" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-22" type="button" role="tab" aria-controls="course-pills-tabs-22" aria-selected="false" tabindex="-1">Activity Assignments</button>
-                                                </li>
-                                                <!-- Tab item -->
-                                                <li class="nav-item me-2 me-sm-5" role="presentation">
-                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-3" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-33" type="button" role="tab" aria-controls="course-pills-tabs-33" aria-selected="false" tabindex="-1">Practice Assignments</button>
-                                                </li>
-                                                <!-- Tab item -->
-                                                <li class="nav-item me-2 me-sm-5" role="presentation">
-                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="course-pills-tab-4" data-bs-toggle="pill" data-bs-target="#course-pills-tabs-44" type="button" role="tab" aria-controls="course-pills-tabs-44" aria-selected="false" tabindex="-1">Graded Assignments</button>
+                                                    <button class="nav-link mb-2 mb-md-0 p-1" id="chapter-head-quizzes-{{ chapter.id}}" data-bs-toggle="pill" data-bs-target="#chapter-content-quizzes-{{ chapter.id}}" type="button" role="tab" aria-controls="course-pills-tabs-22" aria-selected="false" tabindex="-1">Quizzes</button>
                                                 </li>
                                             </ul>
-                                            <div class="d-flex mx-4">
-                                                <!-----------------------------------ADD Chapter Modal--------------------------------------->
-                                                <button type="button" class="btn btn-dark me-auto mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-plus-lg"></i> Add</button>
-                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-                                                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                        <form>
-                                                            <div class="mb-3">
-                                                            <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                                            <input type="text" class="form-control" id="recipient-name">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                            <label for="message-text" class="col-form-label">Message:</label>
-                                                            <textarea class="form-control" id="message-text"></textarea>
-                                                            </div>
-                                                        </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Send message</button>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                <!--------------------------------------ADD Chapter Modal END--------------------------------------------------->  
-                                                
-                                            </div>
+                                           
                                             <!-- Tabs END -->
 
                                             <!-- Tabs content START -->
@@ -244,7 +379,14 @@
 
 
                                                 <!-- Content START -->
-                                                <div class="tab-pane fade active show" id="course-pills-tabs-11" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                <div class="tab-pane fade active show" id="chapter-content-lecture-{{ chapter.id}}" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    
+                                                    <div class="d-flex mb-3">
+                                                        <!-----------------------------------ADD Lecture Modal Button-------------------------------------------------------->
+                                                        <button type="button" class="btn btn-dark me-auto" onclick="addLectureAction('{{ chapter.id }}')" data-bs-toggle="modal" data-bs-target="#addLectureModal"><i class="bi bi-plus-lg"></i> Add Lecture</button>
+                                                        <!--------------------------------------ADD Lecture Modal Button END--------------------------------------------------->  
+                                                    </div>
+
                                                     <table class="table table-hover">
                                                         <thead class="table-dark">
                                                         <tr>
@@ -256,10 +398,54 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody class="table-group-divider">
+                                                        {% for lecture in lectures[chapter.id] %}
+                                                        <tr>
+                                                            <th scope="row">{{ loop.index }}</th>
+                                                            <td>{{ lecture.name }}</td>
+                                                            <td class="text-wrap" style="width: 28rem;" >{{ lecture.description }}</td>
+                                                            <td><a href="{{ lecture.link }}">Link</a></td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-primary view-btn" id="chap{{ lecture.id }}" value="{{ lecture.id }}" onclick="getLectureDetails('{{ lecture.id }}')" data-bs-toggle="modal" data-bs-target="#modifyLectureModal"><i class="bi bi-pencil"></i></button>
+                                                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <!-- Content END -->
+
+
+
+
+
+
+
+
+                                                <!-- Content START -->
+                                                <div class="tab-pane fade" id="chapter-content-quizzes-{{ chapter.id}}" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
+                                                    <div class="d-flex mb-3">
+                                                        <!-----------------------------------ADD Quiz Modal Button---------------------------------------------------------------------------------------------------------------------------------------------->
+                                                        <button type="button" class="btn btn-dark me-auto" onclick="addQuizAction('{{ chapter.id }}')" data-bs-toggle="modal" data-bs-target="#addQuizModal"><i class="bi bi-plus-lg"></i> Add Quiz</button>
+                                                        <!--------------------------------------ADD Quiz Modal Button END------------------------------------------------------------------------------------------------------------------------------------->  
+                                                    </div>
+                                                    <table class="table table-hover">
+                                                        <thead class="table-dark">
+                                                        <tr>
+                                                            <th scope="col">S No.</th>
+                                                            <th scope="col">Release Date</th>
+                                                            <th scope="col">Time Duration</th>
+                                                            <th scope="col">Total Attempts</th>
+                                                            <th scope="col">Deadline</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
                                                         <tr>
                                                             <th scope="row">1</th>
-                                                            <td>Understanding Relational operators</td>
-                                                            <td>Gives Deep Understanding Of Set Theory</td>
+                                                            <td>Understandirs</td>
+                                                            <td>Gives DeepOf Set Theory</td>
+                                                            <td>Gives DeepOf Set Theory</td>
                                                             <td><a href="google.com">Link</a></td>
                                                             <td>
                                                                 <a href="" class="btn btn-primary view-btn" type="button"><i class="bi bi-pencil"></i></a>
@@ -270,108 +456,6 @@
                                                     </table>
                                                 </div>
                                                 <!-- Content END -->
-
-                                                <!-- Content START -->
-                                                <div class="tab-pane fade" id="course-pills-tabs-22" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                        <tr>
-                                                            <th scope="col">Acti</th>
-                                                            <th scope="col">Last Attempt</th>
-                                                            <th scope="col">Marks</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody class="table-group-divider">
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>24/02/2021</td>
-                                                            <td>86%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>14/04/2024</td>
-                                                            <td>96%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">3</th>
-                                                            <td>19/07/2025</td>
-                                                            <td>76%</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <!-- Content END -->
-                                                <!-- Content START -->
-                                                <div class="tab-pane fade" id="course-pills-tabs-33" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                        <tr>
-                                                            <th scope="col">Prac</th>
-                                                            <th scope="col">Last Attempt</th>
-                                                            <th scope="col">Marks</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody class="table-group-divider">
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>24/02/2021</td>
-                                                            <td>86%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>14/04/2024</td>
-                                                            <td>96%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">3</th>
-                                                            <td>19/07/2025</td>
-                                                            <td>76%</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <!-- Content END -->
-                                                <!-- Content START -->
-                                                <div class="tab-pane fade" id="course-pills-tabs-44" role="tabpanel" aria-labelledby="course-pills-tab-1" style="padding-left: 28px; padding-bottom: 70px; padding-top: 25px;">
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                        <tr>
-                                                            <th scope="col">Lec</th>
-                                                            <th scope="col">Gradded</th>
-                                                            <th scope="col">Marks</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody class="table-group-divider">
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>24/02/2021</td>
-                                                            <td>86%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>14/04/2024</td>
-                                                            <td>96%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">3</th>
-                                                            <td>19/07/2025</td>
-                                                            <td>76%</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <!-- Content END -->
-
-
-
-
-
-
-
-
-
-
-                                                
 
 
                                                 
@@ -388,48 +472,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="accordion border border-dark" id="accordionPanelsStayOpenExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsTwo2" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
-                                        View Scores
-                                </button>
-                            </h2>
-                            <div id="collapsTwo2" class="accordion-collapse collapse">
-                                <div class="accordion-body">
-                                    <div>
-                                        <table class="table table-striped">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Quiz</th>
-                                                <th scope="col">Last Attempt</th>
-                                                <th scope="col">Marks</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="table-group-divider">
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>24/02/2021</td>
-                                                <td>86%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>14/04/2024</td>
-                                                <td>96%</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>19/07/2025</td>
-                                                <td>76%</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-             
+                    {% endfor %}
+                    
                     <!---------------------------------Accordin/Chapters ENDS--------------------------->
 
 
@@ -441,4 +485,64 @@
     <!--upcoming table ENDS-->
 
 </div>
+<script>
+    //Preview Modify chapter Form wihile Editing
+    async function getChapterDetails(chapterId) {
+   try {
+       let response = await fetch(`http://127.0.0.1:5000/modify_module/${chapterId}`);
+       let data = await response.json();
+
+       if (data.error) {
+           alert("Instructor not found!");
+           return;
+       }
+        console.log("Fetched Data:", data);
+        mod_chapter_name.value = data.name 
+        mod_chapter_desp.value = data.description
+        modify_chapter_info.action = `/modify_module/${chapterId}`;
+        //Assignming subjects details in modify form by using ({id_name}.value)
+        chapterReset.value = data.id;
+
+   } catch (error) {
+       console.error("Error fetching subject details:", error);
+   }
+}
+
+    //for adding form action link for adding lecture
+    function addLectureAction(chapterId)
+    {
+        add_lecture_info.action = `/admin_lecture/${ chapterId }`   
+    }
+
+    ////Preview Modify Lecture Form wihile Editing
+    async function getLectureDetails(lectureId)
+    {
+        try {
+       let response = await fetch(`http://127.0.0.1:5000/modify_lecture/${lectureId}`);
+       let data = await response.json();
+
+       if (data.error) {
+           alert("Instructor not found!");
+           return;
+       }
+        console.log("Fetched Data:", data);
+        mod_lecture_name.value = data.name 
+        mod_lect_desp.value = data.description
+        mod_lect_link.value = data.link
+        modify_lecture_info.action = `/modify_lecture/${lectureId}`;
+        //Assignming subjects details in modify form by using ({id_name}.value)
+        lectureReset.value = data.id;
+
+   } catch (error) {
+       console.error("Error fetching subject details:", error);
+   }
+    }
+
+    //for adding form action link for adding quiz
+    function addQuizAction(chapterId)
+    {
+        add_quiz_info.action = `/admin_quiz/${ chapterId }`   
+    }
+
+</script>
 {% endblock %}
