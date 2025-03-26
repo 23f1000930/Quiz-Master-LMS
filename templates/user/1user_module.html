@@ -1,17 +1,7 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base/user_base.html' %}
+{% block page_title %} Home {% endblock %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UserLogin</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+{% block user_css %}
   <style>
     /* Sidebar Default (Closed) */
   .sidebar {
@@ -113,7 +103,7 @@
             margin-block: -28px;
         }
   </style>
-</head>
+{% endblock %}
 
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding: 0px 0px;">
@@ -262,103 +252,29 @@
     
     <div class="bg-body rounded-3 ms-auto border border-dark px-3" style="margin-top: -87px; width: 1255px; margin-right: 15px; height: 90vh; overflow: auto;">
     <!------------------------------------------------------Quiz Content STARTS------------------------------------->    
-    
-        <!----------------------------------------------Quiz Main Heading STARTS--------------------------------------------->
-        <div class="d-flex justify-content-between border border-dark my-3 rounded-5" style="height: 33px;" >
-            <span class="badge rounded-pill text-bg-dark py-2" style="font-size: 14px;">Chapter 1: Graded Assignment 1 </span>
-            <h4><code>Duration: 02:56:46</code></h4>
-            <span class="badge rounded-pill text-bg-danger py-2" style="font-size: 14px;" >Deadline : 25-04-2025</span>
-        </div>
-        <!----------------------------------------------Quiz Main Heading ENDS------------------------------------------>
+    <!-- <iframe src="testcontent.html" width="50%" height="60%"></iframe> -->
+    {% include "testcontent.html" %}
+
         
-        <!----------------------------------------------Quiz Questions STARTS---------------------------------------->
-        <form action="/register" method="post">
-            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
-                <div class="lh-1 w-100 question">
-                    <div class="d-flex w-100">
-                        <p class="">Q1. Which jinja2 function is used to render template ? </p><strong class="ms-auto">2 points</strong>
-                    </div>                        
-                        <div class="form-check">
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">a. flask</label><br><br>
-                            
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">b. django</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault3">c. render_template()</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                            <label class="form-check-label" for="flexRadioDefault4">d. debug=TRUE</label>
-                        </div>        
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
-                <div class="lh-1 w-100 question">
-                    <div class="d-flex w-100">
-                        <p class="">Q1. Which jinja2 function is used to render template ? </p><strong class="ms-auto">2 points</strong>
-                    </div>                        
-                        <div class="form-check">
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">a. flask</label><br><br>
-                            
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">b. django</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault3">c. render_template()</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                            <label class="form-check-label" for="flexRadioDefault4">d. debug=TRUE</label>
-                        </div>        
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
-                <div class="lh-1 w-100 question">
-                    <div class="d-flex w-100">
-                        <p class="">Q1. Which jinja2 function is used to render template ? </p><strong class="ms-auto">2 points</strong>
-                    </div>                        
-                        <div class="form-check">
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">a. flask</label><br><br>
-                            
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                            <label class="form-check-label" for="flexRadioDefault2">b. django</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                            <label class="form-check-label" for="flexRadioDefault3">c. render_template()</label><br><br>
-
-                            <input class="form-check-input border border-dark" type="radio" name="flexRadioDefault" id="flexRadioDefault4">
-                            <label class="form-check-label" for="flexRadioDefault4">d. debug=TRUE</label>
-                        </div>        
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
-                <div class="lh-1">
-                <h1 class="h6 mb-0 text-dark lh-1">Bootstrap</h1>
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
-                <div class="lh-1">
-                <h1 class="h6 mb-0 text-dark lh-1">Bootstrap</h1>
-                </div>
-            </div>
-
-            <input class="btn btn-dark mb-3" type="submit" value="Submit Answers">
-        </form>    
-         <!----------------------------------------------Quiz Questions ENDS------------------------------------------->
     </div>
 
 
   
 </div>
+
     
 
-
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch("testcontent.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("contentContainer").innerHTML = data;
+        })
+        .catch(error => console.error("Error loading content:", error));
+    });
+  </script> -->
+  
 
 
 

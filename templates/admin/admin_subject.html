@@ -215,7 +215,7 @@
                                 <label for="mod_category">Subject Category</label>
                             </div>
 
-
+                            <h5><code>Instructors</code></h5>
                             <div  id="mod_all_instructor">
                                 <!--ALL INSTRUCTORS COMES-->
                             </div>
@@ -448,7 +448,7 @@
         //  });
 
 
-        // Loop for showing Selected Instructors
+        // Loop for showing Selected Instructors & All Other Instructors
          all_instructors.forEach(instructor => {
         // Check if the instructor exists in selected_instructors based on ID
         const isChecked = selected_instructors.some(selected => selected.id === instructor.id);

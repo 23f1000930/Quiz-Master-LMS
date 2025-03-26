@@ -70,6 +70,8 @@ class Lecture(db.Model):  # Lecture Model
 
     quizzes = db.relationship("Quiz", backref='thisquiz', cascade="all, delete-orphan")
 
+#backref="thisquiz" this must be backref="thislecture"
+
 class Quiz(db.Model):  # Quiz Model
     id = db.Column(db.Integer, primary_key=True)
 

@@ -281,9 +281,9 @@ def modify_subject(subject_id):
                     {
                         "id": instructor.id,
                         "name": instructor.name,
-                        "experience": instructor.experience,
-                        "description": instructor.description,
-                        "inst_image": instructor.inst_image
+                        # "experience": instructor.experience,
+                        # "description": instructor.description,          #-------->NOT NEEDED
+                        # "inst_image": instructor.inst_image
                     }
                     for instructor in subject.instructors  # Convert Instructor objects to dict
                 ],
@@ -291,9 +291,9 @@ def modify_subject(subject_id):
                     {
                         "id": instructor.id,
                         "name": instructor.name,
-                        "experience": instructor.experience,
-                        "description": instructor.description,
-                        "inst_image": instructor.inst_image
+                        # "experience": instructor.experience,
+                        # "description": instructor.description,         #-------->NOT NEEDED
+                        # "inst_image": instructor.inst_image
                     }
                     for instructor in Instructor.query.all()  # Convert Instructor objects to dict
                 ]     
@@ -365,12 +365,15 @@ def admin_module(subject_id):
 
         lectures = {}
         quizzes = {}
-        #quizzes = Quiz.query.filter(Quiz.chapter_id.in_(chapter_ids)).all()
+
+        #either use this
+        # quizzes = Quiz.query.filter(Quiz.chapter_id.in_(chapter_ids)).all()
+        # lectures = Lecture.query.filter(Lecture.chapter_id.in_(chapter_ids)).all()
+        #or below this
         for chapter_id in chapter_ids:
             lectures[chapter_id] = Lecture.query.filter_by(chapter_id=chapter_id).all()
             quizzes[chapter_id] = Quiz.query.filter_by(chapter_id=chapter_id).all()
             print(quizzes)
-            #lectures.append(Lecture.query.filter_by(id=i).all()) if lctures=[]
 
 
 
@@ -501,16 +504,22 @@ def admin_quiz(chapter_id):
         release_date_str = request.form['release_date']  # '2025-03-07T10:07'
         deadline_str = request.form['deadline']  # '2025-03-08T10:07'
         time_duration_str = request.form['time_duration']  # '14:07' (hh:mm)
-        total_attempts = int(request.form['total_attempts'])
-        lecture_id = int(request.form['oneLecture'])
+        total_attempts = request.form['total_attempts']
+        lecture_id = request.form.get('oneLecture', None)
 
         # Convert strings to proper datetime and time objects
         # strptime() stands for "string parse time" and is a method in Python's datetime 
         # module that converts a date-time string into a datetime object.
         release_date = datetime.strptime(release_date_str, "%Y-%m-%dT%H:%M")
-        deadline = datetime.strptime(deadline_str, "%Y-%m-%dT%H:%M")
-        hours, minutes = map(int, time_duration_str.split(":"))
-        time_duration = time(hour=hours, minute=minutes)
+        deadline = datetime.strptime(deadline_str, "%Y-%m-%dT%H:%M") if deadline_str else None
+        if time_duration_str:
+            hours, minutes = map(int, time_duration_str.split(":")) 
+            time_duration = time(hour=hours, minute=minutes)
+        else:
+            time_duration = None
+
+        total_attempts = int(total_attempts) if total_attempts else None
+        lecture_id = int(lecture_id) if lecture_id else None
 
         new_quiz = Quiz(
             release_date=release_date,
@@ -528,10 +537,87 @@ def admin_quiz(chapter_id):
         subject_id = chapter.that_chap_sub.id
         return redirect(f"/admin_module/{subject_id}")
 
+@app.route("/modify_quiz/<int:quiz_id>", methods=["GET", "POST"])
+def modify_quiz(quiz_id):
+    if request.method == 'GET':
+        quiz=Quiz.query.filter_by(id=quiz_id).first()
+        if quiz:
+            chapter_id = quiz.chapter_id  # OR chapter_id = quiz.thatquizchapter.id
+            print("cccccccccccc", chapter_id)
+            lectures = Lecture.query.filter_by(chapter_id=chapter_id).all()
+            # Convert SQLAlchemy object to dictionary
+            quiz_data = {
+                "id": quiz.id,
+                "release_date": quiz.release_date.isoformat(),
+                "deadline": quiz.deadline.isoformat() if quiz.deadline else None,
+                "time_duration": str(quiz.time_duration) if quiz.time_duration else None,  # Convert time to string
+                "total_attempts": quiz.total_attempts if quiz.total_attempts else None,
+                "all_lectures": [
+                    {
+                        "id": lecture.id,
+                        "name": lecture.name,
+                        "link": lecture.link
+                    } for lecture in lectures
+                ],
+                "selected_lecture": quiz.lecture_id
+                }
 
+            #  isoformat(): Converts datetime objects into a JSON-friendly string format (YYYY-MM-DDTHH:MM:SS).
+            # str(quiz.time_duration): Converts datetime.time into "HH:MM:SS", making it serializable.
+            # str(datetime_object) will return "YYYY-MM-DD HH:MM:SS" (which is readable but not strictly JSON standard).
+            # str(time_object) will return "HH:MM:SS" (which works fine).
+            print("Quiz DATA",jsonify(quiz_data))
+            return jsonify(quiz_data)
+        else:
+            return jsonify({"error": "Subject not found"}), 404
 
+    if request.method == 'POST' :
+        quiz = Quiz.query.get(quiz_id)
+        if quiz:
+            release_date_str = request.form['mod_release_date']  # '2025-03-07T10:07'
+            deadline_str = request.form['mod_deadline']  # '2025-03-08T10:07'
+            total_attempts = request.form['mod_total_attempts'] 
 
+            # # in this case  20:02:00 (don't know why it comes in HH:MM:SS IN SS=00 FORMAT INSTEAD OF ONLY HH:MM)
+            # time_duration_str = request.form['mod_time_duration']  # 14:07:00 instead of '14:07' (hh:mm)
+            # # #So we have to remove extra SS
+            # time_duration_str = time_duration_str[:len(time_duration_str)-3]    # '14:07'
+            # print("time_duration", type(time_duration_str), time_duration_str)
 
+            time_duration_str = request.form['mod_time_duration']
+            """
+            1. assigning value first time in quiz modify form to "time_duration" field gives value in HH:MM
+            2. but updating value of "time_duration" field in quiz modify form gives value in HH:MM:SS where SS is always 00
+            """
+
+            lecture_id = request.form.get('mod_oneLecture', None)
+
+            release_date = datetime.strptime(release_date_str, "%Y-%m-%dT%H:%M")
+            deadline = datetime.strptime(deadline_str, "%Y-%m-%dT%H:%M") if deadline_str else None
+            if time_duration_str:
+                if len(time_duration_str) > 5:
+                    time_duration_str = time_duration_str[:len(time_duration_str)-3]
+                hours, minutes = map(int, time_duration_str.split(":")) 
+                time_duration = time(hour=hours, minute=minutes)
+            else:
+                time_duration = None
+
+            total_attempts = int(total_attempts) if total_attempts else None
+            lecture_id = int(lecture_id) if lecture_id else None
+
+            quiz.release_date = release_date
+            quiz.deadline = deadline
+            quiz.time_duration = time_duration
+            quiz.total_attempts = total_attempts
+            quiz.lecture_id = lecture_id
+            
+
+            db.session.commit()
+
+            chapter = quiz.thatquizchapter
+            subject_id = chapter.that_chap_sub.id
+            return redirect(f"/admin_module/{subject_id}")
+        return render_template("notfound.html")  
 
 
 
@@ -572,3 +658,12 @@ def user_subject():
 @app.route("/user_module")
 def user_module():
     return render_template("user/user_module.html")
+
+
+@app.route("/user_test")
+def user_test():
+    return render_template("testttttt.html")
+
+@app.route("/user_test1")
+def user_test1():
+    return render_template("user/1user_module.html")
