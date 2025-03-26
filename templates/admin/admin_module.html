@@ -292,30 +292,43 @@
                 <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Lecture</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Quiz</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                           <form action="" id="add_quiz_info" method="post">
                               
                             <div class="form-floating mb-3">
-                                  <input type="text" class="form-control" id="lecture_name" name="lecture_name" placeholder="Lecture Name" required>
-                                  <label for="lecture_name">LQQQQQQQQQQQQQQQQQQ Name</label>
+                                  <input type="datetime-local" class="form-control" id="release_date" name="release_date" placeholder="Release Date & Time" required>
+                                  <label for="release_date">Release Date & Time</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <textarea  type="text" class="form-control" id="lect_desp" name="lect_desp" placeholder="Lecture Description" style="height: 100px" required></textarea>
-                                <label for="lect_desp">Lecture Description</label>
+                                <input type="datetime-local" class="form-control" id="deadline" name="deadline" placeholder="Deadline" required>
+                                <label for="deadline">Deadline</label>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="lect_link" name="lect_link" placeholder="Link" required>
-                                <label for="lect_link">Link</label>
+                                <input type="time" class="form-control" id="time_duration" name="time_duration" placeholder="Time Duration" required>
+                                <label for="time_duration">Time Duration</label>
+                            </div>   
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="total_attempts" name="total_attempts" placeholder="Total Attempts" required>
+                                <label for="total_attempts">Total Attempts</label>
+                            </div>
+
+                            <div class="form-control mb-3">
+                                <input type="radio" onclick="fetchAllLectures(value)" class="btn-check" name="chapter_lecture" id="chapter_lecture" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="chapter_lecture">Click Here To Select Lecture For This Quiz (optional)</label>
+                            </div>
+                            <div  id="all_lectures">
+                                <!--ALL LECTURES COMES-->
                             </div>
 
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
-                                  <input type="submit" class="btn btn-dark" value="Add Lecture" style="width: 120px;">
+                                  <input type="submit" class="btn btn-dark" value="Add Quiz" style="width: 120px;">
                               </div>
                           </form>
                       </div>
@@ -324,6 +337,57 @@
                   </div>
             </div>
             <!---------------------------------------Add Quiz Modal END------------------------------------------------------------------------------------------------------------->
+
+            <!--------------------------------------Modify Quiz Modal ----------------------------------------------------------------------------------------------------------------------->
+            <div class="modal fade" id="modifyQuizModal" tabindex="-1" aria-labelledby="modifyQuizModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Quiz</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="add_quiz_info" method="post">
+                              
+                            <div class="form-floating mb-3">
+                                  <input type="datetime-local" class="form-control" id="release_date" name="release_date" placeholder="Release Date & Time" required>
+                                  <label for="release_date">Release Date & Time</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="datetime-local" class="form-control" id="deadline" name="deadline" placeholder="Deadline" required>
+                                <label for="deadline">Deadline</label>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="time" class="form-control" id="time_duration" name="time_duration" placeholder="Time Duration" required>
+                                <label for="time_duration">Time Duration</label>
+                            </div>   
+
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="total_attempts" name="total_attempts" placeholder="Total Attempts" required>
+                                <label for="total_attempts">Total Attempts</label>
+                            </div>
+
+                            <div class="form-control mb-3">
+                                <input type="radio" onclick="fetchAllLectures(value)" class="btn-check" name="chapter_lecture" id="chapter_lecture" autocomplete="off">
+                                <label class="btn btn-outline-dark" for="chapter_lecture">Click Here To Select Lecture For This Quiz (optional)</label>
+                            </div>
+                            <div  id="all_lectures">
+                                <!--ALL LECTURES COMES-->
+                            </div>
+
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                  <input type="submit" class="btn btn-dark" value="Add Quiz" style="width: 120px;">
+                              </div>
+                          </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------Modify Quiz Modal END------------------------------------------------------------------------------------------------------------->
             
             
             
@@ -441,17 +505,19 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody class="table-group-divider">
+                                                        {% for quiz in quizzes[chapter.id] %}    
                                                         <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>Understandirs</td>
-                                                            <td>Gives DeepOf Set Theory</td>
-                                                            <td>Gives DeepOf Set Theory</td>
-                                                            <td><a href="google.com">Link</a></td>
+                                                            <th scope="row">{{ loop.index }}</th>
+                                                            <td>{{ quiz.release_date }}</td>
+                                                            <td>{{ quiz.time_duration }}</td>
+                                                            <td>{{ quiz.total_attempts }}</td>
+                                                            <td>{{ quiz.deadline }}</td>
                                                             <td>
-                                                                <a href="" class="btn btn-primary view-btn" type="button"><i class="bi bi-pencil"></i></a>
+                                                                <button type="button" class="btn btn-primary view-btn" id="chap{{ quiz.id }}" value="{{ quiz.id }}" onclick="getQuizDetails('{{ quiz.id }}')" data-bs-toggle="modal" data-bs-target="#modifyQuizModal"><i class="bi bi-pencil"></i></button>
                                                                 <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
                                                             </td>
                                                         </tr>
+                                                        {% endfor %}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -541,7 +607,36 @@
     //for adding form action link for adding quiz
     function addQuizAction(chapterId)
     {
-        add_quiz_info.action = `/admin_quiz/${ chapterId }`   
+        add_quiz_info.action = `/admin_quiz/${ chapterId }`
+        chapter_lecture.value = chapterId   
+    }
+
+    //FOR LECTURES RADIO
+    async function fetchAllLectures(chapterId)
+    {
+        try {
+        let response = await fetch(`http://127.0.0.1:5000//admin_lecture/${chapterId}/all_lectures`);
+        let data = await response.json();
+        if (data.error) {
+            alert("Lectures not found!");
+            return;
+        }
+        console.log("Fetched Lecture Data:", data);
+
+        all_lectures.innerHTML = "" //ensures same options is not added while clicking dropdown multiple times
+         
+        // Loop through the JSON data
+        data.forEach(lecture => {
+            all_lectures.innerHTML += `
+            <div class="input-group mb-3">
+                <input class="form-check-input" type="radio" id = "${lecture.id}" name = "oneLecture" value = "${lecture.id}" aria-label="Checkbox for following text input">  
+                &nbsp;&nbsp;<label class="form-check-label" for="${lecture.id}">${lecture.name}</label>&nbsp;&nbsp;<a href="${lecture.link}">Link</a>
+            </div>`
+        });
+
+        } catch (error) {
+            console.error("Error fetching subject details:", error);
+        }
     }
 
 </script>

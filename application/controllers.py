@@ -7,7 +7,7 @@ from flask import current_app as app #it refers to the "app" object created in "
 from .models import *# both resides in same folder
 import random
 import string
-from datetime import datetime
+from datetime import datetime, time
 import os #Used for working with file paths.
 #each endpoint with a combination of particular http method gives a particular resource
 
@@ -15,6 +15,8 @@ import os #Used for working with file paths.
 #Handling Image Uploads
 UPLOAD_FOLDER = "static/uploads"  # Defines where uploaded files will be stored.
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER # Defines where uploaded files will be stored.
+
+#query.get() ----------->fetches only first record with primary key
 
 @app.route("/login",methods=["GET","POST"])#url with specific http method gives specific 
 def login():
@@ -43,6 +45,9 @@ def register():
         
         # Convert DOB from YYYY-MM-DD (default input format) to a Python date object
         dob_str = request.form['dob']
+
+        # strptime() stands for "string parse time" and is a method in Python's datetime 
+        # module that converts a date-time string into a datetime object.
         dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
 
         gender = request.form['gender']
@@ -113,7 +118,7 @@ def admin_home():
 
 
 @app.route("/admin_instructor", defaults={'optional': None}, methods=["GET", "POST"])
-@app.route("/admin_instructor/<optional>", methods=["GET", "POST"])  #for showing instructors in subject create form only
+@app.route("/admin_instructor/<optional>", methods=["GET", "POST"])  #for creating api for showing instructors in subject create form only
 def admin_instructor(optional):
     if request.method == 'GET':
         instructors=Instructor.query.all()
@@ -353,14 +358,24 @@ def admin_module(subject_id):
     if request.method == 'GET':
         subject = Subject.query.get(subject_id)
         chapters = Chapter.query.filter_by(subject_id=subject_id).all()
+
+
+        #FOR SHOWING "LECTURES" & "QUIZZES" ON SUBJECT SPECIFIC & CHAPTER AREA
         chapter_ids = [chapter.id for chapter in chapters]
+
         lectures = {}
+        quizzes = {}
+        #quizzes = Quiz.query.filter(Quiz.chapter_id.in_(chapter_ids)).all()
         for chapter_id in chapter_ids:
             lectures[chapter_id] = Lecture.query.filter_by(chapter_id=chapter_id).all()
-            #lectures.append(Lecture.query.filter_by(id=i).all())
+            quizzes[chapter_id] = Quiz.query.filter_by(chapter_id=chapter_id).all()
+            print(quizzes)
+            #lectures.append(Lecture.query.filter_by(id=i).all()) if lctures=[]
+
+
 
         this_user = User.query.filter_by(type="admin").first()
-        return render_template("admin/admin_module.html", subject=subject, chapters=chapters, lectures=lectures, profile_image=this_user.profile_image, profile_name=this_user.firstname)
+        return render_template("admin/admin_module.html", subject=subject, chapters=chapters, lectures=lectures,quizzes=quizzes, profile_image=this_user.profile_image, profile_name=this_user.firstname)
     
     if request.method == 'POST':
         chapter_name = request.form['chapter_name']
@@ -414,7 +429,16 @@ def modify_module(chapter_id):
 
 
 @app.route("/admin_lecture/<int:chapter_id>", methods=["GET", "POST"])
-def admin_lecture(chapter_id):
+@app.route("/admin_lecture/<int:chapter_id>/<optional>", methods=["GET", "POST"])  #for creating api for showing lectures in quiz create form only
+def admin_lecture(chapter_id, optional):
+    if request.method == 'GET':
+        lectures=Lecture.query.filter_by(chapter_id=chapter_id)
+        if optional == "all_lectures":
+            # Return JSON response when optional parameter is provided
+            # list of lectures dictionary
+            all_lectures = [{"id": lecture.id, "name": lecture.name, "link":lecture.link} for lecture in lectures]
+            return jsonify(all_lectures) 
+        
     if request.method == 'POST':
         lecture_name = request.form['lecture_name']
         description = request.form['lect_desp']
@@ -470,6 +494,60 @@ def modify_lecture(lecture_id):
             return redirect(f"/admin_module/{subject_id}")
         return render_template("notfound.html")    
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@app.route("/admin_quiz/<int:chapter_id>", methods=["GET", "POST"])
+def admin_quiz(chapter_id):
+    if request.method == 'POST':
+        release_date_str = request.form['release_date']  # '2025-03-07T10:07'
+        deadline_str = request.form['deadline']  # '2025-03-08T10:07'
+        time_duration_str = request.form['time_duration']  # '14:07' (hh:mm)
+        total_attempts = int(request.form['total_attempts'])
+        lecture_id = int(request.form['oneLecture'])
+
+        # Convert strings to proper datetime and time objects
+        # strptime() stands for "string parse time" and is a method in Python's datetime 
+        # module that converts a date-time string into a datetime object.
+        release_date = datetime.strptime(release_date_str, "%Y-%m-%dT%H:%M")
+        deadline = datetime.strptime(deadline_str, "%Y-%m-%dT%H:%M")
+        hours, minutes = map(int, time_duration_str.split(":"))
+        time_duration = time(hour=hours, minute=minutes)
+
+        new_quiz = Quiz(
+            release_date=release_date,
+            deadline=deadline,
+            time_duration=time_duration,
+            total_attempts=total_attempts,
+            chapter_id=chapter_id,
+            lecture_id=lecture_id
+        )     
+
+        db.session.add(new_quiz)
+        db.session.commit()
+
+        chapter = Chapter.query.get(chapter_id)
+        subject_id = chapter.that_chap_sub.id
+        return redirect(f"/admin_module/{subject_id}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
