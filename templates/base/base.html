@@ -23,7 +23,7 @@
   <!--------------------------------------------------NavBar Start-------------------------------------------->
     <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding: 0px 0px;">
         <div class="container-fluid" style="padding-left: 50px;">
-            <a class="navbar-brand" href="/home" style="font-weight: bold; font-size: 35px; font-family: Bebas Neue;">
+            <a class="navbar-brand" href="{{ url_for('home', user_id=session['any_user_id']) if session.get('any_user_id') else url_for('home') }}" style="font-weight: bold; font-size: 35px; font-family: Bebas Neue;">
                 <i class="bi bi-mastodon icon-style"></i>&nbsp;&nbsp;Quiz
                 Master</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -39,14 +39,24 @@
                     <a href="/help"><button type="button" class="btn btn-light toggle-btn" id="helpBtn">Help</button></a>
                     {% if login_register_show %}
                     <a href="/login"><button type="button" class="btn btn-outline-dark">Login</button></a>&nbsp;&nbsp;
-                    <a href="/register"><button type="button" class="btn btn-outline-dark">Sign Up</button></a>
-                    {% else %}
-                    <a href="/user_profile" type="button">
-                        <span class="badge text-bg-dark">
-                            <img src="/static/uploads/{{ profile_image }}" width="38px" height="36px" class="rounded-3 border border-3 border-white" alt="..."> {{ profile_name }}
-                        </span>
-                    </a>
+                    <a href="/register"><button type="button" class="btn btn-outline-dark">Sign Up</button></a>        
                     {% endif %}
+                    
+                    {% if session["any_user_id"] %}
+                        {% if session["any_user_type"] == "admin" %}
+                            <a href="/admin_home">
+                                <button type="button" class="btn btn-danger">Admin Dashboard</button>
+                            </a>
+                        {% elif session["any_user_type"] == "general" %}
+                            <a href="{{ url_for('user_home', user_id=session['any_user_id']) }}">
+                                <button type="button" class="btn btn-warning">User Dashboard</button>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
+                    {% block LoggedUserNavigation %} {% endblock %}
+
+                    {% block profile %} {% endblock %}
                     
                 </span>
             </div>

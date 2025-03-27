@@ -1,7 +1,9 @@
 {% extends 'base/base.html' %}
 {% block page_title %} Home {% endblock %}
 
-{% set login_register_show = True %}
+{% block LoggedUserNavigation %}
+  
+{% endblock %}
 
 {% block page_body %}
 
@@ -16,7 +18,7 @@
                 Welcome to Quiz Master, your ultimate exam preparation platform! Whether you're studying for an important test or simply want to challenge your knowledge!
         </p>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="/subject" class="btn btn-dark btn-lg px-4 me-sm-3 fw-bold" type="button">Explore Courses</a>
+            <a href="{{ url_for('subject', user_id=session['any_user_id']) if session.get('any_user_id') else url_for('subject') }}" class="btn btn-dark btn-lg px-4 me-sm-3 fw-bold" type="button">Explore Courses</a>
           </div>
         </div>
     </div>
@@ -108,7 +110,7 @@
                                           <h5 class="card-title">Card title</h5>
                                           <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                           <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
+                                              <a href="" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
                                               <a href="#" class="btn btn-dark w-50">Enroll</a>
                                           </div>
                                           </div>
@@ -205,7 +207,7 @@
           
           <!------------------------------View All Button Starts-------------------------------------->
           <div class="d-flex justify-content-center" style="font-size: 20px;">
-              <a href="/subject" class="badge rounded-pill text-bg-dark w-25">View All</a>
+              <a href="{{ url_for('subject', user_id=session['any_user_id']) if session.get('any_user_id') else url_for('subject') }}"  class="badge rounded-pill text-bg-dark w-25">View All</a>
           </div>
           <!------------------------------View All Button ENDS--------------------------->
         </div>

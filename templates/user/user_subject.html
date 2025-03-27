@@ -23,24 +23,23 @@
 <!-- Title -->
 <div class="row mt-4">
     <div class="col-lg-8 mx-auto text-center">
-        <h2 class="fs-1">Current Courses</h2>
+        <h1><code>Current Courses</code></h1>
     </div>
 </div>
     <!--Courses/Subjects-->
     <div class="container" style="margin-left: 155px; padding: 35px;">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" style="padding: 3px;">
 
+            {% for subject in enrolled_subjects %}
             <div class="col">
                     <div class="card border-dark" style="margin-top: 5px;">
-                        <img src="1.jpg" class="card-img-top" width="100%" height="180">
+                        <img src="/static/uploads/{{ subject.sub_image }}" class="card-img-top" width="100%" height="180">
                         <div class="card-body">
-                            <h5 class="card-title">Statistics</h5>
-                            <p class="card-text">The science of collecting, analyzing, and interpreting data to derive
-                                meaningful insights</p>
+                            <h5 class="card-title">{{ subject.name }}</h5>
+                            
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <span class="badge text-bg-success">3 Attempted</span>&nbsp;
-                                    <span class="badge text-bg-warning">5 Left</span>
+                                    <span class="badge text-bg-warning"></span>
                                 </div>
                                 <span class="badge text-bg-dark">Average Marks : 95%</span>
                             </div><br>
@@ -48,11 +47,11 @@
                                 <div class="accordion" id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsOne" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collaps{{ subject.id }}" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
                                                     View Scores
                                             </button>
                                         </h2>
-                                        <div id="collapsOne" class="accordion-collapse collapse">
+                                        <div id="collaps{{ subject.id }}" class="accordion-collapse collapse">
                                             <div class="accordion-body">
                                                 <div>
                                                     <table class="table table-striped">
@@ -89,13 +88,14 @@
                             </div>
                             <br>
                             <div class="d-flex justify-content-between align-items-center">
-                                <a href="/user_module" class="w-100"><button type="button" class="w-100 btn btn-md btn-outline-dark">Go to course</button></a>
+                                <a href="/user_module/{{ this_user.id}}/{{ subject.id }}" class="w-100"><button type="button" class="w-100 btn btn-md btn-outline-dark">Go to course</button></a>
                             </div>
                         </div>
                     </div>
             </div>
+            {% endfor %}
 
-            <div class="col">
+            <!-- <div class="col">
                     <div class="card border-dark" style="margin-top: 5px;">
                         <img src="1.jpg" class="card-img-top" width="100%" height="180">
                         <div class="card-body">
@@ -288,7 +288,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
 

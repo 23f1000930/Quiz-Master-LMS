@@ -1,6 +1,6 @@
 #contains all the routes & view functions
 #Flask → The web framework used to create the web application.
-from flask import Flask,render_template,redirect,request, jsonify, send_from_directory
+from flask import Flask,render_template,redirect,request, jsonify, send_from_directory, session
 from flask import current_app as app #it refers to the "app" object created in "app.py" or "app.py" itself
 #from app import app  ---->not used because it leads to circular import when we import "controllers.py" in "app.py"
 
@@ -18,6 +18,12 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER # Defines where uploaded files will 
 
 #query.get() ----------->fetches only first record with primary key
 
+
+
+app.secret_key = "fghtyhjtrh5665657"  #for flask session
+
+
+
 @app.route("/login",methods=["GET","POST"])#url with specific http method gives specific 
 def login():
     if request.method == "POST":
@@ -26,10 +32,17 @@ def login():
         this_user = User.query.filter_by(username=username).first()
         if this_user:
             if this_user.password == pwd:
+                # Store user data in session
+                session["any_user_id"] = this_user.id
+                session["any_user_type"] = this_user.type
+                session.modified = True  #ensures session data updates on each request.
+
                 if this_user.type == "admin":
                     return redirect("/admin_home")
-                else:
+                if this_user.type == "general":
                     return redirect(f"/user_home/{this_user.id}")
+                else:
+                    return render_template("not_exist.html")
             else:
                 return render_template("incorrect_p.html")
         else:
@@ -88,10 +101,20 @@ def register():
             return redirect("/login")
 
     return render_template("register.html")
-    
+
+@app.route("/logout")
+def logout():
+    # session.pop("user_id", None)
+    # session.pop("user_type", None)
+    session.clear()
+    return redirect("/home")
+
 @app.route("/home")
-def home():
-    return render_template("home.html",)
+@app.route("/home/<int:user_id>")
+def home(user_id=None):
+    # Check if any user (admin or general user) is logged in
+    login_register_show = not session.get('any_user_id')  # True if no user is logged in, False otherwise
+    return render_template("home.html", user_id=user_id, login_register_show=login_register_show)
 
 @app.route("/about")
 def about():
@@ -106,15 +129,18 @@ def help():
     return render_template("help.html",)
 
 @app.route("/subject")
-def subject():
-    return render_template("subject.html",)
+@app.route("/subject/<int:user_id>", methods=["GET", "POST"])
+def subject(user_id):
+    if request.method == 'GET':
+        subjects =Subject.query.all()
+        return render_template("subject.html", user_id=user_id, subjects=subjects)
 
 
 #ADMIN ROUTE & FUNCTION 
 @app.route("/admin_home")
 def admin_home():
     this_user = User.query.filter_by(type="admin").first()
-    return render_template("admin/admin_home.html", profile_image=this_user.profile_image, profile_name=this_user.firstname)
+    return render_template("admin/admin_home.html", this_user=this_user)
 
 
 @app.route("/admin_instructor", defaults={'optional': None}, methods=["GET", "POST"])
@@ -129,7 +155,7 @@ def admin_instructor(optional):
             return jsonify(all_instructors) 
         else:
             this_user = User.query.filter_by(type="admin").first()
-            return render_template("admin/admin_instructor.html", profile_image=this_user.profile_image, profile_name=this_user.firstname, instructors=instructors)
+            return render_template("admin/admin_instructor.html", this_user=this_user, instructors=instructors)
 
     if request.method == 'POST':
         inst_name = request.form['inst_name']
@@ -216,7 +242,7 @@ def admin_subject():
     if request.method == 'GET':
         subjects=Subject.query.all()
         this_user = User.query.filter_by(type="admin").first()
-        return render_template("admin/admin_subject.html", profile_image=this_user.profile_image, profile_name=this_user.firstname, subjects=subjects)
+        return render_template("admin/admin_subject.html", this_user=this_user, subjects=subjects)
 
     if request.method == 'POST':
         subject_name = request.form['sub_name']
@@ -378,7 +404,7 @@ def admin_module(subject_id):
 
 
         this_user = User.query.filter_by(type="admin").first()
-        return render_template("admin/admin_module.html", subject=subject, chapters=chapters, lectures=lectures,quizzes=quizzes, profile_image=this_user.profile_image, profile_name=this_user.firstname)
+        return render_template("admin/admin_module.html", subject=subject, chapters=chapters, lectures=lectures,quizzes=quizzes, this_user=this_user)
     
     if request.method == 'POST':
         chapter_name = request.form['chapter_name']
@@ -649,21 +675,34 @@ def admin_user():
 @app.route("/user_home/<int:user_id>")
 def user_home(user_id):
     this_user = User.query.filter_by(id=user_id).first()
-    return render_template("user/user_home.html", profile_image=this_user.profile_image, profile_name=this_user.firstname)
+    return render_template("user/user_home.html", this_user=this_user)
 
-@app.route("/user_subject")
-def user_subject():
-    return render_template("user/user_subject.html",)
+@app.route("/user_enrollment/<int:user_id>/<int:subject_id>")
+def user_enrollment(user_id, subject_id):
+    user = User.query.get(user_id)
+    subject = Subject.query.get(subject_id)
+    user.subjects.append(subject)  # Add subject to user
+    db.session.commit()  # Save changes
+    return redirect(f'/user_subject/{user_id}')
 
-@app.route("/user_module")
-def user_module():
-    return render_template("user/user_module.html")
+@app.route("/user_subject/<int:user_id>")
+def user_subject(user_id):
+    this_user = User.query.filter_by(id=user_id).first()
+    enrolled_subjects = this_user.subjects
+    return render_template("user/user_subject.html", this_user=this_user, enrolled_subjects=enrolled_subjects )
+
+@app.route("/user_module/<int:user_id>/<int:subject_id>")
+def user_module(user_id, subject_id):
+    this_user = User.query.filter_by(id=user_id).first()
+    subject = Subject.query.get(subject_id)
+    chapters = subject.chapters
+    return render_template("user/user_module.html", this_user=this_user, chapters=chapters)
 
 
 @app.route("/user_test")
 def user_test():
     return render_template("testttttt.html")
 
-@app.route("/user_test1")
-def user_test1():
-    return render_template("user/1user_module.html")
+
+# Set session to expire when the browser closes
+app.config["SESSION_PERMANENT"] = False

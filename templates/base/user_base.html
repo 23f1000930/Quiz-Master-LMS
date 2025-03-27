@@ -5,24 +5,39 @@
   {% block user_css %} {% endblock %}
 {% endblock %}
 
+{% block profile %} 
+<a href="/go_to_profile" type="button">
+  <span class="badge text-bg-dark">
+      <img src="/static/uploads/{{ this_user.profile_image }}" width="38px" height="36px" class="rounded-3 border border-3 border-white" alt="..."> {{ this_user.firstname }}
+  </span>
+</a>
+{% endblock %}
 
 {% block page_body %}
 
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
-    <a href="/user_home" id="uhome">
+    <a href="/user_home/{{ this_user.id }}" id="uhome">
       <i class="bi bi-house-door"></i>
       <span>Home</span>
     </a>
-    <a href="/user_subject" id="usub">
+    
+    {% block ShowModuleScoreCalculator %} {% endblock %}
+
+
+    {% if not NOtShowSubjectSummary %}
+    <a href="/user_subject/{{ this_user.id }}" id="usub">
       <i class="bi bi-journals"></i>
       <span>Subjects</span>
     </a>
-    <a href="/user_summary" id="usummary">
+    <a href="/user_summary/{{ this_user.id }}" id="usummary">
       <i class="bi bi-bar-chart-line"></i>
       <span>Summary</span>
     </a>
-    <a href="/home">
+    {% endif %}
+
+
+    <a href="/logout">
       <i class="bi bi-box-arrow-right"></i>
       <span>Logout</span>
     </a>
@@ -32,6 +47,7 @@
     </a>
   </div>
 
+
   <main class="position asbolute">
     {% block user_content %} {% endblock %}
   </main>
@@ -39,20 +55,23 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Get the current page URL
-      let currentPage = window.location.pathname.split("/").pop();
+      let currentPage = window.location.pathname.split("/");
+      currentPage = currentPage[currentPage.length - 2];
         console.log("Current Page URL:", currentPage)
   
         // Map pages to button IDs
         const pageMap = {
           "user_home":"uhome",
           "user_subject":"usub",
-          "user_summary":"usummary"
+          "user_summary":"usummary",
+          "user_module.html":"umod",
+          "user_score.html":"uscore",
         };
   
         // If current page matches, add active state
         if (pageMap[currentPage]) {
           let activeButton = document.getElementById(pageMap[currentPage]);
-          if (["uhome", "usub", "usummary"].includes(activeButton.id)) {
+          if (["uhome", "usub", "usummary", "umod", "uscore"].includes(activeButton.id)) {
             activeButton.style.background = "black"
             activeButton.style.color = "white"; // Active Effect
           }
