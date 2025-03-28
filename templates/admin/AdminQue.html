@@ -1,0 +1,144 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} {{ subject.name }} {% endblock %}
+
+{% block user_css %}
+<style>
+
+    #nat_value:focus {
+        border-color: green !important;
+        box-shadow: 0 0 5px green !important;
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="px-4 text-center">
+
+    <div class="mb-5">
+        <!-- Title (Centered) -->
+        <h3 ><span class="badge" style="background-color: #712cf9;">{{ subject.name }}</span></h3>
+        <div class="container my-2">
+            <div class="position-relative  py-3 text-center text-muted bg-body border border-dashed rounded-4" style="width:1600px; margin-left: -125px;">
+                <h2 class="mb-3"><code> {{ chapter.name }}</code></h2>
+                <!------------------------------------Add Question Modal-------------------------------------------------------------------->
+                <button type="button" class="btn btn-dark me-auto mx-2 py-2 my-2 w-50" data-bs-toggle="modal" data-bs-target="#addQuestionModal"><i class="bi bi-plus-lg"></i> Add Question</button>
+                <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Chapter</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="/admin_module/{{ subject.id }}" method="post">
+
+                                <div class="form-floating mb-3">
+                                    <textarea  type="text" class="form-control" id="q_statement" name="q_statement" placeholder="Question Statement" style="height: 120px" required></textarea>
+                                    <label for="q_statement">Question Statement</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                      <input type="number" class="form-control" id="q-marks" name="q-marks" placeholder="Question Marks" required>
+                                      <label for="q-marks">Question Marks</label>
+                                </div>
+                                    
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="q_type" onchange="answerBox()" aria-label="Floating label select example" name="q_type" required>
+                                        <option selected disabled value="">Select Category</option>
+                                        <option value="NAT">NAT</option>
+                                        <option value="MCQ">MCQ</option>
+                                        <option value="MSQ">MSQ</option>
+                                    </select>
+                                    <label for="q_type">Question Type</label>
+                                </div>  
+    
+                                <div id="q_options">
+
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Add Chapter" style="width: 120px;">
+                                 </div>
+                              </form>
+                          </div>
+                          
+                        </div>
+                      </div>
+                </div>
+                <!-------------------------------End Of Question Modal---------------------------------------------------------------------------------------------------->
+                <p class="carousel-container fs-5 fw-semibold ">
+                    {{ chapter.description }}
+                </p>
+                <p class="carousel-container fs-5 fw-semibold ">
+                    {{ chapter.description }}
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    function answerBox()
+    {
+        if (q_type.value == "NAT")
+        {
+            q_options.innerHTML = `<div class="form-floating mb-3">
+                                      <input type="number" class="form-control border-success border-2" id="nat_value" name="nat_value" placeholder="Enter NAT Value" required>
+                                      <label for="nat_value">Enter NAT Value</label>
+                                    </div>`
+        }
+
+        if (q_type.value == "MCQ")
+        {
+            q_options.innerHTML = `<div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="mcq_options" name="mcq_options" placeholder="Enter No. of Options" aria-label="Enter No. of Options" aria-describedby="mcq_options_add">
+                                        <button class="btn btn-dark" type="button" onclick="addMcqOptions()" id="mcq_options_add">Add Options</button>
+                                    </div> 
+                                    <div id="insert_mcq_options">
+                                    </div>`
+        }
+
+        if (q_type.value == "MSQ")
+        {
+            q_options.innerHTML = `<div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="msq_options" name="msq_options" placeholder="Enter No. of Options" aria-label="Enter No. of Options" aria-describedby="msq_options_add">
+                                        <button class="btn btn-dark" type="button" onclick="addMsqOptions()" id="msq_options_add">Add Options</button>
+                                    </div> 
+                                    <div id="insert_msq_options">
+                                    </div>`
+        }
+    }
+
+
+    // Handle MCQ OPTIONS
+    function addMcqOptions() {
+        insert_mcq_options.innerHTML = "";
+
+        for (let i = 0; i < parseInt(mcq_options.value); i++) {
+            insert_mcq_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="radio" name="mcq_answer" value="${i}" aria-label="Radio button for following text input">
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="mcq_options" aria-label="Text input with radio button">
+                                            </div>`;
+        }
+    }
+
+    // Handle MSQ OPTIONS
+    function addMsqOptions() {
+        insert_msq_options.innerHTML = "";
+
+        for (let i = 0; i < parseInt(msq_options.value); i++) {
+            insert_msq_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="checkbox" name="msq_answers" value="${i}" aria-label="Checkbox for following text input">
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="msq_options" aria-label="Text input with checkbox">
+                                            </div>`;
+        }
+    }
+</script>
+{% endblock %}   

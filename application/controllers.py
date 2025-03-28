@@ -1,6 +1,6 @@
 #contains all the routes & view functions
 #Flask → The web framework used to create the web application.
-from flask import Flask,render_template,redirect,request, jsonify, send_from_directory, session
+from flask import Flask,render_template,redirect,url_for, request, jsonify, send_from_directory, session
 from flask import current_app as app #it refers to the "app" object created in "app.py" or "app.py" itself
 #from app import app  ---->not used because it leads to circular import when we import "controllers.py" in "app.py"
 
@@ -11,6 +11,7 @@ from datetime import datetime, time
 import os #Used for working with file paths.
 #each endpoint with a combination of particular http method gives a particular resource
 
+import json #for converting python dictionary into json string
 
 #Handling Image Uploads
 UPLOAD_FOLDER = "static/uploads"  # Defines where uploaded files will be stored.
@@ -645,9 +646,151 @@ def modify_quiz(quiz_id):
             return redirect(f"/admin_module/{subject_id}")
         return render_template("notfound.html")  
 
+@app.route("/admin_question/<int:subject_id>/<int:chapter_id>/<int:quiz_id>", methods=["GET", "POST"])
+def admin_question(subject_id, chapter_id, quiz_id):
+    if request.method == 'GET':
+        this_user = User.query.filter_by(type="admin").first()
+        subject = Subject.query.get(subject_id)
+        chapter = Chapter.query.get(chapter_id)
+        quiz =  Quiz.query.get(quiz_id)
+        questions = Question.query.filter_by(quiz_id=quiz_id)
+        all_answers = {}
+        for question in questions:
+            all_answers[question.id] = json.loads(question.answer)  # Convert JSON string to dictionary
+        
+        return render_template("admin/admin_question.html",this_user=this_user, subject=subject, chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers)
+    
+    if request.method == 'POST':
+        question_statement = request.form.get("q_statement")
+        marks = request.form.get("q_marks")
+        question_type = request.form.get("q_type")
+
+        existing_question = Question.query.filter_by(question_statement=question_statement).first()
+        if existing_question:
+            return render_template("already.html")
+        
+        else:    
+            if question_type == "NAT":
+                nat_value = request.form.get("nat_value")
+                print(f"NAT Answer: {nat_value}")
+                answer = { nat_value : 1 }
+
+            elif question_type == "MCQ":
+                mcq_options = request.form.getlist("mcq_options")  # List of options
+                mcq_answer = request.form.get("mcq_answer")  # Selected answer (radio button)
+                print(f"MCQ Options: {mcq_options}")
+                print(f"Selected MCQ Answer: {mcq_answer}")
+                
+                answer = {}
+                for option in mcq_options:
+                    if mcq_options.index(option) == int(mcq_answer):
+                        answer[option] = 1
+                    else :
+                        answer[option] = 0
+                print("ANSWER AHHAHHAHAHH" , answer)            
 
 
+            elif question_type == "MSQ":
+                msq_options = request.form.getlist("msq_options")  # List of options
+                msq_answers = request.form.getlist("msq_answers")  # List of selected checkboxes
+                print(f"MSQ Options: {msq_options}")
+                print(f"Selected MSQ Answers: {msq_answers}")
 
+                answer = {}
+                # Convert msq_answers from a list of strings to a list of integers
+                msq_answers = list(map(int, msq_answers))
+                for option in msq_options:
+                    if msq_options.index(option) in msq_answers:
+                        answer[option] = 1
+                    else :
+                        answer[option] = 0
+                print("ANSWER AHHAHHAHAHH MSQ" , answer)
+
+            new_question = Question(
+                question_statement=question_statement,
+                type=question_type,
+                marks = marks,
+                answer=json.dumps(answer),  # Convert dict to JSON string
+                quiz_id=quiz_id
+            )   
+
+            db.session.add(new_question)
+            db.session.commit()
+            return redirect(url_for('admin_question', subject_id=subject_id, chapter_id=chapter_id, quiz_id=quiz_id))
+    
+            
+            
+    
+@app.route("/modify_question/<int:question_id>", methods=["GET", "POST"])
+def modify_question(question_id):
+    if request.method == 'GET':
+        question=Question.query.filter_by(id=question_id).first()
+        if question:
+            # Convert SQLAlchemy object to dictionary
+            question_data = {
+            "id": question.id,
+            "type":question.type,
+            "question_statement": question.question_statement,
+            "marks": question.marks,
+            "answer":json.loads(question.answer)
+            }
+            print("QUESTION DATA",jsonify(question_data))
+            return jsonify(question_data)
+        else:
+            return jsonify({"error": "  Question not found"}), 404
+        
+    if request.method == 'POST':
+        question = Question.query.get(question_id)
+        if question:
+            question.question_statement = request.form['mod_q_statement']
+            question.marks = request.form['mod_q_marks']
+            
+
+            #HANDLING ANSWERS
+            if question.type == "NAT":
+                nat_value = request.form.get("mod_nat_value")
+                print(f"NAT Answer: {nat_value}")
+                answer = { nat_value : 1 }
+
+            elif question.type == "MCQ":
+                mcq_options = request.form.getlist("mod_mcq_options")  # List of options
+                mcq_answer = request.form.get("mod_mcq_answer")  # Selected answer (radio button)
+                print(f"MCQ Options: {mcq_options}")
+                print(f"Selected MCQ Answer: {mcq_answer}")
+                
+                answer = {}
+                for option in mcq_options:
+                    if mcq_options.index(option) == int(mcq_answer):
+                        answer[option] = 1
+                    else :
+                        answer[option] = 0
+                print("ANSWER AHHAHHAHAHH" , answer)            
+
+
+            elif question.type == "MSQ":
+                msq_options = request.form.getlist("mod_msq_options")  # List of options
+                msq_answers = request.form.getlist("mod_msq_answers")  # List of selected checkboxes
+                print(f"MSQ Options: {msq_options}")
+                print(f"Selected MSQ Answers: {msq_answers}")
+
+                answer = {}
+                # Convert msq_answers from a list of strings to a list of integers
+                msq_answers = list(map(int, msq_answers))
+                for option in msq_options:
+                    if msq_options.index(option) in msq_answers:
+                        answer[option] = 1
+                    else :
+                        answer[option] = 0
+                print("ANSWER AHHAHHAHAHH MSQ" , answer)
+
+            question.answer = json.dumps(answer)
+
+            db.session.commit()
+            quiz=question.thatquiz
+            chapter=quiz.thatquizchapter
+            subject = chapter.that_chap_sub
+            return redirect(f"/admin_question/{subject.id}/{chapter.id}/{quiz.id}")
+        return render_template("notfound.html")
 
 
 

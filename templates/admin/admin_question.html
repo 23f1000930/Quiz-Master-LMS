@@ -1,0 +1,336 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} {{ subject.name }} {% endblock %}
+
+{% block user_css %}
+<style>
+
+    #nat_value:focus {
+        border-color: green !important;
+        box-shadow: 0 0 5px green !important;
+    }
+
+    .form-check-input:disabled, .form-check-label {
+        color: black !important;  /* or any color you prefer */
+        opacity: 1 !important;
+    }
+    
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="px-4 text-center">
+
+    <div class="mb-5">
+        <!-- Title (Centered) -->
+        <h3 ><span class="badge" style="background-color: #712cf9;">{{ subject.name }}</span></h3>
+        <div class="container my-2">
+            <div class="position-relative  py-3 text-center text-muted bg-body border border-dashed rounded-4" style="width:1600px; margin-left: -125px;">
+                <h2 class="mb-3"><code> {{ chapter.name }}</code></h2>
+                <p class="carousel-container fs-5 fw-semibold ">
+                    {{ chapter.description }}
+                </p>
+                <!------------------------------------Add Question Modal------------------------------------------------------------------------------------------------>
+                <button type="button" class="btn btn-dark me-auto mx-2 py-2 my-2 w-25" data-bs-toggle="modal" data-bs-target="#addQuestionModal"><i class="bi bi-plus-lg"></i> Add Question</button>
+                <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add A New Question</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="/admin_question/{{ subject.id }}/{{ chapter.id }}/{{ quiz.id }}" method="post">
+
+                                <div class="form-floating mb-3">
+                                    <textarea  type="text" class="form-control" id="q_statement" name="q_statement" placeholder="Question Statement" style="height: 120px" required></textarea>
+                                    <label for="q_statement">Question Statement</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                      <input type="number" class="form-control" id="q_marks" name="q_marks" placeholder="Question Marks" step="any" required>
+                                      <label for="q_marks">Question Marks</label>
+                                </div>
+                                    
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="q_type" onchange="answerBox()" aria-label="Floating label select example" name="q_type" required>
+                                        <option selected disabled value="">Select Category</option>
+                                        <option value="NAT">NAT</option>
+                                        <option value="MCQ">MCQ</option>
+                                        <option value="MSQ">MSQ</option>
+                                    </select>
+                                    <label for="q_type">Question Type</label>
+                                </div>  
+    
+                                <div id="q_options">
+
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Add Question" style="width: 128px;">
+                                 </div>
+                              </form>
+                          </div>
+                          
+                        </div>
+                      </div>
+                </div>
+                <!-------------------------------End Of Question Modal---------------------------------------------------------------------------------------------------->
+                
+                <!------------------------------------Modify Question Modal-------------------------------------------------------------------->
+                <div class="modal fade" id="modifyQuestionModal" tabindex="-1" aria-labelledby="modifyQuestionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modify Question</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="" id="modify_question_info" method="post">
+
+                                <div class="form-floating mb-3">
+                                    <textarea  type="text" class="form-control" id="mod_q_statement" name="mod_q_statement" placeholder="Question Statement" style="height: 120px" required></textarea>
+                                    <label for="mod_q_statement">Question Statement</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                      <input type="number" class="form-control" id="mod_q_marks" name="mod_q_marks" placeholder="Question Marks" step="any" required>
+                                      <label for="mod_q_marks">Question Marks</label>
+                                </div>
+                                    
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="mod_q_type" aria-label="Floating label select example" name="mod_q_type" disabled>
+                                        <option selected disabled value="">Select Category</option>
+                                        <option value="NAT">NAT</option>
+                                        <option value="MCQ">MCQ</option>
+                                        <option value="MSQ">MSQ</option>
+                                    </select>
+                                    <label for="mod_q_type">Question Type</label>
+                                </div>  
+    
+                                <div id="mod_q_options">
+
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning " id="questionReset" value="" onclick="getQuestionDetails(value)">Reset</button>&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+                                    <input type="submit" class="btn btn-dark" value="Modify Question" style="width: 141px;">
+                                 </div>
+                              </form>
+                          </div>
+                          
+                        </div>
+                      </div>
+                </div>
+                <!-------------------------------End Of Question Modal---------------------------------------------------------------------------------------------------->
+
+
+                {% for question in questions %}
+                    <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
+                        <div class="lh-1 w-100 question">
+                            <div class="d-flex w-100">
+                                <button type="button" class="btn btn-warning view-btn" id="ques{{ question.id }}" value="{{ question.id }}" onclick="getQuestionDetails('{{ question.id }}')" data-bs-toggle="modal" data-bs-target="#modifyQuestionModal"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;
+                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                            </div><br>
+                            <div class="d-flex w-100">
+                                <p class="">Q{{ loop.index }}. {{ question.question_statement }} </p><strong class="ms-auto">{{ question.marks }} points</strong>
+                            </div> 
+                                
+                                
+                                {% if question.type == "NAT" %}
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-text">
+                                        <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked disabled>
+                                        </div>
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="{{ all_answers[question.id].keys() | list | first  }}" disabled>
+                                    </div>
+                                {% endif %}
+
+                                {% if question.type == "MCQ" %}
+                                    {% for option in all_answers[question.id]  %}
+                                        {% if all_answers[question.id][option] == 1 %}
+                                            <div class="d-flex w-100">
+                                                <input class="form-check-input border border-dark" type="radio"  checked disabled>
+                                                <label class="form-check-label mx-3 mt-1">{{ option }}</label><br><br>
+                                            </div>
+                                        {% else %}
+                                            <div class="d-flex w-100">
+                                                <input class="form-check-input border border-dark" type="radio" disabled>
+                                                <label class="form-check-label mx-3 mt-1">{{ option }}</label><br><br>
+                                            </div>    
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+
+                                {% if question.type == "MSQ" %}
+                                    {% for option in all_answers[question.id]  %}
+                                        {% if all_answers[question.id][option] == 1 %}
+                                            <div class="d-flex w-100">
+                                                <input class="form-check-input border border-dark" type="checkbox"  checked disabled>
+                                                <label class="form-check-label mx-3 mt-1">{{ option }}</label><br><br>
+                                            </div>
+                                        {% else %}
+                                            <div class="d-flex w-100">
+                                                <input class="form-check-input border border-dark" type="checkbox" disabled>
+                                                <label class="form-check-label mx-3 mt-1">{{ option }}</label><br><br>
+                                            </div>    
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                      
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-------------------------------------Handling of Answers----------------------------------------------------------------------------------------------->
+<script>
+    function answerBox()
+    {
+        if (q_type.value == "NAT")
+        {
+            q_options.innerHTML = `<div class="form-floating mb-3">
+                                      <input type="number" class="form-control border-success border-2" id="nat_value" name="nat_value" placeholder="Enter NAT Value" step="any" required>
+                                      <label for="nat_value">Enter NAT Value</label>
+                                    </div>`
+        }
+
+        if (q_type.value == "MCQ")
+        {
+            q_options.innerHTML = `<div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="ip_mcq_options" name="ip_mcq_options" placeholder="Enter No. of Options" aria-label="Enter No. of Options" aria-describedby="mcq_options_add">
+                                        <button class="btn btn-dark" type="button" onclick="addMcqOptions()" id="mcq_options_add">Add Options</button>
+                                    </div> 
+                                    <div id="insert_mcq_options">
+                                    </div>`
+        }
+
+        if (q_type.value == "MSQ")
+        {
+            q_options.innerHTML = `<div class="input-group mb-3">
+                                        <input type="number" class="form-control" id="ip_msq_options" name="ip_msq_options" placeholder="Enter No. of Options" aria-label="Enter No. of Options" aria-describedby="msq_options_add">
+                                        <button class="btn btn-dark" type="button" onclick="addMsqOptions()" id="msq_options_add">Add Options</button>
+                                    </div> 
+                                    <div id="insert_msq_options">
+                                    </div>`
+        }
+    }
+
+
+    // Handle MCQ OPTIONS
+    function addMcqOptions() {
+        insert_mcq_options.innerHTML = "";
+
+        for (let i = 0; i < parseInt(ip_mcq_options.value); i++) {
+            insert_mcq_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="radio" name="mcq_answer" value="${i}" aria-label="Radio button for following text input">
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="mcq_options" aria-label="Text input with radio button" required>
+                                            </div>`;
+        }
+    }
+
+    // Handle MSQ OPTIONS
+    function addMsqOptions() {
+        insert_msq_options.innerHTML = "";
+
+        for (let i = 0; i < parseInt(ip_msq_options.value); i++) {
+            insert_msq_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="checkbox" name="msq_answers" value="${i}" aria-label="Checkbox for following text input">
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="msq_options" aria-label="Text input with checkbox" required>
+                                            </div>`;
+        }
+    }
+
+</script>
+
+<!------------------------------Question Preview------------------------------------------------------------------------------------------------------>
+<script>
+     //Preview Modify chapter Form while Editing
+     async function getQuestionDetails(questionId) {
+   try {
+       let response = await fetch(`http://127.0.0.1:5000/modify_question/${questionId}`);
+       let data = await response.json();
+
+       if (data.error) {
+           alert("Question not found!");
+           return;
+       }
+        console.log("Fetched QUESTION Data:", data);
+        mod_q_statement.value = data.question_statement 
+        mod_q_marks.value = data.marks
+        mod_q_type.value = data.type
+        modify_question_info.action = `/modify_question/${questionId}`;
+        //Assignming subjects details in modify form by using ({id_name}.value)
+        questionReset.value = data.id;
+
+        answer = data.answer
+        option = Object.keys(answer)
+
+        //For Showing options(MCQ/MSQ) or Value(NAT)
+        if (data.type == "NAT")
+        {
+            mod_q_options.innerHTML = ""
+
+            nat_answer = option[0];
+            mod_q_options.innerHTML = `
+                                    <div class="form-floating mb-3">
+                                      <input type="number" class="form-control border-success border-2" id="mod_nat_value" name="mod_nat_value" value="${nat_answer}" placeholder="Enter NAT Value" step="any" required>
+                                      <label for="mod_nat_value">Enter NAT Value</label>
+                                    </div>`
+        }
+
+        if (data.type == "MCQ")
+        {
+            mod_q_options.innerHTML = ""
+
+            for(i=0; i<option.length; i++)
+            {
+                let isChecked = answer[option[i]] == 1 ? "checked" : ""; // Check if the option is selected
+
+                mod_q_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="radio" name="mod_mcq_answer" value="${i}" aria-label="Radio button for following text input" ${isChecked}>
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="mod_mcq_options" value="${option[i]}" aria-label="Text input with radio button" required>
+                                            </div>`;
+            }
+        }
+
+        if (data.type == "MSQ")
+        {
+            mod_q_options.innerHTML = ""
+
+            for(i=0; i<option.length; i++)
+            {
+                let isChecked = answer[option[i]] == 1 ? "checked" : ""; // Check if the option is selected
+
+                mod_q_options.innerHTML += `<div class="input-group mb-3">
+                                                <div class="input-group-text border-success border-2">
+                                                    <input class="form-check-input mt-0" type="checkbox" name="mod_msq_answers" value="${i}" aria-label="Checkbox for following text input" ${isChecked}>
+                                                </div>
+                                                <input type="text" class="form-control border-success border-2" name="mod_msq_options" value="${option[i]}" aria-label="Text input with checkbox" required>
+                                            </div>`;
+            }
+        }
+
+
+   } catch (error) {
+       console.error("Error fetching subject details:", error);
+   }
+}
+
+</script>
+{% endblock %}   

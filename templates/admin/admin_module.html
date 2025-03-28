@@ -1,5 +1,5 @@
 {% extends 'base/admin_base.html' %}
-{% block page_title %} Home {% endblock %}
+{% block page_title %} {{ subject.name }} {% endblock %}
 
 {% block user_css %}
 <style>   
@@ -511,6 +511,7 @@
                                                             <td class="fw-semibold">{{ quiz.total_attempts }}</td>
                                                             <td class="text-danger fw-bold">{{ quiz.deadline }}</td>
                                                             <td>
+                                                                <a href="/admin_question/{{ subject.id }}/{{ chapter.id }}/{{ quiz.id }}" class="btn btn-warning view-btn" type="button"><i class="bi bi-card-list"></i></a>
                                                                 <button type="button" class="btn btn-primary view-btn" id="chap{{ quiz.id }}" value="{{ quiz.id }}" onclick="getQuizDetails('{{ quiz.id }}')" data-bs-toggle="modal" data-bs-target="#modifyQuizModal"><i class="bi bi-pencil"></i></button>
                                                                 <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
                                                             </td>
