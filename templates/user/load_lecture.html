@@ -1,0 +1,36 @@
+<style>
+    h3 {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    iframe {
+        width: 100%; /* Full width */
+        height: 520px; /* Set a fixed height */
+        max-height: 80vh; /* Maximum height of viewport */
+        display: block;
+        margin: 0 auto; /* Center the iframe */
+        border-radius: 10px; /* Smooth corners */
+    }
+
+    h4 {
+        color: #666; /* Lighter gray text */
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<h3>{{ lecture.name }}</h3>
+
+<iframe 
+    src="{{ lecture.link }}" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen>
+</iframe>
+
+<h3 style="margin-top: 20px;">About The Lecture</h3>
+<h4>{{ lecture.description }}</h4>

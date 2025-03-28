@@ -60,10 +60,6 @@
       .question{
           margin-block: -28px;
       }
-
-      .lecture-content, .quiz-content{
-        cursor: pointer;
-      }
 </style>
 {% endblock %}
 
@@ -95,68 +91,49 @@
   
 
   <!-----------------------------------------------Chapter/Module Accordion STARTS------------------------------->
-  <div class="accordion border border-dark rounded-3" id="accordionPanelsStayOpenExample" style="width: 326px; margin-top: 14px; margin-left: 66px; height: 90vh; overflow: auto; padding-right: 0px;">
-    <div>
-        <span class="badge text-bg-dark d-block text-center fs-5 p-2">
-            {{ subject.name }}
+  <div class="accordion border border-dark rounded-3" id="accordionPanelsStayOpenExample z-n1 position absolute" style="width: 320px; margin-top: 14px; margin-left: 70px; height: 90vh; overflow: auto; padding-right: 0px;">
+      <div>
+        <span class="badge text-bg-dark" style="display: inline-block; width: 320px; height: auto; font-size: 19px; padding: 11px; word-wrap: break-word; white-space: normal; text-align: center;">
+        {{ subject.name }}
         </span>
 
         {% for chapter in chapters %}
         <div class="accordion-item">
+
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ chapter.id }}" aria-expanded="false" aria-controls="collapse{{ chapter.id }}">
-                    <h6 class="mb-0"><i class="bi bi-book"></i> {{ loop.index }}. {{ chapter.name }}</h6>
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{chapter.id}}" aria-expanded="false" aria-controls="collapse{{chapter.id}}">
+                <h6>{{ loop.index }}. {{ chapter.name }}</h6>
                 </button>
             </h2>
-            <div id="collapse{{ chapter.id }}" class="accordion-collapse collapse">
+            <div id="collapse{{chapter.id}}" class="accordion-collapse collapse">
                 <div class="accordion-body">
-                    <div class="list-group">
-
-                        <!-- Loop through lectures -->
+                <div class="row">
+                    <div class="list-group" id="list-tab" role="tablist">
                         {% for lecture in chapter.lectures %}
-                        <div class="list-group-item list-group-item-action">
-                            <p onclick="loadContent('/load_lecture/{{subject.id}}/{{chapter.id}}/{{lecture.id}}')" class="list-group-item list-group-item-action lecture-content" role="tab"><strong><i class="bi bi-play-circle"></i></strong> {{ loop.index }}. {{ lecture.name }}</p>
-                            <!-- Quizzes under each lecture -->
-                            {% if lecture.quizzes %}
-                            <div class="mt-2">
-                                
-                                <ul class="list-group mt-1">
-                                    {% for quiz in lecture.quizzes %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <p onclick="loadContent('/load_lecture/{{subject.id}}/{{chapter.id}}/{{lecture.id}}')" class="list-group-item list-group-item-action quiz-content" role="tab"><strong><i class="bi bi-file-earmark-text"></i></strong>Quiz {{ loop.index }} ({{ quiz.release_date.strftime('%Y-%m-%d') }})</a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+                            <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">{{ loop.index }}. {{ lecture.name }}</a>
+                            
+                            {% for quiz in lecture.quizzes %}
+                                <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home"><strong> {{ loop.index }} Quiz {{ quiz.release_date }}</strong> </a>
+                            {% endfor %}
 
-                            </div>
-                            {% endif %}
-                        </div>
                         {% endfor %}
 
-                        <!-- Chapter-level quizzes (not linked to any lecture) -->
-                        {% if chapter.quizzes %}
-                        <div class="mt-3">
-                            <span class="badge bg-success"><i class="bi bi-list-check"></i> Other Quizzes</span>
-                            <ul class="list-group mt-1">
-                                {% for quiz in chapter.quizzes %}
-                                    {% if not quiz.lecture_id %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <a href="" class="list-group-item list-group-item-action" role="tab"><strong><i class="bi bi-file-earmark-text"></i></strong>Quiz {{ loop.index }} ({{ quiz.release_date.strftime('%Y-%m-%d') }})</a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-
-                    </div> <!-- End of list-group -->
+                       {% for quiz in chapter.quizzes %}
+                            {% if not quiz.lecture_id %}
+                                <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home"><strong> {{ loop.index }} Quiz {{ quiz.release_date }}</strong> </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
                 </div>
             </div>
+            
         </div>
         {% endfor %}
-    </div>
-</div>
 
+
+      </div>
+  </div>
   <!-----------------------------------------------Module Accordion ENDS------------------------------->
   
   
@@ -164,7 +141,7 @@
   <div class="bg-body rounded-3 ms-auto border border-dark px-3" style="margin-top: 14px; width: 1285px; margin-right: 15px; height: 90vh; overflow: auto;">
   <!------------------------------------------------------Quiz Content STARTS------------------------------------->    
   <!-- <iframe src="testcontent.html" width="50%" height="60%"></iframe> -->
-  <p id="quizContent"></p>
+  {% include "testcontent.html" %}
 
       
   </div>
@@ -228,17 +205,5 @@
       isDragging = false;
   });
 </script>
-<script>
-    function loadContent(url) {
-        fetch(url)
-        .then(response => response.text()) // Get the HTML content
-        .then(html => {
-            console.log("HHHHHHHHT", html)
-            document.getElementById("quizContent").innerHTML = html; // Replace the content
-        })
-        .catch(error => console.error("Error loading content:", error));
-        
-    }
-    </script>
-    
+
 {% endblock %}

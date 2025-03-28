@@ -459,7 +459,7 @@ def modify_module(chapter_id):
 
 @app.route("/admin_lecture/<int:chapter_id>", methods=["GET", "POST"])
 @app.route("/admin_lecture/<int:chapter_id>/<optional>", methods=["GET", "POST"])  #for creating api for showing lectures in quiz create form only
-def admin_lecture(chapter_id, optional):
+def admin_lecture(chapter_id, optional=None):
     if request.method == 'GET':
         lectures=Lecture.query.filter_by(chapter_id=chapter_id)
         if optional == "all_lectures":
@@ -696,8 +696,16 @@ def user_module(user_id, subject_id):
     this_user = User.query.filter_by(id=user_id).first()
     subject = Subject.query.get(subject_id)
     chapters = subject.chapters
-    return render_template("user/user_module.html", this_user=this_user, chapters=chapters)
+    chapter_ids =[chapter.id for chapter in chapters]
+    #lectures = Lecture.query.filter(Lecture.chapter_id.in_(chapter_ids)).all()
+    #quizzes = Quiz.query.filter(Quiz.chapter_id.in_(chapter_ids)).all()
+    return render_template("user/user_module.html", this_user=this_user, subject=subject, chapters=chapters)
 
+
+@app.route("/load_lecture/<int:subject_id>/<int:chapter_id>/<int:lecture_id>")
+def load_lecture(subject_id,chapter_id,lecture_id):
+    lecture=Lecture.query.get(lecture_id)
+    return render_template("user/load_lecture.html", lecture=lecture)
 
 @app.route("/user_test")
 def user_test():
