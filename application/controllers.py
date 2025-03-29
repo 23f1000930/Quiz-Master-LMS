@@ -7,7 +7,9 @@ from flask import current_app as app #it refers to the "app" object created in "
 from .models import *# both resides in same folder
 import random
 import string
-from datetime import datetime, time
+from datetime import datetime, time 
+from zoneinfo import ZoneInfo    #for Convert UTC to IST & allows us to work with time zones.
+
 import os #Used for working with file paths.
 #each endpoint with a combination of particular http method gives a particular resource
 
@@ -793,6 +795,7 @@ def modify_question(question_id):
         return render_template("notfound.html")
 
 
+@app.route("/modify_question/<int:question_id>", methods=["GET", "POST"])
 
 
 
@@ -849,6 +852,158 @@ def user_module(user_id, subject_id):
 def load_lecture(subject_id,chapter_id,lecture_id):
     lecture=Lecture.query.get(lecture_id)
     return render_template("user/load_lecture.html", lecture=lecture)
+
+@app.route("/load_quiz/<int:user_id>/<int:subject_id>/<int:chapter_id>/<int:quiz_id>")
+def load_quiz(user_id,subject_id,chapter_id,quiz_id):
+    this_user=User.query.get(user_id)
+    quiz=Quiz.query.get(quiz_id)
+    chapter=quiz.thatquizchapter
+    questions=Question.query.filter_by(quiz_id=quiz_id)
+    all_answers = {}
+    for question in questions:
+        all_answers[question.id] = json.loads(question.answer)  # Convert JSON string to dictionary
+    if Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).first():
+        user_latest_score = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).order_by(Score.id.desc()).first()
+        user_latest_response = json.loads(user_latest_score.user_answer)
+        
+        #filtering user response in form of {<question_id>:<correct option/answer>}
+        user_latest_answer = {}
+        for ques_id in user_latest_response:
+
+            user_latest_answer[ques_id] = []
+            attempted_question = Question.query.get(ques_id)
+            
+            response_values = list(user_latest_response[ques_id].values())
+            response_options = list(user_latest_response[ques_id].keys())
+            
+            if attempted_question.type == "MSQ":
+                for opt in response_options:
+                    if user_latest_response[ques_id][opt] == 1:
+                        user_latest_answer[ques_id].append(opt)
+
+            else:    
+                selected_index = response_values.index(1)
+                selected_option = response_options[selected_index]
+                user_latest_answer[ques_id].append(selected_option)
+
+        return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers ,user_latest_answer=user_latest_answer)
+
+
+    return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers)
+
+@app.route("/user_score/<int:user_id>/<int:quiz_id>", methods=["GET", "POST"] )
+def user_score(user_id, quiz_id):
+    if request.method == 'POST':
+        questions = Question.query.filter_by(quiz_id=quiz_id).all()
+        
+        all_answers = {}
+        for question in questions:
+            all_answers[question.id] = json.loads(question.answer)  # Convert JSON string to dictionary
+
+        user_total_score = 0
+        user_all_answers = {}
+
+        for question in questions:
+            if question.type == "NAT":
+                if "nat_value" in request.form:
+                    user_answer = request.form.get("nat_value")     #datatype str
+                    actual_answer = list(all_answers[question.id].keys())[0]  #datatype str
+                    if user_answer == actual_answer:
+                        user_total_score += question.marks
+                    #STORING USER RESPONSE    
+                    user_all_answers[question.id] = {user_answer: 1}
+                    
+
+            if question.type == "MCQ":
+                if str(question.id) in request.form:
+                    user_answer = int(request.form.get(str(question.id)))
+                    actual_answer = list(all_answers[question.id].values())
+                    if actual_answer.index(1) == user_answer-1:
+                        user_total_score += question.marks
+                        #STORING USER RESPONSE
+                        user_all_answers[question.id] = all_answers[question.id]
+                    else :
+                        #STORING USER RESPONSE
+                        answer_options = list(all_answers[question.id].keys())
+                        selected_option = answer_options[user_answer-1]
+                        data = dict.fromkeys(answer_options, 0) #initializing options
+                        data[selected_option] = 1
+                        user_all_answers[question.id] = data
+
+
+            if question.type == "MSQ":
+                if 2==2:
+                    user_answers = request.form.getlist(str(question.id))
+                    user_answers = list(map(int, user_answers))
+
+                    actual_answer = list(all_answers[question.id].values())
+                    actual_answer_options=list(all_answers[question.id].keys())
+
+                    correct_answer_options = []
+                    for options in actual_answer_options:
+                        if all_answers[question.id][options] == 1:
+                            correct_answer_options.append(options)  
+
+
+
+                    no_options = len(correct_answer_options)
+                    msq_socre = 0
+                    msq_marks = question.marks
+
+                    for user_answer in user_answers:
+                        if actual_answer[user_answer-1] == 1:
+                            msq_socre += (msq_marks)/no_options
+                        else:
+                            msq_socre -= (msq_marks)/no_options
+                    
+                    if msq_socre >= 0:
+                        user_total_score += msq_socre
+
+                    #STORING USER RESPONSE
+                    answer_options = list(all_answers[question.id].keys())
+                    selected_options = []
+                    for user_answer in user_answers:
+                        selected_option=actual_answer_options[user_answer-1]
+                        selected_options.append(selected_option) 
+
+                    data = dict.fromkeys(answer_options, 0) #initializing options
+                    for selected_option in selected_options:
+                        data[selected_option] = 1
+                    user_all_answers[question.id] = data
+
+        utc_now = datetime.now(ZoneInfo("UTC")) #time_stamp_of_last_attempt
+        '''datetime.now(ZoneInfo("UTC")) fetches the current time in UTC.
+        Instead of datetime.utcnow(), this explicitly assigns the UTC time zone.'''
+
+
+        ist_now = utc_now.astimezone(ZoneInfo("Asia/Kolkata"))
+        '''astimezone(ZoneInfo("Asia/Kolkata")) converts the UTC time to Indian Standard Time (IST).
+            IST is UTC +5:30, meaning if UTC time is 09:11:17, the IST time would be 14:41:17.'''
+        
+        #.strftime('%Y-%m-%d %H:%M:%S') formats the date and time into a readable string:
+        time_stamp_of_last_attempt = ist_now
+
+        new_score = Score(
+            time_stamp_of_last_attempt=time_stamp_of_last_attempt,
+            user_answer=json.dumps(user_all_answers),
+            total_score=user_total_score,
+            quiz_id=quiz_id,
+            user_id=user_id
+        )
+
+        db.session.add(new_score)
+        db.session.commit()
+
+        return user_all_answers       
+
+
+
+
+
+
+
+
+
 
 @app.route("/user_test")
 def user_test():

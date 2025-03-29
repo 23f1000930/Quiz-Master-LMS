@@ -1,0 +1,79 @@
+
+<div>
+    <!----------------------------------------------Quiz Main Heading STARTS--------------------------------------------->
+        <div class="d-flex justify-content-between border border-dark my-3 rounded-5" style="height: 33px;" >
+            <span class="badge rounded-pill text-bg-dark py-2" style="font-size: 14px;">Chapter : {{ chapter.name }} </span>
+            <h4><code>Duration(HH:MM:SS): {{quiz.time_duration}}</code></h4>
+            <span class="badge rounded-pill text-bg-danger py-2" style="font-size: 14px;" >Deadline : {{ quiz.deadline }}</span>
+        </div>
+        <!----------------------------------------------Quiz Main Heading ENDS------------------------------------------>
+
+        <!----------------------------------------------Quiz Questions STARTS---------------------------------------->
+        <form action="/user_score/{{ this_user.id }}/{{ quiz.id }}" method="post">
+
+            {% for question in questions %}
+            <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
+                <div class="lh-1 w-100 question">
+
+                    <div class="d-flex w-100">
+                        <p class="">Q{{ loop.index }}. {{ question.question_statement }}</p><strong class="ms-auto">{{ question.marks }} points</strong>
+                    </div>
+                    {% if user_latest_answer is defined %}
+                        {% if question.id | string in user_latest_answer  %}
+                        
+                            <div class="form-check">
+                                    {% if question.type == "NAT" %}
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" aria-label="Text input with checkbox" value="{{ user_latest_answer[question.id | string][0] }}" name="nat_value" >
+                                            </div>
+                                        {% endif %}
+        
+                                    {% if question.type == "MCQ" %}
+                                        {% for option in all_answers[question.id]  %}
+                                            
+                                            <input class="form-check-input border border-dark" type="radio" value="{{ loop.index }}" name="{{ question.id }}" id="{{ question.id }}{{ loop.index }}"  {% if option in user_latest_answer[question.id | string] %}checked{% endif %}>
+                                            <label class="form-check-label" for="{{ question.id }}{{ loop.index }}">{{ option }}</label><br><br>                                                               
+                                        {% endfor %}
+                                    {% endif %}
+        
+                                    {% if question.type == "MSQ" %}
+                                        {% for option in all_answers[question.id]  %}
+                                            <input class="form-check-input border border-dark" type="checkbox" value="{{ loop.index }}" name="{{ question.id }}" id="{{ question.id }}{{ loop.index }}" {% if option in user_latest_answer[question.id | string] %}checked{% endif %}>
+                                            <label class="form-check-label" for="{{ question.id }}{{ loop.index }}">{{ option }}</label><br><br>                                                               
+                                        {% endfor %}
+                                    {% endif %}                                     
+                            </div>
+                        {% endif %}
+
+                    {% else %}            
+                    <div class="form-check">
+                            
+                            {% if question.type == "NAT" %}
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="" name="nat_value" >
+                                    </div>
+                                {% endif %}
+
+                            {% if question.type == "MCQ" %}
+                                {% for option in all_answers[question.id]  %}
+                                    <input class="form-check-input border border-dark" type="radio" value="{{ loop.index }}" name="{{ question.id }}" id="{{ question.id }}{{ loop.index }}">
+                                    <label class="form-check-label" for="{{ question.id }}{{ loop.index }}">{{ option }}</label><br><br>                                                               
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if question.type == "MSQ" %}
+                                {% for option in all_answers[question.id]  %}
+                                    <input class="form-check-input border border-dark" type="checkbox" value="{{ loop.index }}" name="{{ question.id }}" id="{{ question.id }}{{ loop.index }}">
+                                    <label class="form-check-label" for="{{ question.id }}{{ loop.index }}">{{ option }}</label><br><br>                                                               
+                                {% endfor %}
+                            {% endif %}                                     
+                    </div>
+                    {% endif %}    
+
+                </div>
+            </div>
+            {% endfor %}
+            <input class="btn btn-dark mb-3" type="submit" value="Submit Answers">
+        </form>    
+        <!----------------------------------------------Quiz Questions ENDS------------------------------------------->
+</div>
