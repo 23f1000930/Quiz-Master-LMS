@@ -827,9 +827,12 @@ def user_home(user_id):
 def user_enrollment(user_id, subject_id):
     user = User.query.get(user_id)
     subject = Subject.query.get(subject_id)
-    user.subjects.append(subject)  # Add subject to user
-    db.session.commit()  # Save changes
-    return redirect(f'/user_subject/{user_id}')
+    if subject in user.subjects:
+        return f"Already Enrolled in {subject.name}"
+    else:
+        user.subjects.append(subject)  # Add subject to user
+        db.session.commit()  # Save changes
+        return redirect(f'/user_subject/{user_id}')
 
 @app.route("/user_subject/<int:user_id>")
 def user_subject(user_id):
@@ -857,39 +860,63 @@ def load_lecture(subject_id,chapter_id,lecture_id):
 def load_quiz(user_id,subject_id,chapter_id,quiz_id):
     this_user=User.query.get(user_id)
     quiz=Quiz.query.get(quiz_id)
-    chapter=quiz.thatquizchapter
-    questions=Question.query.filter_by(quiz_id=quiz_id)
-    all_answers = {}
-    for question in questions:
-        all_answers[question.id] = json.loads(question.answer)  # Convert JSON string to dictionary
-    if Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).first():
-        user_latest_score = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).order_by(Score.id.desc()).first()
-        user_latest_response = json.loads(user_latest_score.user_answer)
+
+    #checking release datetime & deadline date time is passed or not
+    utc_now = datetime.now(ZoneInfo("UTC"))
+    ist_now = utc_now.astimezone(ZoneInfo("Asia/Kolkata"))
+
+    #checking Release Date
+    if quiz.release_date.astimezone(ZoneInfo("Asia/Kolkata")) <=ist_now:
+
+        #Checkinh Deadline
+        if quiz.deadline.astimezone(ZoneInfo("Asia/Kolkata")) >=ist_now:
+            
+            quiz_records = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).all()
+            no_of_attempts = len(quiz_records)
+            if no_of_attempts < quiz.total_attempts:
+            
+                chapter=quiz.thatquizchapter
+                questions=Question.query.filter_by(quiz_id=quiz_id)
+                all_answers = {}
+                for question in questions:
+                    all_answers[question.id] = json.loads(question.answer)  # Convert JSON string to dictionary
+                if Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).first():
+                    user_latest_score = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).order_by(Score.id.desc()).first()
+                    user_latest_response = json.loads(user_latest_score.user_answer)
+                    
+                    #filtering user response in form of {<question_id>:<correct option/answer>}
+                    user_latest_answer = {}
+                    for ques_id in user_latest_response:
+
+                        user_latest_answer[ques_id] = []
+                        attempted_question = Question.query.get(ques_id)
+                        
+                        response_values = list(user_latest_response[ques_id].values())
+                        response_options = list(user_latest_response[ques_id].keys())
+                        
+                        if attempted_question.type == "MSQ":
+                            for opt in response_options:
+                                if user_latest_response[ques_id][opt] == 1:
+                                    user_latest_answer[ques_id].append(opt)
+
+                        else:    
+                            selected_index = response_values.index(1)
+                            selected_option = response_options[selected_index]
+                            user_latest_answer[ques_id].append(selected_option)
+
+                    return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers ,user_latest_answer=user_latest_answer)
+
+
+                return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers)
+            
+            else:
+                return f"<h1>SORRY, You Have No Attempt Left For This Quiz</h1>"
         
-        #filtering user response in form of {<question_id>:<correct option/answer>}
-        user_latest_answer = {}
-        for ques_id in user_latest_response:
-
-            user_latest_answer[ques_id] = []
-            attempted_question = Question.query.get(ques_id)
-            
-            response_values = list(user_latest_response[ques_id].values())
-            response_options = list(user_latest_response[ques_id].keys())
-            
-            if attempted_question.type == "MSQ":
-                for opt in response_options:
-                    if user_latest_response[ques_id][opt] == 1:
-                        user_latest_answer[ques_id].append(opt)
-
-            else:    
-                selected_index = response_values.index(1)
-                selected_option = response_options[selected_index]
-                user_latest_answer[ques_id].append(selected_option)
-
-        return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers ,user_latest_answer=user_latest_answer)
-
-
-    return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers)
+        else:
+            return f"<h1>Deadline for this Quiz is already passed on {quiz.deadline}</h1>"
+    
+    else:
+        return f"<h1>This Quiz will we release on {quiz.release_date}</h1>"
 
 @app.route("/user_score/<int:user_id>/<int:quiz_id>", methods=["GET", "POST"] )
 def user_score(user_id, quiz_id):
@@ -994,7 +1021,10 @@ def user_score(user_id, quiz_id):
         db.session.add(new_score)
         db.session.commit()
 
-        return user_all_answers       
+        quiz = Quiz.query.get(quiz_id)
+        chapter = quiz.thatquizchapter
+        subject = chapter.that_chap_sub
+        return redirect(f"/user_module/{ user_id }/{ subject.id }")      
 
 
 
