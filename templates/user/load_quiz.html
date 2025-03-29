@@ -3,13 +3,13 @@
     <!----------------------------------------------Quiz Main Heading STARTS--------------------------------------------->
         <div class="d-flex justify-content-between border border-dark my-3 rounded-5" style="height: 33px;" >
             <span class="badge rounded-pill text-bg-dark py-2" style="font-size: 14px;">Chapter : {{ chapter.name }} </span>
-            <h4><code>Duration(HH:MM:SS): {{quiz.time_duration}}</code></h4>
+            <h4><span>Duration(HH:MM:SS): </span><code id="quiz_timer"> {{ quiz.time_duration }}</code></h4>
             <span class="badge rounded-pill text-bg-danger py-2" style="font-size: 14px;" >Deadline : {{ quiz.deadline }}</span>
         </div>
         <!----------------------------------------------Quiz Main Heading ENDS------------------------------------------>
 
         <!----------------------------------------------Quiz Questions STARTS---------------------------------------->
-        <form action="/user_score/{{ this_user.id }}/{{ quiz.id }}" method="post">
+        <form action="/user_score/{{ this_user.id }}/{{ quiz.id }}" id="quiz_submit" method="post">
 
             {% for question in questions %}
             <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">

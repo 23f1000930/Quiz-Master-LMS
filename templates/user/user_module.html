@@ -233,12 +233,59 @@
         fetch(url)
         .then(response => response.text()) // Get the HTML content
         .then(html => {
-            console.log("HHHHHHHHT", html)
             document.getElementById("quizContent").innerHTML = html; // Replace the content
+
+
+
+
+            //Implementing Timer For Quiz
+            if (quiz_timer) 
+            {
+                console.log("Quiz Timer Value:", quiz_timer.textContent);
+                // Parse HH:MM:SS into total seconds
+                let timerText = quiz_timer.textContent //Time duration value from jinja, it is string
+                let timeParts = timerText.split(":");
+                let totalSeconds = parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60 + parseInt(timeParts[2]);
+
+                function updateTimer() {
+                    if (totalSeconds <= 0) {
+                        document.getElementById("quiz_timer").innerText = "Time's up!";
+                        clearInterval(timerInterval); // Stop the timer
+
+                        // Auto-submit form when timer reaches 0
+                        document.getElementById("quiz_submit").submit();
+
+                        return;
+                    }
+
+                    // Calculate hours, minutes, seconds
+                    let hours = Math.floor(totalSeconds / 3600);
+                    let minutes = Math.floor((totalSeconds % 3600) / 60);
+                    let seconds = totalSeconds % 60;
+
+                    // Format as HH:MM:SS
+                    let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    document.getElementById("quiz_timer").innerText = formattedTime;
+
+                    totalSeconds--; // Decrease time
+                }
+
+                updateTimer(); // Call immediately
+                let timerInterval = setInterval(updateTimer, 1000); // Run every second
+    
+            } 
+                
+            else 
+            {
+                console.log("Element not found");
+            }
+
+
+            
         })
         .catch(error => console.error("Error loading content:", error));
         
     }
-    </script>
+</script>
     
 {% endblock %}
