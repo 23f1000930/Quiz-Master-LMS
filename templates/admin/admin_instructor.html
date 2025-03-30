@@ -183,6 +183,31 @@
                 </div>
                 <!--------------------------------------MODIFY Subject Modal END--------------------------------------------------->  
                 
+
+
+                 <!-----------------------------------Instructor Deletion Confirmation--------------------------------------------------------------------->
+                 <div class="modal fade" id="deleteInstructorModal" tabindex="-1" aria-labelledby="deleteInstructorModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                  <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="delete_instructor_name"></h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          Are you sure you want to delete in this instructor?
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                          <a href="" id="confirm_instructor_delete" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                      </div>
+                  </div>
+              </div>
+              <!---------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search">
                     <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
@@ -216,7 +241,7 @@
                           </td>
                           <td class="" >
                               <button type="button" class="btn btn-primary view-btn" id="sub{{ instructor.id }}" value="{{ instructor.id }}" onclick="getInstructorDetails('{{ instructor.id }}')" data-bs-toggle="modal" data-bs-target="#modifyInstructorModal"><i class="bi bi-pencil"></i></button>
-                              <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                              <button type="button" class="btn btn-danger view-btn" onclick="fillInstructorDeleteModal('{{ instructor.id }}','{{ instructor.name }}')" data-bs-toggle="modal" data-bs-target="#deleteInstructorModal"><i class="bi bi-trash"></i></button>
                           </td>
                       </tr>
                       {% endfor %}
@@ -268,4 +293,15 @@ function previewImage(event, imgId) {
    }
 }
 </script>
+
+
+<!---------------------Filling form action for deleting Instructor---------------------------------------------->
+<script>
+  //For chapter deletion
+  function fillInstructorDeleteModal(instructor_id, instructorName){
+      delete_instructor_name.innerHTML = instructorName
+      let data_info = "instructor"
+      confirm_instructor_delete.href = `/admin_delete/${data_info}/${ instructor_id }`
+  }
+</script>   
 {% endblock %}

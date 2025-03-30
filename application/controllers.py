@@ -798,7 +798,81 @@ def modify_question(question_id):
 @app.route("/modify_question/<int:question_id>", methods=["GET", "POST"])
 
 
+#------------------------------------------ONE AND ONLY DELETE ROUTE-----------------------------------------------------------------------------------------
+@app.route("/admin_delete/<string:data_info>/<int:data_id>", methods=["GET", "POST"])
+def admin_delete(data_info, data_id):
 
+    if data_info == 'subject':
+        subject = Subject.query.get(data_id)
+        if subject:
+            db.session.delete(subject)
+            db.session.commit()
+            return redirect("/admin_subject")
+        else:
+            print("Subject not found.")
+
+    if data_info == "chapter":
+        chapter = Chapter.query.get(data_id)
+        if chapter:
+            subject=chapter.that_chap_sub
+
+            db.session.delete(chapter)
+            db.session.commit()
+            
+            return redirect(f"/admin_module/{subject.id}")
+        else:
+            print("Chapter not found.")
+
+    if data_info == "lecture":
+        lecture = Lecture.query.get(data_id)
+        if lecture:
+            chapter=lecture.thatlecturechapter
+            subject=chapter.that_chap_sub
+
+            db.session.delete(lecture)
+            db.session.commit()
+
+            return redirect(f"/admin_module/{subject.id}")
+        else:
+            print("Lecture not found.")   
+
+    if data_info == "quiz":
+        quiz = Quiz.query.get(data_id)
+        if quiz:
+            chapter=quiz.thatquizchapter
+            subject=chapter.that_chap_sub
+
+            db.session.delete(quiz)
+            db.session.commit()
+
+            return redirect(f"/admin_module/{subject.id}")
+        else:
+            print("Quiz not found.")
+
+    if data_info == "question":
+        question = Question.query.get(data_id)
+        if question:
+            quiz=question.thatquiz
+            chapter=quiz.thatquizchapter
+            subject=chapter.that_chap_sub
+
+            db.session.delete(question)
+            db.session.commit()
+
+            return redirect(f"/admin_question/{subject.id}/{chapter.id}/{quiz.id}")
+        else:
+            print("Question not found.")                    
+
+    if data_info == "instructor":
+        instructor = Instructor.query.get(data_id)
+        if instructor:
+
+            db.session.delete(instructor)
+            db.session.commit()
+
+            return redirect("/admin_instructor")
+        else:
+            print("Question not found.")
 
 
 
@@ -1010,6 +1084,13 @@ def user_score(user_id, quiz_id):
         #.strftime('%Y-%m-%d %H:%M:%S') formats the date and time into a readable string:
         time_stamp_of_last_attempt = ist_now
 
+        if "time_left" in request.form:
+            time_taken=request.form["time_left"]
+            time_taken = list(map(int, time_taken.split(":")))  # Convert "HH:MM:SS" to [HH, MM, SS]
+            time_taken = time(hour=time_taken[0], minute=time_taken[1], second=time_taken[2])
+            print("TTTTTTTTTTLEFT", time_taken)
+            print("TTTTTTTTTTLEFT", type(time_taken))
+
         new_score = Score(
             time_stamp_of_last_attempt=time_stamp_of_last_attempt,
             user_answer=json.dumps(user_all_answers),
@@ -1018,8 +1099,8 @@ def user_score(user_id, quiz_id):
             user_id=user_id
         )
 
-        db.session.add(new_score)
-        db.session.commit()
+        # db.session.add(new_score)
+        # db.session.commit()
 
         quiz = Quiz.query.get(quiz_id)
         chapter = quiz.thatquizchapter

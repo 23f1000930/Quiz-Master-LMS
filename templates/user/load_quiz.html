@@ -10,6 +10,10 @@
 
         <!----------------------------------------------Quiz Questions STARTS---------------------------------------->
         <form action="/user_score/{{ this_user.id }}/{{ quiz.id }}" id="quiz_submit" method="post">
+            
+            <!------For submitting the Remaining time left for the quiz-->
+            <input type="hidden" id="time_left" name="time_left">
+
 
             {% for question in questions %}
             <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">

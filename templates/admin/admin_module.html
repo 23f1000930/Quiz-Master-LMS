@@ -387,7 +387,79 @@
             </div>
             <!---------------------------------------Modify Quiz Modal END------------------------------------------------------------------------------------------------------------->
             
+
+
+
+
+
+            <!-----------------------------------Chapter Deletion Confirmation--------------------------------------------------------------------->
+            <div class="modal fade" id="deleteChapterModal" tabindex="-1" aria-labelledby="deleteChapterModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="delete_chapter_name"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete in this chapter?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                        <a href="" id="confirm_chapter_delete" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------------------------------------------------------------------------------------------------->
+
+            <!-----------------------------------Lecture Deletion Confirmation--------------------------------------------------------------------->
+            <div class="modal fade" id="deleteLectureModal" tabindex="-1" aria-labelledby="deleteLectureModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="delete_lecture_name"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete in this lecture?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                        <a href="" id="confirm_lecture_delete" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------------------------------------------------------------------------------------------------->
+
+            <!-----------------------------------Quiz Deletion Confirmation--------------------------------------------------------------------->
+            <div class="modal fade" id="deleteQuizModal" tabindex="-1" aria-labelledby="deleteQuizModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="delete_quiz_name"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete in this quiz?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                        <a href="" id="confirm_quiz_delete" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------------------------------------------------------------------------------------------------->
             
+
+
+
+
+
+
+
+
             
             
             
@@ -418,7 +490,7 @@
                                     <div>
                                         <!-- Modify Chapter Button -->
                                         <button type="button" class="btn btn-warning me-auto mx-2 mb-2" id="sub{{ chapter.id }}" value="{{ chapter.id }}" onclick="getChapterDetails('{{ chapter.id }}')" data-bs-toggle="modal" data-bs-target="#modifyChapterModal"><i class="bi bi-pencil"></i> Edit Chapter</button>
-                                        
+                                        <button type="button" class="btn btn-danger me-auto mx-2 mb-2" onclick="fillChapterDeleteModal('{{ chapter.id }}','{{  chapter.name }}')" data-bs-toggle="modal" data-bs-target="#deleteChapterModal"><i class="bi bi-trash"></i> Delete</button>
                                         <!--upcoming table STARTS-->
                                         <div class="container">
                                             <!-- Tabs START -->
@@ -468,7 +540,7 @@
                                                             <td><a href="{{ lecture.link }}">Link</a></td>
                                                             <td>
                                                                 <button type="button" class="btn btn-primary view-btn" id="chap{{ lecture.id }}" value="{{ lecture.id }}" onclick="getLectureDetails('{{ lecture.id }}')" data-bs-toggle="modal" data-bs-target="#modifyLectureModal"><i class="bi bi-pencil"></i></button>
-                                                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                                                                <button type="button" class="btn btn-danger view-btn" onclick="fillLectureDeleteModal('{{ lecture.id }}','{{  lecture.name }}')" data-bs-toggle="modal" data-bs-target="#deleteLectureModal"><i class="bi bi-trash"></i></button>
                                                             </td>
                                                         </tr>
                                                         {% endfor %}
@@ -513,7 +585,7 @@
                                                             <td>
                                                                 <a href="/admin_question/{{ subject.id }}/{{ chapter.id }}/{{ quiz.id }}" class="btn btn-warning view-btn" type="button"><i class="bi bi-card-list"></i></a>
                                                                 <button type="button" class="btn btn-primary view-btn" id="chap{{ quiz.id }}" value="{{ quiz.id }}" onclick="getQuizDetails('{{ quiz.id }}')" data-bs-toggle="modal" data-bs-target="#modifyQuizModal"><i class="bi bi-pencil"></i></button>
-                                                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                                                                <button type="button" class="btn btn-danger view-btn" onclick="fillQuizDeleteModal('{{ quiz.id }}','{{  quiz.name }}')" data-bs-toggle="modal" data-bs-target="#deleteQuizModal"><i class="bi bi-trash"></i></button>
                                                             </td>
                                                         </tr>
                                                         {% endfor %}
@@ -687,5 +759,29 @@
    }
     }
 
+</script>
+
+<!---------------------Filling form action for deleting subject---------------------------------------------->
+<script>
+    //For chapter deletion
+    function fillChapterDeleteModal(chapter_id, chapterName){
+        delete_chapter_name.innerHTML = chapterName
+        let data_info = "chapter"
+        confirm_chapter_delete.href = `/admin_delete/${data_info}/${ chapter_id }`
+    }
+
+    //For lecture deletion
+    function fillLectureDeleteModal(lecture_id, lectureName){
+        delete_lecture_name.innerHTML = lectureName
+        let data_info = "lecture"
+        confirm_lecture_delete.href = `/admin_delete/${data_info}/${ lecture_id }`
+    }
+
+    //For quiz deletion
+    function fillQuizDeleteModal(quiz_id, quizName){
+        delete_quiz_name.innerHTML = quizName
+        let data_info = "quiz"
+        confirm_quiz_delete.href = `/admin_delete/${data_info}/${ quiz_id }`
+    }
 </script>
 {% endblock %}

@@ -249,6 +249,29 @@
                 </div>
             </div>
             <!--------------------------------------MODIFY Subject Modal END--------------------------------------------------->  
+            
+            <!-----------------------------------Subject Deletion Confirmation------------------------------------------------------>
+            <div class="modal fade" id="deleteSubjectModal" tabindex="-1" aria-labelledby="deleteSubjectModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="delete_subject_name"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete in this course?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                        <a href="" id="confirm_delete" type="button" class="btn btn-danger">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <!---------------------------------------------------------------------------------------------------------------------------------->
+            
+            
+            
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
@@ -277,7 +300,7 @@
                                 <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
-                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                    <button type="button" class="btn btn-danger w-50" onclick="fillSubjectDeleteModal('{{ subject.id }}','{{  subject.name }}')" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                                 </div>
                             </div>
@@ -306,7 +329,7 @@
                                 <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
-                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                    <button type="button" class="btn btn-danger w-50" onclick="fillSubjectDeleteModal('{{ subject.id }}','{{  subject.name }}')" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                                 </div>
                             </div>
@@ -335,7 +358,7 @@
                                 <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
-                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                    <button type="button" class="btn btn-danger w-50" onclick="fillSubjectDeleteModal('{{ subject.id }}','{{  subject.name }}')" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                                 </div>
                             </div>
@@ -363,7 +386,7 @@
                                 <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
-                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                    <button type="button" class="btn btn-danger w-50" onclick="fillSubjectDeleteModal('{{ subject.id }}','{{  subject.name }}')" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                                 </div>
                             </div>
@@ -390,7 +413,7 @@
                                 <a href="/admin_module/{{ subject.id }}" class="btn btn-warning w-100">Explore</a><br><br>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" class="btn btn-dark w-50" id="sub{{ subject.id }}" value="{{ subject.id }}" onclick="getSubjectDetails('{{ subject.id }}')" data-bs-toggle="modal" data-bs-target="#modifySubjectModal"><i class="bi bi-pencil"></i>&nbsp;&nbsp;Edit</button>&nbsp;&nbsp;
-                                    <a href="#" class="btn btn-danger w-50"><i class="bi bi-trash"></i>&nbsp;&nbsp;Delete</a>
+                                    <button type="button" class="btn btn-danger w-50" onclick="fillSubjectDeleteModal('{{ subject.id }}','{{  subject.name }}')" data-bs-toggle="modal" data-bs-target="#deleteSubjectModal"><i class="bi bi-trash"></i> Delete</button>
                                 </div>
                                 </div>
                             </div>
@@ -512,5 +535,14 @@
         }
     }
 
+</script>
+
+<!---------------------Filling form action for deleting subject---------------------------------------------->
+<script>
+    function fillSubjectDeleteModal(subject_id, subjectName){
+        delete_subject_name.innerHTML = subjectName
+        let data_info = "subject"
+        confirm_delete.href = `/admin_delete/${data_info}/${ subject_id }`
+    }
 </script>
 {% endblock %}

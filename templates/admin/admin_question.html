@@ -128,12 +128,35 @@
                 <!-------------------------------End Of Question Modal---------------------------------------------------------------------------------------------------->
 
 
+                <!-----------------------------------Question Deletion Confirmation--------------------------------------------------------------------->
+                <div class="modal fade" id="deleteQuestionModal" tabindex="-1" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="delete_question_name"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete in this question?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                            <a href="" id="confirm_question_delete" type="button" class="btn btn-danger">Delete</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <!---------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
                 {% for question in questions %}
                     <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
                         <div class="lh-1 w-100 question">
                             <div class="d-flex w-100">
                                 <button type="button" class="btn btn-warning view-btn" id="ques{{ question.id }}" value="{{ question.id }}" onclick="getQuestionDetails('{{ question.id }}')" data-bs-toggle="modal" data-bs-target="#modifyQuestionModal"><i class="bi bi-pencil"></i></button>&nbsp;&nbsp;
-                                <a href="" class="btn btn-danger view-btn" type="button"><i class="bi bi-trash"></i></a>
+                                <button type="button" class="btn btn-danger view-btn" onclick="fillQuestionDeleteModal('{{ question.id }}','{{  question.question_statement }}')" data-bs-toggle="modal" data-bs-target="#deleteQuestionModal"><i class="bi bi-trash"></i></button>
                             </div><br>
                             <div class="d-flex w-100">
                                 <p class="">Q{{ loop.index }}. {{ question.question_statement }} </p><strong class="ms-auto">{{ question.marks }} points</strong>
@@ -333,4 +356,15 @@
 }
 
 </script>
+
+
+<!---------------------Filling form action for deleting Question---------------------------------------------->
+<script>
+    //For chapter deletion
+    function fillQuestionDeleteModal(question_id, questionName){
+        delete_question_name.innerHTML = questionName
+        let data_info = "question"
+        confirm_question_delete.href = `/admin_delete/${data_info}/${ question_id }`
+    }
+</script>    
 {% endblock %}   

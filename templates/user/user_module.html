@@ -228,6 +228,8 @@
       isDragging = false;
   });
 </script>
+
+<!-----------------------------------------loading Quiz Content & Initializing Timer-------------------------------->
 <script>
     function loadContent(url) {
         fetch(url)
@@ -267,6 +269,10 @@
                     let formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                     document.getElementById("quiz_timer").innerText = formattedTime;
 
+                    // Update hidden input field with remaining time
+                    //document.getElementById("time_left").value = formattedTime;
+                    time_left.value = formattedTime
+                    
                     totalSeconds--; // Decrease time
                 }
 
