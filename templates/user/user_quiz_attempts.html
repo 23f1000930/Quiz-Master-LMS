@@ -1,0 +1,93 @@
+{% extends 'base/user_base.html' %}
+{% block page_title %} Subjects {% endblock %}
+
+{% block user_css %}
+<style>
+    .accordion {
+    margin-bottom: 10px; /* Adjust the value as needed */
+    /* border: 2px solid 	#212529;  Change color as needed */
+    border-radius: 8px;
+    }
+
+    #nat_value:focus {
+        border-color: green !important;
+        box-shadow: 0 0 5px green !important;
+    }
+    .form-check-input:disabled, .form-check-label {
+        color: black !important;
+        opacity: 1 !important;
+    }
+</style>   
+{% endblock %}
+
+{% block user_content %} 
+<div class="px-4 text-center">
+    <div class="mb-5">
+        <h3><span class="badge" style="background-color: #712cf9;">{{ subject.name }}</span></h3>
+        <div class="container my-2">
+            <div class="position-relative py-3 text-center text-muted bg-body border border-dashed rounded-4" style="width:1600px; margin-left: -125px;">
+                <h2 class="mb-3"><code>{{ chapter.name }}</code></h2>
+                <p class="carousel-container fs-5 fw-semibold">{{ chapter.description }}</p>
+                <h4>
+                    <span class="badge text-bg-primary mx-2">Released on: {{ quiz.release_date}}</span>
+                    <span class="badge text-bg-info mx-2">Time Duration: {{ quiz.time_duration}}</span>
+                    <span class="badge text-bg-success mx-2">Total Attempts: {{ quiz.total_attempts }}</span>
+                    <span class="badge text-bg-warning mx-2">Attempts Left: {{ quiz.total_attempts - scores | length }}</span>
+                    <span class="badge text-bg-danger mx-2">Deadline: {{ quiz.deadline}}</span>
+                </h4>
+                {% for all_answers in user_attempted_answers %}
+                <div class="accordion border border-dark mx-4" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ loop.index}}" aria-expanded="false" aria-controls="collapsTwo" fdprocessedid="58sgg4">
+                                    <h4><code>Attempt {{ loop.index }} attempted on  {{ scores[loop.index0].time_stamp_of_last_attempt }}</code></h4>
+                            </button>
+                        </h2>
+                        <div id="{{ loop.index }}" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <div>
+                                    {% for question in questions %}
+                                        <div class="d-flex align-items-center border border-dark py-5 px-5 my-3 rounded-3">
+                                            <div class="lh-1 w-100 question">
+                                                <div class="d-flex w-100">
+                                                    <p>Q{{ loop.index }}. {{ question.question_statement }}</p>
+                                                    <strong class="ms-auto">{{ question.marks }} points</strong>
+                                                </div> 
+
+                                                {% set q_id = question.id|string %}
+                                                {% set answer = all_answers.get(q_id, {}) %}
+                                                
+                                                {% if answer %}
+                                                    {% if question.type == "NAT" %}
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-text">
+                                                                <input class="form-check-input mt-0" type="checkbox" checked disabled>
+                                                            </div>
+                                                            <input type="text" class="form-control" value="{{ answer.keys() | list | first }}" disabled>
+                                                        </div>
+                                                    {% elif question.type in ["MCQ", "MSQ"] %}
+                                                        {% for option, is_selected in answer.items() %}
+                                                            <div class="d-flex w-100">
+                                                                <input class="form-check-input border border-dark" type="radio" {% if is_selected %}checked{% endif %} disabled>
+                                                                <label class="form-check-label mx-3 mt-1">{{ option }}</label><br><br>
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    <p class="text-danger">No answer recorded for this question.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %} 
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

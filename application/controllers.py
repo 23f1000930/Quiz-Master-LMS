@@ -795,8 +795,6 @@ def modify_question(question_id):
         return render_template("notfound.html")
 
 
-@app.route("/modify_question/<int:question_id>", methods=["GET", "POST"])
-
 
 #------------------------------------------ONE AND ONLY DELETE ROUTE-----------------------------------------------------------------------------------------
 @app.route("/admin_delete/<string:data_info>/<int:data_id>", methods=["GET", "POST"])
@@ -984,10 +982,12 @@ def load_quiz(user_id,subject_id,chapter_id,quiz_id):
                 return render_template("user/load_quiz.html",this_user=this_user,chapter=chapter, quiz=quiz, questions=questions, all_answers=all_answers)
             
             else:
-                return f"<h1>SORRY, You Have No Attempt Left For This Quiz</h1>"
+                return f'<h1>SORRY, You Have No Attempt Left For This Quiz</h1><br> \
+         <a href="{url_for(f"user_quiz_attempts", user_id=user_id, quiz_id=quiz_id)}" style="color: blue; text-decoration: underline;">View All Your Attempts</a>'
         
         else:
-            return f"<h1>Deadline for this Quiz is already passed on {quiz.deadline}</h1>"
+            return f'<h1>Deadline for this Quiz is already passed on {quiz.deadline}</h1><br> \
+         <a href="{url_for(f"user_quiz_attempts", user_id=user_id, quiz_id=quiz_id)}" style="color: blue; text-decoration: underline;">View All Your Attempts</a>'
     
     else:
         return f"<h1>This Quiz will we release on {quiz.release_date}</h1>"
@@ -1099,26 +1099,45 @@ def user_score(user_id, quiz_id):
             user_id=user_id
         )
 
-        # db.session.add(new_score)
-        # db.session.commit()
+        db.session.add(new_score)
+        db.session.commit()
 
         quiz = Quiz.query.get(quiz_id)
         chapter = quiz.thatquizchapter
         subject = chapter.that_chap_sub
         return redirect(f"/user_module/{ user_id }/{ subject.id }")      
 
+@app.route("/user_quiz_attempts/<int:user_id>/<int:quiz_id>", methods=["GET", "POST"])
+def user_quiz_attempts(user_id, quiz_id):
+    this_user = User.query.get(user_id)
+    quiz = Quiz.query.get(quiz_id)
+
+    if not quiz:
+        return "Quiz not found", 404
+
+    chapter = quiz.thatquizchapter
+    subject = chapter.that_chap_sub
+    questions = Question.query.filter_by(quiz_id=quiz_id).all()
+
+    # Fetch user scores and extract answers
+    scores = Score.query.filter_by(user_id=user_id, quiz_id=quiz_id).all()
+    
+    user_attempted_answers = []
+    for score in scores:
+        try:
+            user_attempted_answers.append(json.loads(score.user_answer))
+        except json.JSONDecodeError:
+            user_attempted_answers.append({})  # Handle invalid JSON case
+
+    return render_template("user/user_quiz_attempts.html", 
+        this_user=this_user, subject=subject, chapter=chapter, 
+        quiz=quiz, questions=questions, user_attempted_answers=user_attempted_answers,
+        scores=scores
+    )
 
 
 
 
-
-
-
-
-
-@app.route("/user_test")
-def user_test():
-    return render_template("testttttt.html")
 
 
 # Set session to expire when the browser closes

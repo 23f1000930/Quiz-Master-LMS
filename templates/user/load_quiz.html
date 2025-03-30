@@ -4,6 +4,7 @@
         <div class="d-flex justify-content-between border border-dark my-3 rounded-5" style="height: 33px;" >
             <span class="badge rounded-pill text-bg-dark py-2" style="font-size: 14px;">Chapter : {{ chapter.name }} </span>
             <h4><span>Duration(HH:MM:SS): </span><code id="quiz_timer"> {{ quiz.time_duration }}</code></h4>
+            <a href="/user_quiz_attempts/{{ this_user.id }}/{{ quiz.id }}"  type="button" class="btn btn-success py-1 fw-bold">View Previous Attempts</a>
             <span class="badge rounded-pill text-bg-danger py-2" style="font-size: 14px;" >Deadline : {{ quiz.deadline }}</span>
         </div>
         <!----------------------------------------------Quiz Main Heading ENDS------------------------------------------>
