@@ -3,7 +3,8 @@
 from flask import Flask,render_template,redirect,url_for, request, jsonify, send_from_directory, session
 from flask import current_app as app #it refers to the "app" object created in "app.py" or "app.py" itself
 #from app import app  ---->not used because it leads to circular import when we import "controllers.py" in "app.py"
-
+from sqlalchemy.sql import func
+import matplotlib.pyplot as plt
 from .models import *# both resides in same folder
 import random
 import string
@@ -871,6 +872,102 @@ def admin_delete(data_info, data_id):
             return redirect("/admin_instructor")
         else:
             print("Question not found.")
+
+
+
+@app.route("/admin_summary/", methods=["GET", "POST"])
+def admin_summary():
+    this_user = User.query.filter_by(type="admin").first()
+    total_subjects = Subject.query.count()
+    total_users = User.query.count()
+    total_quizzes = Quiz.query.count()
+    total_inst = Instructor.query.count()
+
+    # Calculate Subject-wise Average Quiz Scores
+    subject_avg_scores = (
+        db.session.query(
+            Subject.name.label("subject_name"),
+            func.avg(Score.total_score).label("average_score")
+        )
+        .join(Chapter, Subject.id == Chapter.subject_id)
+        .join(Quiz, Chapter.id == Quiz.chapter_id)
+        .join(Score, Quiz.id == Score.quiz_id)
+        .group_by(Subject.id, Subject.name)
+        .all()
+    )
+
+    # Convert Query Result to List
+    avg_scores_data = [
+        {"subject_name": row.subject_name, "average_score": round(row.average_score, 2) if row.average_score else 0}
+        for row in subject_avg_scores
+    ]
+
+    # Generate Bar Chart using Matplotlib
+    if avg_scores_data:  # Only generate if data exists
+        subject_names = [item["subject_name"] for item in avg_scores_data]
+        avg_scores = [item["average_score"] for item in avg_scores_data]
+
+        plt.figure(figsize=(10, 5))
+        plt.bar(subject_names, avg_scores, color="skyblue")
+        plt.xlabel("Subjects")
+        plt.ylabel("Average Score")
+        plt.title("Subject-wise Average Quiz Scores")
+        plt.xticks(rotation=45)
+        plt.grid(axis="y", linestyle="--", alpha=0.7)
+
+        # Save image to static folder
+        img_path = os.path.join("static", "subject_avg_scores.png")
+        plt.savefig(img_path, bbox_inches="tight")
+        plt.close()
+    else:
+        img_path = None  # No data, no graph
+    
+
+    # Finding subject wise enrolled users
+    # Fetch subject-wise enrollment data
+    enrollment_data = [
+        {"subject_name": subject.name, "enrolled_users": len(subject.thatuser)}
+        for subject in Subject.query.all()
+    ]
+
+    # Extract data for plotting
+    subject_names = [item["subject_name"] for item in enrollment_data]
+    enrolled_users = [item["enrolled_users"] for item in enrollment_data]
+
+    # Plot bar chart
+    plt.figure(figsize=(10, 5))
+    plt.bar(subject_names, enrolled_users, color="skyblue")
+
+    # Labels and title
+    plt.xlabel("Subjects")
+    plt.ylabel("Enrolled Users")
+    plt.title("Subject-wise Enrolled Users")
+    plt.xticks(rotation=45)
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+
+    # Save image to static folder
+    img_path = os.path.join("static", "subject_enroll.png")
+    plt.savefig(img_path, bbox_inches="tight")
+    plt.close()
+
+
+
+
+    return render_template(
+        "admin/admin_summary.html",
+        this_user=this_user,
+        total_subjects=total_subjects,
+        total_users=total_users,
+        total_inst=total_inst,
+        total_quizzes=total_quizzes,
+        avg_scores_data=avg_scores_data,
+        chart_url1=url_for("static", filename="subject_avg_scores.png") if img_path else None,
+        chart_url2=url_for("static", filename="subject_enroll.png")
+    )
+
+
+
+
 
 
 

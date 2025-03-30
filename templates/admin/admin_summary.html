@@ -1,0 +1,116 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} Summary {% endblock %}
+
+{% block user_css %}
+<style>   
+    .user-summary1 {
+        background-image: linear-gradient(310deg, #7928ca, #57dc9c);
+    }
+
+    .user-summary2 {
+        background-color: #0a2344 !important;
+    }
+    
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="px-4 text-center">
+    <div class="mb-5">
+      <!-- Title (Centered) -->
+      <h3 ><span class="badge text-bg-warning">Summary Charts</span></h3>
+    </div>
+  
+      <!--user short summary STARTS-->
+      <div class="container my-5">
+          <div class="row g-4">
+            <!-- Counter item -->
+            <div class="col-sm-6 col-xl-3">
+              <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-15 rounded-3">
+                <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-people"></i></span>
+                <div class="ms-4 h6 fw-normal mb-0">
+                  <div class="d-flex">
+                    <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">{{ total_users }}</h5>
+                  </div>
+                  <p class="mb-0 text-white">Users</p>
+                </div>
+              </div>
+            </div>
+            <!-- Counter item -->
+            <div class="col-sm-6 col-xl-3">
+              <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+                <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-mortarboard"></i></span>
+                <div class="ms-4 h6 fw-normal mb-0">
+                  <div class="d-flex">
+                    <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200" data-purecounter-duration="0">{{ total_inst }}</h5>
+                  </div>
+                  <p class="mb-0 text-warning">Instructors</p>
+                </div>
+              </div>
+            </div>
+            <!-- Counter item -->
+            <div class="col-sm-6 col-xl-3">
+              <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-10 rounded-3">
+                <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-journals"></i></i></span>
+                <div class="ms-4 h6 fw-normal mb-0">
+                  <div class="d-flex">
+                    <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">{{ total_subjects }}</h5>
+                  </div>
+                  <p class="mb-0 text-white">Courses</p>
+                </div>
+              </div>
+            </div>
+            <!-- Counter item -->
+            <div class="col-sm-6 col-xl-3">
+              <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+                <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-journal-bookmark"></i></span>
+                <div class="ms-4 h6 fw-normal mb-0">
+                  <div class="d-flex">
+                    <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">{{ total_quizzes }}</h5>
+                   
+                  </div>
+                  <p class="mb-0 text-warning">Quizzes</p>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <!--user short summary ENDS-->
+  
+      <!--upcoming table STARTS-->
+      <div class="container my-5">
+        <div class="container my-5">
+            <h3 class="text-center"><span class="badge text-bg-primary">Subject-wise Average Quiz Scores</span></h3>
+            
+            <div class="d-flex justify-content-center mt-4">
+                {% if chart_url1 %}
+                    <div class="chart-container border rounded p-3 bg-light shadow">
+                        <img src="{{ chart_url1 }}" alt="Subject-wise Average Scores" height="" class="img-fluid rounded">
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted">No quiz scores available to display.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="container my-5">
+            <h3 class="text-center"><span class="badge text-bg-primary">Subject-wise Average Quiz Scores</span></h3>
+            
+            <div class="d-flex justify-content-center mt-4">
+                {% if chart_url2 %}
+                    <div class="chart-container border rounded p-3 bg-light shadow">
+                        <img src="{{ chart_url2 }}" alt="Subject-wise Average Scores" height="" class="img-fluid rounded">
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted">No quiz scores available to display.</p>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+      <!--upcoming table ENDS-->
+  
+  </div>
+{% endblock %}
