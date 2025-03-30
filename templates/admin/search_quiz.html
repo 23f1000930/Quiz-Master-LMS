@@ -1,0 +1,65 @@
+{% extends 'base/admin_base.html' %}
+{% block page_title %} Home {% endblock %}
+
+{% block user_css %}
+<style>       
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %} 
+<div class="px-4 text-center">
+  
+  <div class="mb-5">
+    <!-- Title (Centered) -->
+    <h3 ><span class="badge text-bg-warning">Users</span></h3>
+  </div>
+
+    <!--upcoming table STARTS-->
+    <div class="container my-5">
+        <div class="position-relative px-5 py-3 text-center text-muted bg-body border border-dashed rounded-5">  
+            <div class="d-flex justify-content-center position-relative">
+                <h2><code>Quiz Results</code></h2>
+            </div> <br>
+            <form class="d-flex" role="search" action="/search_quiz" method="GET">
+                <input class="form-control me-2" type="date" name="quz" placeholder="Search by Release Date" aria-label="Search">
+                <button class="btn btn-dark" type="submit"><i class="bi bi-search"></i></button>
+            </form><br>            
+            <div>
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">S No.</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Time Duration</th>
+                        <th scope="col">Total Attempts</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                    {% for quiz in quizzes %}    
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td class="text-success fw-semibold">{{ quiz.release_date }}</td>
+                        <td class="fw-semibold">{{ quiz.time_duration }}</td>
+                        <td class="fw-semibold">{{ quiz.total_attempts }}</td>
+                        <td class="text-danger fw-bold">{{ quiz.deadline }}</td>
+                        <td>
+                            Action
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><br>
+    </div>
+    <!--upcoming table ENDS-->
+
+</div>
+{% endblock %}

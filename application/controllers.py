@@ -3,7 +3,9 @@
 from flask import Flask,render_template,redirect,url_for, request, jsonify, send_from_directory, session
 from flask import current_app as app #it refers to the "app" object created in "app.py" or "app.py" itself
 #from app import app  ---->not used because it leads to circular import when we import "controllers.py" in "app.py"
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, or_ 
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from .models import *# both resides in same folder
 import random
@@ -117,8 +119,9 @@ def logout():
 @app.route("/home/<int:user_id>")
 def home(user_id=None):
     # Check if any user (admin or general user) is logged in
+    subjects=Subject.query.all()
     login_register_show = not session.get('any_user_id')  # True if no user is logged in, False otherwise
-    return render_template("home.html", user_id=user_id, login_register_show=login_register_show)
+    return render_template("home.html", user_id=user_id, login_register_show=login_register_show, subjects=subjects)
 
 @app.route("/about")
 def about():
@@ -966,8 +969,47 @@ def admin_summary():
     )
 
 
+@app.route("/search_subject", methods=["GET", "POST"])
+def search_subject():
+    query = request.args.get('sub', '')  # Get search query from URL parameters
+    subjects = Subject.query.filter(Subject.name.ilike(f"%{query}%")).all() if query else None  # Case-insensitive search
+    this_user = User.query.filter_by(type="admin").first()
+    return render_template("admin/admin_subject.html", this_user=this_user, subjects=subjects)
+
+@app.route("/search_user", methods=["GET", "POST"])
+def search_user():
+    query = request.args.get('usr', '')  # Get search query from URL parameters
+    all_users = User.query.filter(
+            or_(
+                User.firstname.ilike(f"%{query}%"),
+                User.lastname.ilike(f"%{query}%"),
+                User.username.ilike(f"%{query}%"),
+                User.email.ilike(f"%{query}%")
+            )
+        ).all()
+    this_user = User.query.filter_by(type="admin").first()
+    return render_template("admin/admin_user.html", this_user=this_user, all_users=all_users)
 
 
+@app.route("/search_quiz", methods=["GET", "POST"])
+def search_quiz():
+    query = request.args.get('quz', '').strip()  # Get search query and remove spaces
+    quizzes = None
+
+    if query:
+        try:
+            # Convert query string to datetime (assuming format YYYY-MM-DD)
+            search_date = datetime.strptime(query, "%Y-%m-%d").date()  # Convert to date (without time)
+
+            # Filter quizzes where release_date matches the search_date
+            quizzes = Quiz.query.filter(db.func.date(Quiz.release_date) == search_date).all()
+
+        except ValueError:
+            quizzes = None  # Invalid date format, no results
+
+    this_user = User.query.filter_by(type="admin").first()
+
+    return render_template("admin/search_quiz.html", this_user=this_user, quizzes=quizzes)
 
 
 
@@ -983,7 +1025,8 @@ def admin_summary():
 @app.route("/admin_user")
 def admin_user():
     this_user = User.query.filter_by(type="admin").first()
-    return render_template("admin/admin_user.html",profile_image=this_user.profile_image, profile_name=this_user.firstname)
+    all_users=User.query.all()
+    return render_template("admin/admin_user.html", this_user=this_user, all_users=all_users)
 
  
 #USER ROUTE & FUNCTION 
@@ -1232,6 +1275,59 @@ def user_quiz_attempts(user_id, quiz_id):
         scores=scores
     )
 
+@app.route("/user_summary/<int:user_id>", methods=["GET", "POST"])
+def user_summary(user_id):
+    this_user=User.query.get(user_id)
+    no_enrolled_sub=len(this_user.subjects)
+    scores =Score.query.filter_by(user_id=user_id).all()
+    scores = [score.total_score for score in scores]  # Extract total scores
+    avg_score = round(sum(scores) / len(scores), 2)
+    
+
+    #Total No. of quiz attempted by the user
+    total_quizzes = Quiz.query.count()  # Total number of quizzes
+    attempted_quizzes = (
+        db.session.query(Score.quiz_id).filter(Score.user_id == user_id).distinct().count()
+    )  # Count distinct quizzes attempted by the user
+
+
+
+    #SUBJECT WISE SCORES
+    results = (
+        db.session.query(
+            Subject.name, 
+            func.avg(Score.total_score).label("avg_score")
+        )
+        .join(Chapter, Subject.id == Chapter.subject_id)
+        .join(Quiz, Chapter.id == Quiz.chapter_id)
+        .join(Score, Quiz.id == Score.quiz_id)
+        .group_by(Subject.name)
+        .all()
+    )
+
+    # Convert results to a dictionary
+    avg_scores = {subject: round(avg, 2) for subject, avg in results}
+    # Generate bar plot and save it
+    subjects = list(avg_scores.keys())
+    avg_marks = list(avg_scores.values())
+
+    plt.figure(figsize=(8, 5))
+    plt.bar(subjects, avg_marks, color='skyblue')
+    plt.xlabel("Subjects")
+    plt.ylabel("Average Score")
+    plt.title("Subject-wise Average Scores")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Save image to static folder
+    img_path = os.path.join("static", "user_subjects_avg_scores.png")
+    plt.savefig(img_path, bbox_inches="tight")
+    plt.close()
+
+    return render_template("user/user_summary.html", this_user=this_user, no_enrolled_sub=no_enrolled_sub,
+    avg_score=avg_score, attempted_quizzes=attempted_quizzes, total_quizzes=total_quizzes ,
+    chart_url1=url_for("static", filename="user_subjects_avg_scores.png")
+     )
 
 
 

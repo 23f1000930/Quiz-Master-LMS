@@ -1,199 +1,115 @@
-<!doctype html>
-<html lang="en">
+{% extends 'base/user_base.html' %}
+{% block page_title %} Home {% endblock %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>UserLogin</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-  <style>
-    .form-body {
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 90vh;
-            padding-bottom: 150px;
-        }
-    .form-container {
-          background: white;
-          padding: 30px;
-          border-radius: 10px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          width: 380px;
-        }  
-    /* Sidebar Default (Closed) */
-  .sidebar {
-      width: 60px;
-      height: 43vh;
-      background: #f8f9fa;
-      transition: width 0.3s ease-in-out;
-      overflow: hidden;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding-top: 2px;
-      border-radius: 17px;
-      margin-top: 176px;
-  }
-
-  /* Expanded Sidebar */
-  .sidebar.expanded {
-      width: 180px; /* Sidebar खुलेगा */
-  }
-
-  /* Sidebar Links */
-  .sidebar a {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      color: black;
-      padding: 12px;
-      font-size: 16px;
-      transition: background 0.3s;
-  }
-
-  .sidebar a i {
-      font-size: 24px;
-      margin-right: 10px;
-  }
-
-  .sidebar a span {
-      opacity: 0;
-      transition: opacity 0.3s ease-in-out;
-      white-space: nowrap;
-  }
-
-  /* Show Text Only When Expanded */
-  .sidebar.expanded a span {
-      opacity: 1;
-  }
-
-  </style>
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="padding: 0px 0px;">
-    <div class="container-fluid" style="padding-left: 50px;">
-      <a class="navbar-brand" href="basic.html" style="font-weight: bold; font-size: 35px; font-family: Bebas Neue;">Quiz
-        Master</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent"
-        style="font-weight: 500; font-size: 17px; font-family: sans-serif;">
-
-        <span class="navbar-text" style="margin-left: auto;">
-          <a href="about.html"><button type="button" class="btn btn-light toggle-btn" id="aboutBtn">About
-              Us</button></a>
-          <a href="contact.html"><button type="button" class="btn btn-light toggle-btn" id="contactBtn">Contact
-              US</button></a>
-          <a href="help.html"><button type="button" class="btn btn-light toggle-btn" id="helpBtn">Help</button></a>
-        </span>
-      </div>
-    </div>
-  </nav><br><br><br><br>
-
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <a href="user_home.html" id="uhome">
-    <i class="bi bi-house-door"></i>
-    <span>Home</span>
-  </a>
-  <a href="user_subject.html" id="usub">
-    <i class="bi bi-journals"></i>
-    <span>Subjects</span>
-  </a>
-  <a href="user_summary.html" id="usummary">
-    <i class="bi bi-bar-chart-line"></i>
-    <span>Summary</span>
-  </a>
-  <a href="login.html">
-    <i class="bi bi-box-arrow-right"></i>
-    <span>Logout</span>
-  </a>
-  <a href="#" id="toggleSidebar">
-    <i class="bi bi-chevron-double-right" id="toggleIcon"></i>
-    <span>Collapse</span>
-  </a>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get the current page URL
-    let currentPage = window.location.pathname.split("/").pop();
-      console.log("Current Page URL:", currentPage)
-
-      // Map pages to button IDs
-      const pageMap = {
-        "about.html": "aboutBtn",
-        "contact.html": "contactBtn",
-        "help.html": "helpBtn",
-        "user_home.html":"uhome",
-        "user_subject.html":"usub",
-        "user_summary.html":"usummary"
-      };
-
-      // If current page matches, add active state
-      if (pageMap[currentPage]) {
-        let activeButton = document.getElementById(pageMap[currentPage]);
-        if (["uhome", "usub", "uscore", "usummary"].includes(activeButton.id)) {
-          activeButton.style.background = "black"
-          activeButton.style.color = "white"; // Active Effect
-        }
-        else {
-          activeButton.classList.remove("btn-light");
-          activeButton.classList.add("btn-dark"); // Active Effect
-        }
-
-      }
-    const sidebar = document.getElementById("sidebar");
-    const toggleButton = document.getElementById("toggleSidebar");
-    const toggleIcon = document.getElementById("toggleIcon");
-
-    // Unique storage key for home.html
-    let storageKey = "sidebarExpanded_user_dashboard";
-
-    // Check localStorage for previous sidebar state
-    if (localStorage.getItem(storageKey) === "true") {
-        sidebar.classList.add("expanded");
-        toggleIcon.classList.remove("bi-chevron-double-right");
-        toggleIcon.classList.add("bi-chevron-double-left");
+{% block user_css %}
+<style>   
+    .user-summary1 {
+        background-image: linear-gradient(310deg, #7928ca, #ff0080);
     }
 
-    // Toggle sidebar on button click
-    toggleButton.addEventListener("click", function (event) {
-        event.preventDefault();
-        sidebar.classList.toggle("expanded");
+    .user-summary2 {
+        background-color: #2a3e55 !important;
+    }
+    
+    .view-btn{
+        padding: 0px 24px;
+        margin-top: -3px;
+    }
+</style>
+{% endblock %}
 
-        if (sidebar.classList.contains("expanded")) {
-            toggleIcon.classList.remove("bi-chevron-double-right");
-            toggleIcon.classList.add("bi-chevron-double-left");
-            localStorage.setItem(storageKey, "true");
-        } else {
-            toggleIcon.classList.remove("bi-chevron-double-left");
-            toggleIcon.classList.add("bi-chevron-double-right");
-            localStorage.setItem(storageKey, "false");
-        }
-    });
-  });
-</script>
+{% block user_content %} 
+<div class="px-4 text-center">
 
+    <div class="d-flex mb-3 row g-2 mt-3" style="padding-inline: 98px;">
+        <a class="btn btn-outline-dark w-25" type="button" style="height: 40px; font-size: 19px;"><i class="bi bi-box-arrow-down"></i> Export Data</a>
+        <!-- Clock item STARTS -->
+          <div class="d-flex justify-content-center ms-auto align-items-center p-4 bg-secondary-subtle bg-opacity-15 rounded-3" style="height: 73px; width: 264px;">
+            <span class="display-6 lh-1 text-dark mb-0"><i class="bi bi-clock"></i></i></span>
+            <div class="ms-4 h6 fw-normal mb-0">
+              <div class="d-flex">
+                <h5 class="purecounter mb-0 fw-bold" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">9</h5>
+              </div>
+              <p class="mb-0">Quiz Attempted</p>
+            </div>
+        <!-- Clock item ENDS-->
+        </div>
+    </div>    
 
+    <!--user short summary STARTS-->
+    <div class="container my-5">
+        <div class="row g-4">
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-15 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-check2-square"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-delay="200" data-purecounter-duration="0">{{ attempted_quizzes }}</h5>
+                </div>
+                <p class="mb-0 text-white">Quiz Attempted</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-bar-graph"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="200" data-purecounter-delay="200" data-purecounter-duration="0">{{ avg_score }}</h5>
+                  <span class="mb-0 h5 text-warning">%</span>
+                </div>
+                <p class="mb-0 text-warning">Performance</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary1 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-white mb-0"><i class="bi bi-journals"></i></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-white" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">{{ no_enrolled_sub }}</h5>
+                </div>
+                <p class="mb-0 text-white">Current Courses</p>
+              </div>
+            </div>
+          </div>
+          <!-- Counter item -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="d-flex justify-content-center align-items-center p-4 user-summary2 bg-opacity-10 rounded-3">
+              <span class="display-6 lh-1 text-warning mb-0"><i class="bi bi-file-earmark-check"></i></span>
+              <div class="ms-4 h6 fw-normal mb-0">
+                <div class="d-flex">
+                  <h5 class="purecounter mb-0 fw-bold text-warning" data-purecounter-start="0" data-purecounter-end="6" data-purecounter-delay="300" data-purecounter-duration="0">{{ total_quizzes-attempted_quizzes }}</h5>
+                 
+                </div>
+                <p class="mb-0 text-warning">Quizzes Left</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--user short summary ENDS-->
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-  
-  
-</body>
+    <!--upcoming table STARTS-->
+    <div class="container my-5">
+      <div class="container my-5">
+        <h3 class="text-center"><span class="badge text-bg-primary">Subject-wise Average Quiz Scores</span></h3>
+        
+        <div class="d-flex justify-content-center mt-4">
+            {% if chart_url1 %}
+                <div class="chart-container border rounded p-3 bg-light shadow">
+                    <img src="{{ chart_url1 }}" alt="User Subject-wise Average Scores" height="" class="img-fluid rounded">
+                </div>
+            {% else %}
+                <p class="text-center text-muted">No quiz scores available to display.</p>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <!--upcoming table ENDS-->
 
-</html>
+</div>
+{% endblock %}

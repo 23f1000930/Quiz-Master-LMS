@@ -92,113 +92,48 @@
           <!---------------------------------Card & Carousal Container STARTS----------------------------->
           <div class="position-relative px-5 py-3 text-center text-muted bg-body border border-dashed rounded-5">  
             <div class="d-flex justify-content-center position-relative">
-              <h2><code>Data Science</code></h2>
-              <a href="#" class="btn btn-outline-danger position-absolute end-0" style="height: 39px; margin-right: 54px;">
+              <h2><code>All Courses</code></h2>
+              <a href="{{ url_for('subject', user_id=session['any_user_id']) if session.get('any_user_id') else url_for('subject') }}" class="btn btn-outline-danger position-absolute end-0" style="height: 39px; margin-right: 54px;">
                   View All <i class="bi bi-arrow-right"></i>
               </a>
             </div>                
               <!-------------------------------------CROUSAL STARTS HERE----------------------------------->
               <div class="carousel-container">
-                  <div id="carouselExampleIndicators" class="carousel slide" style="width: 1160px; padding-inline: 34px;">
-                      <div class="carousel-inner d-flex">
-                          <div class="carousel-item active">
-                              <div class="row">
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="carousel-item">
-                              <div class="row">
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="col-4">
-                                      <div class="card" style="width: 22rem;">
-                                          <img src="static/1.jpg" width="100%" height="180" class="card-img-top" alt="...">
-                                          <div class="card-body">
-                                          <h5 class="card-title">Card title</h5>
-                                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                          <div class="d-flex justify-content-end">
-                                              <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
-                                              <a href="#" class="btn btn-dark w-50">Enroll</a>
-                                          </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              
-              
-                  <!-- Buttons at left and right -->
-                  <button class="btn btn-dark carousel-btn prev-btn" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                      <i class="bi bi-chevron-left"></i>
-                  </button>
-                  <button class="btn btn-dark carousel-btn next-btn" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                      <i class="bi bi-chevron-right"></i>
-                  </button>
-              </div>
+                <div id="carouselExampleIndicators" class="carousel slide" style="width: 1160px; padding-inline: 34px;">
+                    <div class="carousel-inner d-flex">
+                        {% for i in range(0, subjects|length, 3) %}
+                        <div class="carousel-item {% if i == 0 %}active{% endif %}">
+                            <div class="row">
+                                {% for subject in subjects[i:i+3] %}
+                                <div class="col-4">
+                                    <div class="card" style="width: 22rem;">
+                                        <img src="/static/uploads/{{ subject.sub_image }}" width="100%" height="180" class="card-img-top" alt="{{ subject.name }}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ subject.name }}</h5>
+                                            <p class="card-text">{{ subject.description }}</p>
+                                            <div class="d-flex justify-content-end">
+                                                <a href="#" class="btn btn-outline-danger w-50">Explore</a>&nbsp;&nbsp;
+                                                <a href="#" class="btn btn-dark w-50">Enroll</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            
+                <!-- Buttons for Carousel Navigation -->
+                <button class="btn btn-dark carousel-btn prev-btn" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button class="btn btn-dark carousel-btn next-btn" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+            
               <!---------------------------------------CROUSAL ENDS HERE------------------------------------>
           </div><br>
           <!---------------------------------Card & Carousal Container STARTS--------------------------->
