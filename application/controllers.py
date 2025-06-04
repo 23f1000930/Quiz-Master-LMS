@@ -919,11 +919,11 @@ def admin_summary():
         plt.grid(axis="y", linestyle="--", alpha=0.7)
 
         # Save image to static folder
-        img_path = os.path.join("static", "subject_avg_scores.png")
-        plt.savefig(img_path, bbox_inches="tight")
+        img_path1 = os.path.join("static", "subject_avg_scores.png")
+        plt.savefig(img_path1, bbox_inches="tight")
         plt.close()
     else:
-        img_path = None  # No data, no graph
+        img_path1 = None  # No data, no graph
     
 
     # Finding subject wise enrolled users
@@ -964,7 +964,7 @@ def admin_summary():
         total_inst=total_inst,
         total_quizzes=total_quizzes,
         avg_scores_data=avg_scores_data,
-        chart_url1=url_for("static", filename="subject_avg_scores.png") if img_path else None,
+        chart_url1=url_for("static", filename="subject_avg_scores.png") if img_path1 else None,
         chart_url2=url_for("static", filename="subject_enroll.png")
     )
 
@@ -1281,8 +1281,13 @@ def user_summary(user_id):
     no_enrolled_sub=len(this_user.subjects)
     scores =Score.query.filter_by(user_id=user_id).all()
     scores = [score.total_score for score in scores]  # Extract total scores
-    avg_score = round(sum(scores) / len(scores), 2)
-    
+    if len(scores)>0:
+        avg_score = round(sum(scores) / len(scores), 2)
+    else:
+        avg_score = 0
+
+
+
 
     #Total No. of quiz attempted by the user
     total_quizzes = Quiz.query.count()  # Total number of quizzes
@@ -1301,6 +1306,7 @@ def user_summary(user_id):
         .join(Chapter, Subject.id == Chapter.subject_id)
         .join(Quiz, Chapter.id == Quiz.chapter_id)
         .join(Score, Quiz.id == Score.quiz_id)
+        .filter(Score.user_id==user_id)
         .group_by(Subject.name)
         .all()
     )
