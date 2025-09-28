@@ -115,6 +115,7 @@ def logout():
     session.clear()
     return redirect("/home")
 
+@app.route("/")
 @app.route("/home")
 @app.route("/home/<int:user_id>")
 def home(user_id=None):
