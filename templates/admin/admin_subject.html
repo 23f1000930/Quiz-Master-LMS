@@ -436,7 +436,7 @@
     //FOR PREVIEW THE DETAILS IN FORM
    async function getSubjectDetails(subjectId) {
     try {
-        let response = await fetch(`http://127.0.0.1:5000/modify_subject/${subjectId}`);
+        let response = await fetch(`/modify_subject/${subjectId}`);
         let data = await response.json();
 
         if (data.error) {
@@ -511,7 +511,7 @@
     async function fetchAllInstructors()
     {
         try {
-        let response = await fetch("http://127.0.0.1:5000/admin_instructor/all_instructors");
+        let response = await fetch("/admin_instructor/all_instructors");
         let data = await response.json();
         if (data.error) {
             alert("Instructors not found!");

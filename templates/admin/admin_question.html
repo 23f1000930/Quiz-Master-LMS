@@ -284,7 +284,7 @@
      //Preview Modify chapter Form while Editing
      async function getQuestionDetails(questionId) {
    try {
-       let response = await fetch(`http://127.0.0.1:5000/modify_question/${questionId}`);
+       let response = await fetch(`/modify_question/${questionId}`);
        let data = await response.json();
 
        if (data.error) {

@@ -256,7 +256,8 @@
 <script>
   async function getInstructorDetails(instructortId) {
    try {
-       let response = await fetch(`http://127.0.0.1:5000/modify_instructor/${instructortId}`);
+       //let response = await fetch(`http://127.0.0.1:5000/modify_instructor/${instructortId}`);
+       let response = await fetch(`/modify_instructor/${instructortId}`);
        let data = await response.json();
 
        if (data.error) {

@@ -631,7 +631,7 @@
     //Preview Modify chapter Form while Editing
     async function getChapterDetails(chapterId) {
    try {
-       let response = await fetch(`http://127.0.0.1:5000/modify_module/${chapterId}`);
+       let response = await fetch(`/modify_module/${chapterId}`);
        let data = await response.json();
 
        if (data.error) {
@@ -662,7 +662,7 @@
     async function getLectureDetails(lectureId)
     {
         try {
-       let response = await fetch(`http://127.0.0.1:5000/modify_lecture/${lectureId}`);
+       let response = await fetch(`/modify_lecture/${lectureId}`);
        let data = await response.json();
 
        if (data.error) {
@@ -695,7 +695,7 @@
     async function fetchAllLectures(chapterId)
     {
         try {
-        let response = await fetch(`http://127.0.0.1:5000//admin_lecture/${chapterId}/all_lectures`);
+        let response = await fetch(`/admin_lecture/${chapterId}/all_lectures`);
         let data = await response.json();
         if (data.error) {
             alert("Lectures not found!");
@@ -723,7 +723,7 @@
     async function getQuizDetails(quizId)
     {
         try {
-       let response = await fetch(`http://127.0.0.1:5000/modify_quiz/${quizId}`);
+       let response = await fetch(`/modify_quiz/${quizId}`);
        let data = await response.json();
 
        if (data.error) {
