@@ -138,11 +138,13 @@ def help():
 
 @app.route("/subject")
 @app.route("/subject/<int:user_id>", methods=["GET", "POST"])
-def subject(user_id):
+def subject(user_id=None):
     if request.method == 'GET':
         subjects =Subject.query.all()
-        return render_template("subject.html", user_id=user_id, subjects=subjects)
-
+        if user_id:
+            return render_template("subject.html", user_id=user_id, subjects=subjects)
+        else:
+            return render_template("subject.html", subjects=subjects)
 
 #ADMIN ROUTE & FUNCTION 
 @app.route("/admin_home")
